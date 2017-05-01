@@ -17,7 +17,7 @@ namespace CStoJS
 
         public override string ToString()
         {
-            return lexema + " of type " + type;
+            return $"{lexema} of type {type}";
         }
     }
 }
