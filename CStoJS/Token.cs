@@ -3,9 +3,9 @@ namespace CStoJS
     public class Token
     {
         public TokenType type;
-        private int column;
-        private int row;
-        private string lexema;
+        public int column;
+        public int row;
+        public string lexema;
 
         public Token(TokenType type, string lexema, int row, int column)
         {
