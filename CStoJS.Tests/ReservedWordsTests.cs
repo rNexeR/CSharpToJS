@@ -16,7 +16,7 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken();
             var i = 0;
             while(current.type != TokenType.EOF && i < expectedTypes.Length){
-                Assert.True(expectedTypes[i++] == current.type);
+                Assert.Equal(expectedTypes[i++], current.type);
                 current = lexer.GetNextToken();
             }
 

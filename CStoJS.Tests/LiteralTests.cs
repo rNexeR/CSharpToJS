@@ -97,5 +97,64 @@ namespace CStoJS.Tests
                 current = lexer.GetNextToken();
             }
         }
+
+        [Fact]
+        public void CorrectIntLiteral(){
+            var input = new InputString("1 23 5 \0");
+            var lexer = new Lexer(input);
+
+            var expectedTypes = new TokenType[]{TokenType.LITERAL_INT, TokenType.LITERAL_INT, TokenType.LITERAL_INT};
+            var expectedLexemas = new string[]{"1","23", "5"};
+
+            var current = lexer.GetNextToken();
+            var i = 0;
+            while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
+                Assert.Equal(expectedTypes[i], current.type);
+                Assert.Equal(expectedLexemas[i++], current.lexema);
+                current = lexer.GetNextToken();
+            }
+        }
+
+        [Fact]
+        public void CorrectFloatLiteral(){
+            var input = new InputString("1.5F 23.7F 5.0F \0");
+            var lexer = new Lexer(input);
+
+            var expectedTypes = new TokenType[]{TokenType.LITERAL_FLOAT, TokenType.LITERAL_FLOAT, TokenType.LITERAL_FLOAT};
+            var expectedLexemas = new string[]{"1.5F","23.7F", "5.0F"};
+
+            var current = lexer.GetNextToken();
+            var i = 0;
+            while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
+                Assert.Equal(expectedTypes[i], current.type);
+                Assert.Equal(expectedLexemas[i++], current.lexema);
+                current = lexer.GetNextToken();
+            }
+        }
+
+        [Fact]
+        public void FloatLiteralMustFinishWithF(){
+            var input = new InputString("1.5F 23.7F 5.0 5.0.0 \0");
+            var lexer = new Lexer(input);
+
+            var expectedTypes = new TokenType[]{TokenType.LITERAL_FLOAT, TokenType.LITERAL_FLOAT};
+            var expectedLexemas = new string[]{"1.5F","23.7F"};
+
+            var current = lexer.GetNextToken();
+            var i = 0;
+            while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
+                Assert.Equal(expectedTypes[i], current.type);
+                Assert.Equal(expectedLexemas[i++], current.lexema);
+                current = lexer.GetNextToken();
+            }
+
+            Exception ex = Assert.Throws<FloatLiteralException>(() => lexer.GetNextToken());
+
+            Assert.Equal("Float Literal must finish with F.", ex.Message);
+
+            ex = Assert.Throws<FloatLiteralException>(() => lexer.GetNextToken());
+
+            Assert.Equal("Float Literal must finish with F.", ex.Message);
+        }
     }
 }

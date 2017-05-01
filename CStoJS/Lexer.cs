@@ -13,7 +13,6 @@ namespace CStoJS
         private Dictionary<string, TokenType> multipleOptionsDict;
         private List<string> escapeSequences;
 
-
         public Lexer(InputString inputString)
         {
             this.inputString = inputString;
@@ -29,6 +28,15 @@ namespace CStoJS
             escapeSequences = new List<string>();
             escapeSequences.Add("\t");
             escapeSequences.Add("\n");
+            escapeSequences.Add("\'");
+            escapeSequences.Add("\"");
+            escapeSequences.Add("\\");
+            escapeSequences.Add("\0");
+            escapeSequences.Add("\a");
+            escapeSequences.Add("\b");
+            escapeSequences.Add("\f");
+            escapeSequences.Add("\r");
+            escapeSequences.Add("\v");
         }
 
         private void InitMultipleOptionsDictionary()
@@ -214,7 +222,28 @@ namespace CStoJS
 
         private Token DigitOptionsSelector()
         {
-            throw new NotImplementedException();
+            var lexema = new StringBuilder(currentSymbol.character.ToString());
+            var ret = new Token(TokenType.LITERAL_INT, lexema.ToString(), currentSymbol.rowCount, currentSymbol.colCount);
+            currentSymbol = inputString.GetNextSymbol();
+
+            while(Char.IsDigit(currentSymbol.character) || (currentSymbol.character == '.' && !lexema.ToString().Contains("."))){
+                lexema.Append(currentSymbol.character);
+                if(currentSymbol.character == '.')
+                    ret.type = TokenType.LITERAL_FLOAT;
+                currentSymbol = inputString.GetNextSymbol();
+            }
+
+            if(ret.type == TokenType.LITERAL_FLOAT){
+                if(currentSymbol.character != 'F')
+                    throw new FloatLiteralException("Float Literal must finish with F.");
+                else
+                    lexema.Append(currentSymbol.character);
+                    currentSymbol = inputString.GetNextSymbol();
+            }
+
+            ret.lexema = lexema.ToString();
+
+            return ret;
         }
     }
 }

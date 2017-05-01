@@ -10,7 +10,7 @@ namespace CStoJS
         OP_MULTIPLICATION,
         OP_MODULO,
         OP_ASSIGN,
-        LIT_INT,
+        LITERAL_INT,
         PAREN_OPEN,
         PAREN_CLOSE,
         END_STATEMENT,
@@ -51,6 +51,7 @@ namespace CStoJS
         OP_CONDITIONAL_NOT_EQUAL,
         CHAR_TYPE,
         STRING_TYPE,
-        LITERAL_STRING_VERBATIM
+        LITERAL_STRING_VERBATIM,
+        LITERAL_FLOAT
     }
 }
