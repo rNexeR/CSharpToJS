@@ -1,4 +1,4 @@
-namespace CStoJS
+namespace CStoJS.Inputs
 {
     public interface IInput
     {

@@ -1,4 +1,6 @@
-namespace CStoJS
+using System;
+
+namespace CStoJS.LexerLibraries
 {
     public class Symbol
     {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CStoJS.Inputs;
 
-namespace CStoJS
+namespace CStoJS.LexerLibraries
 {
     public class Lexer
     {
@@ -88,15 +86,56 @@ namespace CStoJS
         private void InitReservedWordsDictionary()
         {
             reservedWordsDict = new Dictionary<string, TokenType>();
-            reservedWordsDict["int"] = TokenType.INT_TYPE;
-            reservedWordsDict["float"] = TokenType.FLOAT_TYPE;
-            reservedWordsDict["bool"] = TokenType.BOOL_TYPE;
-            reservedWordsDict["string"] = TokenType.STRING_TYPE;
-            reservedWordsDict["char"] = TokenType.CHAR_TYPE;
-            reservedWordsDict["true"] = TokenType.TRUE_BOOL_VALUE;
-            reservedWordsDict["false"] = TokenType.FALSE_BOOL_VALUE;
-            reservedWordsDict["as"] = TokenType.OP_AS;
-            reservedWordsDict["is"] = TokenType.OP_IS;
+
+            reservedWordsDict["public"] = TokenType.PUBLIC_KEYWORD;
+            reservedWordsDict["private"] = TokenType.PRIVATE_KEYWORD;
+            reservedWordsDict["protected"] = TokenType.PROTECTED_KEYWORD;
+            reservedWordsDict["static"] = TokenType.STATIC_KEYWORD;
+            reservedWordsDict["abstract"] = TokenType.ABSTRACT_KEYWORD;
+            reservedWordsDict["virtual"] = TokenType.VIRTUAL_KEYWORD;
+            reservedWordsDict["override"] = TokenType.OVERRIDE_KEYWORD;
+
+            reservedWordsDict["class"] = TokenType.CLASS_KEYWORD;
+            reservedWordsDict["enum"] = TokenType.ENUM_KEYWORD;
+            reservedWordsDict["interface"] = TokenType.INTERFACE_KEYWORD;
+
+            reservedWordsDict["namespace"] = TokenType.NAMESPACE_KEYWORD;
+            reservedWordsDict["base"] = TokenType.BASE_KEYWORD;
+
+            reservedWordsDict["if"] = TokenType.IF_KEYWORD;
+            reservedWordsDict["else"] = TokenType.ELSE_KEYWORD;
+            reservedWordsDict["switch"] = TokenType.SWITCH_KEYWORD;
+            reservedWordsDict["case"] = TokenType.CASE_KEYWORD;
+            reservedWordsDict["default"] = TokenType.DEFAULT_KEYWORD;
+
+            reservedWordsDict["while"] = TokenType.WHILE_KEYWORD;
+            reservedWordsDict["for"] = TokenType.FOR_KEYWORD;
+            reservedWordsDict["foreach"] = TokenType.FOREACH_KEYWORD;
+            reservedWordsDict["do"] = TokenType.DO_KEYWORD;
+
+            reservedWordsDict["int"] = TokenType.INT_KEYWORD;
+            reservedWordsDict["bool"] = TokenType.BOOL_KEYWORD;
+            reservedWordsDict["char"] = TokenType.CHAR_KEYWORD;
+            reservedWordsDict["float"] = TokenType.FLOAT_KEYWORD;
+            reservedWordsDict["string"] = TokenType.STRING_KEYWORD;
+            reservedWordsDict["void"] = TokenType.VOID_KEYWORD;
+            reservedWordsDict["var"] = TokenType.VAR_KEYWORD;
+
+            reservedWordsDict["break"] = TokenType.BREAK_KEYWORD;
+            reservedWordsDict["continue"] = TokenType.CONTINUE_KEYWORD;
+            reservedWordsDict["return"] = TokenType.RETURN_KEYWORD;
+
+            reservedWordsDict["is"] = TokenType.IS_KEYWORD;
+            reservedWordsDict["as"] = TokenType.AS_KEYWORD;
+
+            reservedWordsDict["new"] = TokenType.NEW_KEYWORD;
+            reservedWordsDict["this"] = TokenType.THIS_KEYWORD;
+
+            reservedWordsDict["true"] = TokenType.TRUE_KEYWORD;
+            reservedWordsDict["false"] = TokenType.FALSE_KEYWORD;
+
+            reservedWordsDict["using"] = TokenType.USING_KEYWORD;
+
         }
 
         public Token GetNextToken()

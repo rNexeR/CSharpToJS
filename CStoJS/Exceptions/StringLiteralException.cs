@@ -1,6 +1,6 @@
 using System;
 
-namespace CStoJS
+namespace CStoJS.Exceptions
 {
     internal class StringLiteralException : Exception
     {
