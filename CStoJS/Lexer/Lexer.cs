@@ -1,4 +1,4 @@
-﻿using CStoJS.Inputs;
+using CStoJS.Inputs;
 using System.Collections.Generic;
 using CStoJS.Exceptions;
 using System;
@@ -67,11 +67,15 @@ namespace CStoJS.LexerLibraries
             multipleOptionsDict["!"] = TokenType.OP_NEGATION;
             multipleOptionsDict["!="] = TokenType.OP_CONDITIONAL_NOT_EQUAL;
 
+            multipleOptionsDict["%"] = TokenType.OP_MODULO;
             multipleOptionsDict["%="] = TokenType.OP_ASSIGN_MODULO;
+            multipleOptionsDict["*"] = TokenType.OP_MULTIPLICATION;
             multipleOptionsDict["*="] = TokenType.OP_ASSIGN_MULTIPLICATION;
-            multipleOptionsDict["/"] = TokenType.OP_ASSIGN_DIVISION;
+            multipleOptionsDict["/"] = TokenType.OP_DIVISION;
+            multipleOptionsDict["/="] = TokenType.OP_ASSIGN_DIVISION;
             multipleOptionsDict["&="] = TokenType.OP_ASSIGN__AND;
             multipleOptionsDict["|="] = TokenType.OP_ASSIGN__OR;
+            multipleOptionsDict["^"] = TokenType.OP_BITS_XOR;
             multipleOptionsDict["^="] = TokenType.OP_ASSIGN_XOR;
             multipleOptionsDict["<<="] = TokenType.OP_ASSIGN_SHIFT_LEFT;
             multipleOptionsDict[">>="] = TokenType.OP_ASSIGN_SHIFT_RIGHT;
@@ -91,6 +95,7 @@ namespace CStoJS.LexerLibraries
             oneSymbolDict[':'] = TokenType.OP_HIERARCHY;
             oneSymbolDict['.'] = TokenType.OP_MEMBER_ACCESS;
             oneSymbolDict[','] = TokenType.COMMA;
+            oneSymbolDict['~'] = TokenType.OP_BITS_COMPLEMENT;
             oneSymbolDict['\0'] = TokenType.EOF;
         }
 
@@ -297,3 +302,4 @@ namespace CStoJS.LexerLibraries
         }
     }
 }
+

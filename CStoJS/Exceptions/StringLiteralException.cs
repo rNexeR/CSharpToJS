@@ -2,7 +2,7 @@ using System;
 
 namespace CStoJS.Exceptions
 {
-    public class StringLiteralException : Exception
+    internal class StringLiteralException : Exception
     {
         public StringLiteralException()
         {

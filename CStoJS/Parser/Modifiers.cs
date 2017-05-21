@@ -1,4 +1,4 @@
-﻿using CStoJS.Exceptions;
+using CStoJS.Exceptions;
 using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;

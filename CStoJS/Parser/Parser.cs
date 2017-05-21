@@ -19,7 +19,7 @@ namespace CStoJS.ParserLibraries
         public Parser(Lexer lexer){
             this.lexer = lexer;
             this.InitializeArrays();
-            enableDebug = true;
+            // enableDebug = true;
         }
 
         public void InitializeArrays(){

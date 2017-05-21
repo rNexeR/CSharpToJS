@@ -1,3 +1,4 @@
+
 using System;
 
 namespace CStoJS.Exceptions

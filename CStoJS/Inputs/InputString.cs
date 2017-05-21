@@ -42,4 +42,5 @@ namespace CStoJS.Inputs
             return new Symbol('\0', rowCount, colCount);
         }
     }
+
 }
