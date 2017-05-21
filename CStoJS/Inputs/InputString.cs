@@ -1,4 +1,7 @@
-namespace CStoJS
+using CStoJS.LexerLibraries;
+
+
+namespace CStoJS.Inputs
 {
     public class InputString : IInput
     {

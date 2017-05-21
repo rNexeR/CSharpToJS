@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CStoJS.Inputs;
 using System.Collections.Generic;
+using CStoJS.Exceptions;
+using System;
 using System.Text;
 
-namespace CStoJS
+namespace CStoJS.LexerLibraries
 {
     public class Lexer
     {
@@ -44,9 +46,10 @@ namespace CStoJS
             multipleOptionsDict = new Dictionary<string, TokenType>();
             multipleOptionsDict["+"] = TokenType.OP_SUM;
             multipleOptionsDict["++"] = TokenType.OP_INC_PP;
-            multipleOptionsDict["+="] = TokenType.OP_INC_PE;
+            multipleOptionsDict["+="] = TokenType.OP_ASSIGN_PLUS;
             multipleOptionsDict["-"] = TokenType.OP_SUBSTRACT;
             multipleOptionsDict["--"] = TokenType.OP_INC_MM;
+            multipleOptionsDict["-="] = TokenType.OP_ASSIGN_MINUS;
             multipleOptionsDict["="] = TokenType.OP_ASSIGN;
             multipleOptionsDict["=="] = TokenType.OP_CONDITIONAL_EQUAL;
             multipleOptionsDict["?"] = TokenType.OP_CONDITIONAL;
@@ -63,6 +66,15 @@ namespace CStoJS
             multipleOptionsDict["||"] = TokenType.OP_CONDITIONAL_OR;
             multipleOptionsDict["!"] = TokenType.OP_NEGATION;
             multipleOptionsDict["!="] = TokenType.OP_CONDITIONAL_NOT_EQUAL;
+
+            multipleOptionsDict["%="] = TokenType.OP_ASSIGN_MODULO;
+            multipleOptionsDict["*="] = TokenType.OP_ASSIGN_MULTIPLICATION;
+            multipleOptionsDict["/"] = TokenType.OP_ASSIGN_DIVISION;
+            multipleOptionsDict["&="] = TokenType.OP_ASSIGN__AND;
+            multipleOptionsDict["|="] = TokenType.OP_ASSIGN__OR;
+            multipleOptionsDict["^="] = TokenType.OP_ASSIGN_XOR;
+            multipleOptionsDict["<<="] = TokenType.OP_ASSIGN_SHIFT_LEFT;
+            multipleOptionsDict[">>="] = TokenType.OP_ASSIGN_SHIFT_RIGHT;
         }
 
         private void InitOneSymbolDictionary()
@@ -74,29 +86,67 @@ namespace CStoJS
             oneSymbolDict['}'] = TokenType.BRACE_CLOSE;
             oneSymbolDict[']'] = TokenType.BRACKET_CLOSE;
             oneSymbolDict['['] = TokenType.BRACKET_OPEN;
-            oneSymbolDict['*'] = TokenType.OP_MULTIPLICATION;
-            oneSymbolDict['/'] = TokenType.OP_DIVISION;
             oneSymbolDict['~'] = TokenType.OP_BITS_COMPLEMENT;
             oneSymbolDict[';'] = TokenType.END_STATEMENT;
             oneSymbolDict[':'] = TokenType.OP_HIERARCHY;
             oneSymbolDict['.'] = TokenType.OP_MEMBER_ACCESS;
-            oneSymbolDict['%'] = TokenType.OP_MODULO;
-            oneSymbolDict['^'] = TokenType.OP_BITS_XOR;
+            oneSymbolDict[','] = TokenType.COMMA;
             oneSymbolDict['\0'] = TokenType.EOF;
         }
 
         private void InitReservedWordsDictionary()
         {
             reservedWordsDict = new Dictionary<string, TokenType>();
-            reservedWordsDict["int"] = TokenType.INT_TYPE;
-            reservedWordsDict["float"] = TokenType.FLOAT_TYPE;
-            reservedWordsDict["bool"] = TokenType.BOOL_TYPE;
-            reservedWordsDict["string"] = TokenType.STRING_TYPE;
-            reservedWordsDict["char"] = TokenType.CHAR_TYPE;
-            reservedWordsDict["true"] = TokenType.TRUE_BOOL_VALUE;
-            reservedWordsDict["false"] = TokenType.FALSE_BOOL_VALUE;
-            reservedWordsDict["as"] = TokenType.OP_AS;
-            reservedWordsDict["is"] = TokenType.OP_IS;
+
+            reservedWordsDict["public"] = TokenType.PUBLIC_KEYWORD;
+            reservedWordsDict["private"] = TokenType.PRIVATE_KEYWORD;
+            reservedWordsDict["protected"] = TokenType.PROTECTED_KEYWORD;
+            reservedWordsDict["static"] = TokenType.STATIC_KEYWORD;
+            reservedWordsDict["abstract"] = TokenType.ABSTRACT_KEYWORD;
+            reservedWordsDict["virtual"] = TokenType.VIRTUAL_KEYWORD;
+            reservedWordsDict["override"] = TokenType.OVERRIDE_KEYWORD;
+
+            reservedWordsDict["class"] = TokenType.CLASS_KEYWORD;
+            reservedWordsDict["enum"] = TokenType.ENUM_KEYWORD;
+            reservedWordsDict["interface"] = TokenType.INTERFACE_KEYWORD;
+
+            reservedWordsDict["namespace"] = TokenType.NAMESPACE_KEYWORD;
+            reservedWordsDict["base"] = TokenType.BASE_KEYWORD;
+
+            reservedWordsDict["if"] = TokenType.IF_KEYWORD;
+            reservedWordsDict["else"] = TokenType.ELSE_KEYWORD;
+            reservedWordsDict["switch"] = TokenType.SWITCH_KEYWORD;
+            reservedWordsDict["case"] = TokenType.CASE_KEYWORD;
+            reservedWordsDict["default"] = TokenType.DEFAULT_KEYWORD;
+
+            reservedWordsDict["while"] = TokenType.WHILE_KEYWORD;
+            reservedWordsDict["for"] = TokenType.FOR_KEYWORD;
+            reservedWordsDict["foreach"] = TokenType.FOREACH_KEYWORD;
+            reservedWordsDict["do"] = TokenType.DO_KEYWORD;
+
+            reservedWordsDict["int"] = TokenType.INT_KEYWORD;
+            reservedWordsDict["bool"] = TokenType.BOOL_KEYWORD;
+            reservedWordsDict["char"] = TokenType.CHAR_KEYWORD;
+            reservedWordsDict["float"] = TokenType.FLOAT_KEYWORD;
+            reservedWordsDict["string"] = TokenType.STRING_KEYWORD;
+            reservedWordsDict["void"] = TokenType.VOID_KEYWORD;
+            reservedWordsDict["var"] = TokenType.VAR_KEYWORD;
+
+            reservedWordsDict["break"] = TokenType.BREAK_KEYWORD;
+            reservedWordsDict["continue"] = TokenType.CONTINUE_KEYWORD;
+            reservedWordsDict["return"] = TokenType.RETURN_KEYWORD;
+
+            reservedWordsDict["is"] = TokenType.IS_KEYWORD;
+            reservedWordsDict["as"] = TokenType.AS_KEYWORD;
+
+            reservedWordsDict["new"] = TokenType.NEW_KEYWORD;
+            reservedWordsDict["this"] = TokenType.THIS_KEYWORD;
+
+            reservedWordsDict["true"] = TokenType.TRUE_KEYWORD;
+            reservedWordsDict["false"] = TokenType.FALSE_KEYWORD;
+
+            reservedWordsDict["using"] = TokenType.USING_KEYWORD;
+
         }
 
         public Token GetNextToken()

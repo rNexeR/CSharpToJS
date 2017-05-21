@@ -1,0 +1,4 @@
+RUN SELECTED TEST
+    dotnet test --filter Name~[Method-Nam]
+    dotnet test --filter Priority=[number]
+    dotnet test --filter ClassName=[Namespace].[ClassName]

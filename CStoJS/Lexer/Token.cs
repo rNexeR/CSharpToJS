@@ -1,4 +1,4 @@
-namespace CStoJS
+namespace CStoJS.LexerLibraries
 {
     public class Token
     {

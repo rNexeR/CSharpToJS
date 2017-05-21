@@ -1,4 +1,6 @@
-namespace CStoJS
+using CStoJS.LexerLibraries;
+
+namespace CStoJS.Inputs
 {
     public interface IInput
     {

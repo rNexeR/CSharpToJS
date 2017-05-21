@@ -1,0 +1,39 @@
+Program -> Statement_List
+Statement_List  -> Statement Statement_List
+                | Epsilon
+Statement   ->  Basic_Statement
+            |   Declarative_Statement
+
+Basic_Statement ->  Variable_Declaration
+                |   Conditional_Statement
+                |   Iterate_Statement
+                |   Jump_Statement
+                |   Compound_Statement
+                |   Expression_Statement
+
+Declarative_Statement   ->  FunOrVar_Declaration
+                        |   Class_Declaration
+                        |   Enum_Declaration
+                        |   Interface_Declaration
+                        |   Using_Statement
+
+Using_Statement ->  "using" id
+
+Compound_Statement  ->  '{' Basic_Statement_List '}'
+
+Basic_Statement_List    ->  Basic_Statement Basic_Statement_List
+                        |   Epsilon
+
+Expression_Statement    ->  Expression ';'
+                        |   ';'
+
+Expression  ->  Assignment_Expression Inline_Expression
+
+Inline_Expression   ->  ',' Expression
+                    |   Epsilon
+
+Assignment_Expression   ->  Logical_Or_Expression Ternary_Expression Assignment_Expression_P
+
+Assignment_Expression_P ->  
+
+Logical_Or_Expression   ->  

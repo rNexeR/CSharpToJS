@@ -1,0 +1,3 @@
+MatchExactly( new TokenType[]{ TokenType.CLASS_KEYWORD, TokenType.ID } );
+MatchAny(this.optional_modifiers)
+MatchAny( this.encapsulation_modifiers.Concat().toArray()

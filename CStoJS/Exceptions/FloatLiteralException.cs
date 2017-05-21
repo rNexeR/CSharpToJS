@@ -1,6 +1,6 @@
 using System;
 
-namespace CStoJS
+namespace CStoJS.Exceptions
 {
     public class FloatLiteralException : Exception
     {
