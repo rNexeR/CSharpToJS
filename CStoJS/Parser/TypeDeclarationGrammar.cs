@@ -4,35 +4,51 @@ using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
 
-namespace CStoJS.ParserLibraries{
-    public partial class Parser{
-        void TypeDeclarationList(){
+namespace CStoJS.ParserLibraries
+{
+    public partial class Parser
+    {
+        void TypeDeclarationList()
+        {
             printDebug("Type Declaration List");
-            if( MatchAny( this.class_modifiers.Concat(this.encapsulation_modifiers).Concat(new TokenType[]{TokenType.CLASS_KEYWORD, TokenType.ENUM_KEYWORD, TokenType.INTERFACE_KEYWORD }).ToArray()) ){ 
+            if (MatchAny(this.class_modifiers.Concat(this.encapsulation_modifiers).Concat(new TokenType[] { TokenType.CLASS_KEYWORD, TokenType.ENUM_KEYWORD, TokenType.INTERFACE_KEYWORD }).ToArray()))
+            {
                 TypeDeclaration();
                 TypeDeclarationList();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
 
-        void TypeDeclaration(){
+        void TypeDeclaration()
+        {
             printDebug("Type Declaration");
-            if( MatchAny(this.encapsulation_modifiers) ){
+            if (MatchAny(this.encapsulation_modifiers))
+            {
                 ConsumeToken();
             }
             GroupDeclaration();
-        }   
+        }
 
-        void GroupDeclaration(){
+        void GroupDeclaration()
+        {
             printDebug("Group Declaration");
-            if( MatchAny( this.class_modifiers.Concat(new TokenType[]{ TokenType.CLASS_KEYWORD }).ToArray() ) ){ 
+            if (MatchAny(this.class_modifiers.Concat(new TokenType[] { TokenType.CLASS_KEYWORD }).ToArray()))
+            {
                 ClassDeclaration();
-            }else if( MatchAny( new TokenType[]{ TokenType.ENUM_KEYWORD } ) ){
+            }
+            else if (MatchAny(new TokenType[] { TokenType.ENUM_KEYWORD }))
+            {
                 EnumDeclaration();
-            }else if( MatchAny( new TokenType[]{ TokenType.INTERFACE_KEYWORD } ) ){
+            }
+            else if (MatchAny(new TokenType[] { TokenType.INTERFACE_KEYWORD }))
+            {
                 InterfaceDeclaration();
-            }else{
+            }
+            else
+            {
                 ThrowSyntaxException("Class, Enum or Interface Declaration expected");
             }
         }

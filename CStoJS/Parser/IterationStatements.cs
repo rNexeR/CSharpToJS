@@ -10,6 +10,7 @@ namespace CStoJS.ParserLibraries
     {
         private void IterationStatement()
         {
+            printDebug("Iteration Statement");
             if(!MatchAny(iteration_statements))
                 ThrowSyntaxException("Iteration Statement expected");
 
@@ -26,36 +27,80 @@ namespace CStoJS.ParserLibraries
 
         private void ForEachStatement()
         {
-            throw new NotImplementedException();
+            printDebug("ForEach Statement");
+            MatchExactly(TokenType.FOREACH_KEYWORD);
+            MatchExactly(TokenType.PAREN_OPEN);
+            TypeOrVar();
+            MatchExactly(TokenType.ID);
+            MatchExactly(TokenType.IN_KEYWORD);
+            Expression();
+            MatchExactly(TokenType.PAREN_CLOSE);
+            EmbeddedStatement();
         }
 
         private void ForStatement()
         {
-            throw new NotImplementedException();
+            printDebug("For Statement");
+            MatchExactly(TokenType.FOR_KEYWORD);
+            MatchExactly(TokenType.PAREN_OPEN);
+            OptionalForInitializer();
+            MatchExactly(TokenType.END_STATEMENT);
+            OptionalExpression();
+            MatchExactly(TokenType.END_STATEMENT);
+            OptionalStatementExpressionList();
+            MatchExactly(TokenType.PAREN_CLOSE);
+            EmbeddedStatement();
+        }
+
+        private void OptionalForInitializer()
+        {
+            printDebug("Optional For Initializer");
+             TokenType[] nuevo = { TokenType.OP_TERNARY, TokenType.OP_HIERARCHY,
+                TokenType.OP_NULL_COALESCING, TokenType.OP_CONDITIONAL_OR,
+                TokenType.OP_CONDITIONAL_AND, TokenType.OP_BITS_OR,
+                TokenType.OP_BITS_XOR, TokenType.OP_BITS_AND, TokenType.ID
+            };
+            if(MatchAny(types.Concat(new TokenType[]{TokenType.VAR_KEYWORD}).ToArray())){
+                LocalVariableDeclaration();
+            }else if(MatchAny(nuevo.Concat(expression_operators).ToArray())){
+                StatementExpressionList();
+            }else{
+                //epsilon
+            }
         }
 
         private void DoStatement()
         {
-            throw new NotImplementedException();
+            printDebug("Do Statement");
+            MatchExactly(TokenType.DO_KEYWORD);
+            EmbeddedStatement();
+            MatchExactly(TokenType.WHILE_KEYWORD);
+            MatchExactly(TokenType.PAREN_OPEN);
+            Expression();
+            MatchExactly(TokenType.PAREN_CLOSE);
+            MatchExactly(TokenType.END_STATEMENT);
         }
 
         private void WhileStatement()
         {
-            throw new NotImplementedException();
+            printDebug("While Statement");
+            MatchExactly(TokenType.WHILE_KEYWORD);
+            MatchExactly(TokenType.PAREN_OPEN);
+            Expression();
+            MatchExactly(TokenType.PAREN_CLOSE);
+            EmbeddedStatement();
         }
 
         private void JumpStatement()
         {
+            printDebug("Jump Statement");
             if(!MatchAny(jump_statements))
                 ThrowSyntaxException("Jump Statement expected");
             
             if( ConsumeOnMatch(TokenType.BREAK_KEYWORD) || ConsumeOnMatch(TokenType.CONTINUE_KEYWORD) ){
-                MatchExactly(TokenType.END_STATEMENT);
+
             }else if(ConsumeOnMatch(TokenType.RETURN_KEYWORD)){
-                if(!ConsumeOnMatch(TokenType.END_STATEMENT)){
-                    OptionalExpressionList();
-                    MatchExactly(TokenType.END_STATEMENT);
-                }
+                    OptionalExpression();
             }
         }
     }

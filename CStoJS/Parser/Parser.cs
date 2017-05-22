@@ -14,7 +14,8 @@ namespace CStoJS.ParserLibraries
         private TokenType[] types; 
         private TokenType[] literals, unary_operators, assignment_operators, increment_decrement_operators;
         private TokenType[] relational_operators, equality_operators, shift_operators, additive_operators;
-        private TokenType[] multiplicative_operators, is_as_operators, expression_operators;
+        private TokenType[] multiplicative_operators, is_as_operators, expression_operators, unary_expression_options;
+        private TokenType[] jump_statements, selection_statements, iteration_statements;
         private bool enableDebug = false;
         private Token[] lookAhead;
         private bool lookAheadBack;
@@ -45,6 +46,11 @@ namespace CStoJS.ParserLibraries
             this.expression_operators = is_as_operators.Concat(multiplicative_operators).Concat(shift_operators).Concat(equality_operators).Concat(relational_operators).Concat(assignment_operators).Concat(unary_operators).Concat(additive_operators).Concat(literals).Concat(types).Concat(new TokenType[]{ TokenType.PAREN_OPEN, TokenType.NEW_KEYWORD, TokenType.THIS_KEYWORD }).ToArray();
         
             this.increment_decrement_operators = new TokenType[]{ TokenType.OP_INC_MM, TokenType.OP_INC_PP };
+            this.unary_expression_options = new TokenType[]{ TokenType.PAREN_OPEN,TokenType.NEW_KEYWORD, TokenType.ID, TokenType.THIS_KEYWORD};
+            this.jump_statements = new TokenType[]{TokenType.RETURN_KEYWORD, TokenType.BREAK_KEYWORD, TokenType.CONTINUE_KEYWORD};
+            this.selection_statements = new TokenType[]{TokenType.IF_KEYWORD, TokenType.SWITCH_KEYWORD};
+            this.iteration_statements = new TokenType[]{TokenType.WHILE_KEYWORD, TokenType.DO_KEYWORD, TokenType.FOREACH_KEYWORD, TokenType.FOR_KEYWORD};
+
         }
 
         public void parse(){

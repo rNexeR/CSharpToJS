@@ -95,6 +95,7 @@ namespace CStoJS.LexerLibraries
         OP_ASSIGN_SHIFT_LEFT,
         OP_ASSIGN_SHIFT_RIGHT,
         LINE_COMMENT,
-        BLOCK_COMMENT
+        BLOCK_COMMENT,
+        IN_KEYWORD
     }
 }

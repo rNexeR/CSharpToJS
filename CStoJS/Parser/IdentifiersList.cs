@@ -43,6 +43,7 @@ namespace CStoJS.ParserLibraries{
             printDebug("Identifier List Prime");
             if( Match(TokenType.COMMA) ){
                 MatchExactly( new TokenType[]{ TokenType.COMMA, TokenType.ID } );
+                IdentifierAttribute();
                 IdentifierListPrime();
             }else{
                 //EPSILON

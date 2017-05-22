@@ -59,9 +59,11 @@ namespace CStoJS.ParserLibraries
         {
             printDebug("Primary Expression Prime");
             if( OptionalMatchExactly( new TokenType[]{ TokenType.OP_MEMBER_ACCESS, TokenType.ID } ) ){
-                OptionalFunctOrArrayCall();
                 PrimaryExpressionPrime();
-            }else if( MatchAndComsumeAny(this.increment_decrement_operators) ){
+            }else if(Match(TokenType.PAREN_OPEN) || Match(TokenType.BRACKET_OPEN)){
+                OptionalFunctOrArrayCall();
+            }
+            else if( MatchAndComsumeAny(this.increment_decrement_operators) ){
                 PrimaryExpressionPrime();
             }else{
                //epsilon

@@ -15,10 +15,12 @@ namespace CStoJS.ParserLibraries
                 OptionalNamespaceMemberDeclaration();
             }else if( MatchAny( new TokenType[]{ TokenType.NAMESPACE_KEYWORD }) ){
                 OptionalNamespaceMemberDeclaration();
-            }else if( MatchAny( this.class_modifiers.Concat(this.encapsulation_modifiers).Concat(new TokenType[]{TokenType.CLASS_KEYWORD, TokenType.ENUM_KEYWORD, TokenType.INTERFACE_KEYWORD }).ToArray() ) ){
+            }
+            else if( MatchAny( this.class_modifiers.Concat(this.encapsulation_modifiers).Concat(new TokenType[]{TokenType.CLASS_KEYWORD, TokenType.ENUM_KEYWORD, TokenType.INTERFACE_KEYWORD }).ToArray() ) ){
                 TypeDeclarationList();
             }else{
-                ThrowSyntaxException("Using Directive, Namespace Declaration or Type Declaration Expected");
+                // ThrowSyntaxException("Using Directive, Namespace Declaration or Type Declaration Expected");
+                //epsilon
             }
         }
 
@@ -55,6 +57,7 @@ namespace CStoJS.ParserLibraries
                OptionalNamespaceMemberDeclaration();
             }else{
                 TypeDeclarationList();
+                OptionalNamespaceMemberDeclaration();
             }
         }
 

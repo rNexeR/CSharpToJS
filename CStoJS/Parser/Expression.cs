@@ -241,6 +241,13 @@ namespace CStoJS.ParserLibraries{
             }
         }
 
+        void OptionalExpression(){
+            if( MatchAny(this.expression_operators) ){
+                Expression();
+            }else{
+                //epsilon
+            }
+        }
         void Literals(){
             printDebug("Literlas");
             if( MatchAny(this.literals) ){

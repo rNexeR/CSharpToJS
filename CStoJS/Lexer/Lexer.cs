@@ -148,6 +148,7 @@ namespace CStoJS.LexerLibraries
 
             reservedWordsDict["is"] = TokenType.IS_KEYWORD;
             reservedWordsDict["as"] = TokenType.AS_KEYWORD;
+            reservedWordsDict["in"] = TokenType.IN_KEYWORD;
 
             reservedWordsDict["new"] = TokenType.NEW_KEYWORD;
             reservedWordsDict["this"] = TokenType.THIS_KEYWORD;
