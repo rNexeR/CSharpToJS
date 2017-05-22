@@ -164,11 +164,10 @@ namespace CStoJS.Tests
 
         [Fact]
         public void Symbols(){
-            var input = new InputString("() {} [] : . \0");
+            var input = new InputString("() {} : . \0");
             var lexer = new Lexer(input);
 
-            var expectedTypes = new TokenType[]{TokenType.PAREN_OPEN, TokenType.PAREN_CLOSE, TokenType.BRACE_OPEN, TokenType.BRACE_CLOSE, TokenType.BRACKET_OPEN,
-                                                TokenType.BRACKET_CLOSE, TokenType.OP_HIERARCHY, TokenType.OP_MEMBER_ACCESS};
+            var expectedTypes = new TokenType[]{TokenType.PAREN_OPEN, TokenType.PAREN_CLOSE, TokenType.BRACE_OPEN, TokenType.BRACE_CLOSE, TokenType.OP_HIERARCHY, TokenType.OP_MEMBER_ACCESS};
 
             var current = lexer.GetNextToken().type;
             var i = 0;

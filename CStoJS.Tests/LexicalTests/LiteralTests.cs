@@ -9,6 +9,27 @@ namespace CStoJS.Tests
     public class LiteralTests
     {
         [Fact]
+        public void FunctionCall(){
+            var input = new InputString("hola(0); \0");
+            var lexer = new Lexer(input);
+
+            var expectedTypes = new TokenType[]{TokenType.ID, TokenType.PAREN_OPEN, TokenType.LITERAL_INT, TokenType.PAREN_CLOSE, TokenType.END_STATEMENT};
+            var expectedLexemas = new string[]{"hola", "(", "0", ")", ";"};
+
+            var current = lexer.GetNextToken();
+            var i = 0;
+            while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
+                Assert.Equal(expectedTypes[i] , current.type);
+                Assert.Equal(expectedLexemas[i++] , current.lexema);
+                current = lexer.GetNextToken();
+            }
+
+            // Exception ex = Assert.Throws<CharLiteralException>(() => lexer.GetNextToken());
+
+            // Assert.Equal("Char Literal must be closed.", ex.Message);
+        }
+
+        [Fact]
         public void CharLiteralMustBeClosed(){
             var input = new InputString("'a' 'b' ' \0");
             var lexer = new Lexer(input);
@@ -86,11 +107,11 @@ namespace CStoJS.Tests
 
         [Fact]
         public void CorrectStringVerbatimLiteral(){
-            var input = new InputString("&& \"a\" \"break\" \"hello\" @\"hi\" \0");
+            var input = new InputString("&& \"a\" \"break\" \"hello\" @\"hi\"" + @" @"" hi""""hola"""" "" " + "\0");
             var lexer = new Lexer(input);
 
-            var expectedTypes = new TokenType[]{TokenType.OP_CONDITIONAL_AND, TokenType.LITERAL_STRING, TokenType.LITERAL_STRING, TokenType.LITERAL_STRING, TokenType.LITERAL_STRING_VERBATIM};
-            var expectedLexemas = new string[]{"&&","\"a\"", "\"break\"", "\"hello\"", "\"hi\""};
+            var expectedTypes = new TokenType[]{TokenType.OP_CONDITIONAL_AND, TokenType.LITERAL_STRING, TokenType.LITERAL_STRING, TokenType.LITERAL_STRING, TokenType.LITERAL_STRING_VERBATIM, TokenType.LITERAL_STRING_VERBATIM};
+            var expectedLexemas = new string[]{"&&","\"a\"", "\"break\"", "\"hello\"", "@\"hi\"", "@\"hi\"\"hola\"\" \""};
 
             var current = lexer.GetNextToken();
             var i = 0;

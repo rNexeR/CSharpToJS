@@ -58,7 +58,6 @@ public class kevin : Nexer{
     }
 
     public method(int a) : base(a){
-        int[] a = new int[5];
         {
             if(a==10){
                 return a;
@@ -86,16 +85,12 @@ public class kevin : Nexer{
 
     public method(int a) : base(a){
         this.local = a;
-        x[5] = 10;
         ++x;
         x++;
         (Persona)new Persona();
         5;
         (5+A).CompareTo(10);
         this.prototype.jamon(a,a).value;
-        this.prototype.jamon(a,a).value[5];
-        Dictionary<int,float> hasmap = new Dictionary<int,float>();
-        var nuevo = new Dictionary<int,float>();
     }
 }
 ";

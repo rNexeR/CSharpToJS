@@ -39,8 +39,7 @@ namespace CStoJS.ParserLibraries
                 PrimaryExpressionPrime();
             }else if( MatchAndComsumeAny(this.literals) ){
                 PrimaryExpressionPrime();
-            }else if( Match(TokenType.ID) ){
-                ConsumeToken();
+            }else if( ConsumeOnMatch(TokenType.ID) ){
                 PrimaryExpressionPrime();
             }else if( ConsumeOnMatch(TokenType.PAREN_OPEN)){
                 printDebug("\t==> '(' Detected");
@@ -61,8 +60,8 @@ namespace CStoJS.ParserLibraries
             printDebug("Primary Expression Prime");
             if( OptionalMatchExactly( new TokenType[]{ TokenType.OP_MEMBER_ACCESS, TokenType.ID } ) ){
                 PrimaryExpressionPrime();
-            }else if(Match(TokenType.PAREN_OPEN) || Match(TokenType.BRACKET_OPEN)){
-                OptionalFunctOrArrayCall();
+            }else if(Match(TokenType.PAREN_OPEN)){
+                OptionalFunctCall();
             }
             else if( MatchAndComsumeAny(this.increment_decrement_operators) ){
                 PrimaryExpressionPrime();
@@ -71,14 +70,12 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        private void OptionalFunctOrArrayCall()
+        private void OptionalFunctCall()
         {
-            printDebug("Optional Funct Or Array Call");
+            printDebug("Optional Funct Call");
             if( ConsumeOnMatch(TokenType.PAREN_OPEN) ){
                 ArgumentList();
                 MatchExactly(TokenType.PAREN_CLOSE);
-            }else if( Match(TokenType.BRACKET_OPEN) ){
-                OptionalArrayAccessList();
             }else{
                 // epsilon
             }
@@ -92,34 +89,9 @@ namespace CStoJS.ParserLibraries
 
         private void InstanceExpressionFactorized()
         {
-            if( Match(TokenType.BRACKET_OPEN) ){
-                // if( Match(TokenType.BRACKET_OPEN) ){
-                //     RankSpecifierList();
-                //     MatchExactly(TokenType.BRACKET_CLOSE);
-                //     ArrayInitializer();
-                // }else{
-                //     ExpressionList();
-                //     MatchExactly(TokenType.BRACKET_CLOSE);
-                //     OptionalRankSpecifierList();
-                //     OptionalArrayInitializer();
-                // }
-                if( ConsumeOnMatchLA(TokenType.BRACKET_OPEN) && ConsumeOnMatchLA(TokenType.COMMA) ){
-                    RollbackLA();
-                    RankSpecifierList();
-                    ArrayInitializer();
-                }else{
-                    RollbackLA();
-                    ConsumeOnMatch(TokenType.BRACKET_OPEN);
-                    ExpressionList();
-                    MatchExactly(TokenType.BRACKET_CLOSE);
-                    OptionalRankSpecifierList();
-                    OptionalArrayInitializer();
-                }
-            }else{
                 MatchExactly(TokenType.PAREN_OPEN);
                 ArgumentList();
                 MatchExactly(TokenType.PAREN_CLOSE);
-            }
         }
 
         private void ExpressionList()

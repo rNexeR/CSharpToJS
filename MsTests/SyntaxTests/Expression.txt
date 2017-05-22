@@ -5,9 +5,9 @@ public class kevin : Javier
     int MARTES = ((5 * 9 / 3) - 7 + (2 * 7 + 4) / ( (128 >> 5 * 5) - (1 << 7 * 46) / 3 )) + 15;
     int MIERCOLES = 0;
     int x = y = z = w = MARTES / 2;
-    Kevin[] kevin = new Kevin.Javier();
+    Kevin.Javier kevin = new Kevin.Javier();
 
-    Kevin.Javier[] sayHello(){
+    Kevin.Javier sayHello(){
         int x = 5;
     }
 
@@ -70,12 +70,4 @@ public class kevin : Javier
     float f = persona.tryParse(x);
     Persona persona = this.atributo;
     Persona persona = this.method(x,y,r,nada);
-
-    //TestClassWithArraysInExpression
-    float mana = new int[2][][][];
-    private int arreglo =  new float[,,,,]{};
-    int arreglo = new int[2]{ 5,7 };
-    int arreglo = new int[2][]{ new int[5],new int[8]};
-    int arreglo = { new int[5], new int[4], array };
-    int value = new Persona(x,y,w).array[2];
 }

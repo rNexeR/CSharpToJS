@@ -93,8 +93,8 @@ namespace CStoJS.LexerLibraries
             oneSymbolDict[')'] = TokenType.PAREN_CLOSE;
             oneSymbolDict['{'] = TokenType.BRACE_OPEN;
             oneSymbolDict['}'] = TokenType.BRACE_CLOSE;
-            oneSymbolDict[']'] = TokenType.BRACKET_CLOSE;
-            oneSymbolDict['['] = TokenType.BRACKET_OPEN;
+            // oneSymbolDict[']'] = TokenType.BRACKET_CLOSE;
+            // oneSymbolDict['['] = TokenType.BRACKET_OPEN;
             oneSymbolDict['~'] = TokenType.OP_BITS_COMPLEMENT;
             oneSymbolDict[';'] = TokenType.END_STATEMENT;
             oneSymbolDict[':'] = TokenType.OP_HIERARCHY;
@@ -291,19 +291,20 @@ namespace CStoJS.LexerLibraries
             var lexema = new StringBuilder(currentSymbol.character.ToString());
             var lex = lexema.ToString();
             var ret = new Token(TokenType.LITERAL_STRING_VERBATIM, lexema.ToString(), currentSymbol.rowCount, currentSymbol.colCount);
+            currentSymbol = inputString.GetNextSymbol();
+            lexema.Append('"');
 
             do
             {
                 currentSymbol = inputString.GetNextSymbol();
-                while(currentSymbol.character == '"'){
+                if(currentSymbol.character == '"'){
                     lexema.Append(currentSymbol.character);
                     currentSymbol = inputString.GetNextSymbol();
                     if(currentSymbol.character == '"'){
                         lexema.Append(currentSymbol.character);
                         currentSymbol = inputString.GetNextSymbol();
-                        continue;
+                        //continue;
                     }else{
-                        lexema.Append(currentSymbol.character);
                         break;
                     }
                 }

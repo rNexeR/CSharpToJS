@@ -14,7 +14,6 @@ public class BezierCurveInspector : Editor {
         Vector3 p1 = ShowPoint(1);
         Vector3 p2 = ShowPoint(2);
 
-        //Persona[] p = new Persona[3];
         //Persona.Carlos carlos = new Persona.Carlos();
 
         Handles.color = Color.white;
@@ -23,13 +22,11 @@ public class BezierCurveInspector : Editor {
     }
 
     private Vector3 ShowPoint (int index) {
-        Vector3 point = handleTransform.TransformPoint(curve.points[index]);
         EditorGUI.BeginChangeCheck();
         point = Handles.DoPositionHandle(point, handleRotation);
         if (EditorGUI.EndChangeCheck()) {
             Undo.RecordObject(curve, "Move Point");
             EditorUtility.SetDirty(curve);
-            curve.points[index] = handleTransform.InverseTransformPoint(point);
         }
         return point;
     }

@@ -68,13 +68,5 @@ class nuevaClase
         float f = persona.tryParse(x);
         Persona persona = this.atributo;
         Persona persona = this.method(x,y,r,nada);
-
-        //TestClassWithArraysInExpression
-        float mana = new int[2][][][];
-        int arreglo =  new float[,,]{5,6,7,8}; 
-        int arreglo = new int[2]{ 5,7 };
-        int arreglo = new int[2][]{ new int[5],new int[8]};
-        int arreglo = { new int[5], new int[4], array };
-        int value = new Persona(x,y,w).array[2];
     }   
 }

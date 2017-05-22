@@ -67,7 +67,7 @@ namespace CStoJS.ParserLibraries{
             if( MatchAny(this.expression_operators) ){
                 Expression();
             }else{
-                ArrayInitializer();
+                ThrowSyntaxException("VariableInitializer expected");
             }
         }
 

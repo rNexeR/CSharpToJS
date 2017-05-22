@@ -11,8 +11,8 @@ namespace Main
     {
         static void Main(string[] args)
         {
-            // string txtContent = System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/CStoJS.Tests/LiteralTests.cs");
-            var txtContent = "namespace test.test1.test2{\n}\0";
+            string txtContent = System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/MsTests/CompleteExample3.txt");
+            // var txtContent = "namespace test.test1.test2{\n}\0";
             var input = new InputString(txtContent);
             var lexer = new Lexer(input);
             var parser = new Parser(lexer);

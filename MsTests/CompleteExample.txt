@@ -31,7 +31,6 @@ namespace X
         class SomeClass
         {
             private int x;
-            private bool[,] y;
 
             protected static int counter;
 
@@ -127,7 +126,7 @@ abstract class Test : SomeClass2, Hey, System.Some.Thing
         
     }
 
-    public static System.Object[][] Function()
+    public static System.Object Function()
     {
         
     }
@@ -161,5 +160,5 @@ abstract class Test : SomeClass2, Hey, System.Some.Thing
         
     }
 
-    public abstract int[][] SomethingAbstract();
+    public abstract SomethingAbstract();
 }
