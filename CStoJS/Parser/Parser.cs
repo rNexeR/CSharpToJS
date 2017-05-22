@@ -25,7 +25,7 @@ namespace CStoJS.ParserLibraries
             this.InitializeArrays();
             this.lookAhead = new Token[]{};
             this.lookAheadBack = false;
-            enableDebug = true;
+            // enableDebug = true;
         }
 
         public void InitializeArrays(){

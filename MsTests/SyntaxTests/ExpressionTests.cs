@@ -27,6 +27,7 @@ namespace MsTests.SyntaxTests
             {
                 int before = isVisible && IsHere;
                 int before = (isVisible && IsHere);
+                
             }
             ";
             var input = new InputString(txtContent);

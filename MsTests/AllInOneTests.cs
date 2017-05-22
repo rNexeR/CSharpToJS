@@ -30,14 +30,14 @@ namespace CStoJS.MsTests
             parser.parse();
         }
 
-        // [TestMethod]
-        // public void AllInOneTest3(){
-        //     var txtContent =  System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/MsTests/CompleteExample3.txt");
-        //     var input = new InputString(txtContent);
-        //     var lexer = new Lexer(input);
-        //     var parser = new Parser(lexer);
+        [TestMethod]
+        public void AllInOneTest3(){
+            var txtContent =  System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/MsTests/CompleteExample3.txt");
+            var input = new InputString(txtContent);
+            var lexer = new Lexer(input);
+            var parser = new Parser(lexer);
 
-        //     parser.parse();
-        // }
+            parser.parse();
+        }
     }
 }

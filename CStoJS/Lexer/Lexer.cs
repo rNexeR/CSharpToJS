@@ -160,6 +160,10 @@ namespace CStoJS.LexerLibraries
 
         }
 
+        private void ThrowException(string msg){
+            throw new LexicalException($"{msg} [{currentSymbol.character}] at [{currentSymbol.rowCount}, {currentSymbol.colCount}]");
+        }
+
         public Token GetNextToken()
         {
             while (Char.IsWhiteSpace(currentSymbol.character))
@@ -183,8 +187,10 @@ namespace CStoJS.LexerLibraries
                 return DigitOptionsSelector();
             else if (Char.IsLetter(currentSymbol.character) || currentSymbol.character == '_')
                 return LetterOptionsSelector();
-            else
-                throw new LexicalException("Symbol not supported.");
+            else{
+                ThrowException("Symbol not supported.");
+                return new Token(TokenType.EOF, "", 0, 0);
+            }
         }
 
         private Token MultipleOptionsSelector()
@@ -209,7 +215,7 @@ namespace CStoJS.LexerLibraries
                     while(currentSymbol.character != '\n'){
                         currentSymbol = inputString.GetNextSymbol();
                         if(currentSymbol.character == '\0'){
-                            throw new LexicalException("Block Comment must be closed");
+                            ThrowException("Block Comment must be closed");
                         }
                     }
                     return GetNextToken();
@@ -223,10 +229,10 @@ namespace CStoJS.LexerLibraries
                                 currentSymbol = inputString.GetNextSymbol();
                                 return GetNextToken();
                             }else if(currentSymbol.character == '\0'){
-                                throw new LexicalException("Block Comment must be closed");
+                                ThrowException("Block Comment must be closed");
                             }
                         }else if(currentSymbol.character == '\0'){
-                            throw new LexicalException("Block Comment must be closed");
+                            ThrowException("Block Comment must be closed");
                         }
                     }
                 }
@@ -246,7 +252,7 @@ namespace CStoJS.LexerLibraries
             {
                 currentSymbol = inputString.GetNextSymbol();
                 if(currentSymbol.character == '\n' || currentSymbol.character == '\0')
-                    throw new CharLiteralException("Char Literal must be closed.");
+                    ThrowException("Char Literal must be closed.");
                 lexema.Append(currentSymbol.character);
                 lex = lexema.ToString();
             } while (currentSymbol.character != '\'');
@@ -255,7 +261,7 @@ namespace CStoJS.LexerLibraries
             currentSymbol = inputString.GetNextSymbol();
 
             if(ret.lexema.Length > 3)
-                throw new CharLiteralException("Too many characters in Char Literal.");
+                ThrowException("Too many characters in Char Literal.");
             return ret;
         }
 
@@ -269,7 +275,7 @@ namespace CStoJS.LexerLibraries
             {
                 currentSymbol = inputString.GetNextSymbol();
                 if(currentSymbol.character == '\n' || currentSymbol.character == '\0')
-                    throw new StringLiteralException("String Literal must be closed.");
+                    ThrowException("String Literal must be closed.");
                 lexema.Append(currentSymbol.character);
                 lex = lexema.ToString();
             } while (currentSymbol.character != '"');
@@ -282,11 +288,36 @@ namespace CStoJS.LexerLibraries
 
         private Token StringVerbatimLiteralDetector()
         {
-            var ret = new Token(TokenType.LITERAL_STRING_VERBATIM, "", currentSymbol.rowCount, currentSymbol.colCount);
-            currentSymbol = inputString.GetNextSymbol();
-            var str = StringLiteralDetector();
+            var lexema = new StringBuilder(currentSymbol.character.ToString());
+            var lex = lexema.ToString();
+            var ret = new Token(TokenType.LITERAL_STRING_VERBATIM, lexema.ToString(), currentSymbol.rowCount, currentSymbol.colCount);
 
-            ret.lexema = str.lexema;
+            do
+            {
+                currentSymbol = inputString.GetNextSymbol();
+                while(currentSymbol.character == '"'){
+                    lexema.Append(currentSymbol.character);
+                    currentSymbol = inputString.GetNextSymbol();
+                    if(currentSymbol.character == '"'){
+                        lexema.Append(currentSymbol.character);
+                        currentSymbol = inputString.GetNextSymbol();
+                        continue;
+                    }else{
+                        lexema.Append(currentSymbol.character);
+                        break;
+                    }
+                }
+                    
+                lexema.Append(currentSymbol.character);
+            } while (currentSymbol.character != '"');
+
+            ret.lexema = lexema.ToString();
+            currentSymbol = inputString.GetNextSymbol();
+
+
+            // var str = StringLiteralDetector();
+
+            // ret.lexema = "@" + str.lexema;
 
             return ret;
         }
@@ -324,8 +355,8 @@ namespace CStoJS.LexerLibraries
             }
 
             if(ret.type == TokenType.LITERAL_FLOAT){
-                if(currentSymbol.character != 'F')
-                    throw new FloatLiteralException("Float Literal must finish with F.");
+                if(currentSymbol.character != 'F' && currentSymbol.character != 'f')
+                    ThrowException("Float Literal must finish with F.");
                 else
                     lexema.Append(currentSymbol.character);
                     currentSymbol = inputString.GetNextSymbol();
