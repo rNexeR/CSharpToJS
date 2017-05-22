@@ -35,16 +35,12 @@ namespace CStoJS.ParserLibraries
         {
             printDebug($"Primary Expression {currentToken.lexema}");
             if( ConsumeOnMatch(TokenType.NEW_KEYWORD) ){
-                printDebug("\t||HERE1");
                 InstanceExpression();
                 PrimaryExpressionPrime();
             }else if( MatchAndComsumeAny(this.literals) ){
-                printDebug("\t||HERE2");
                 PrimaryExpressionPrime();
             }else if( Match(TokenType.ID) ){
-                printDebug("\t||HERE3");
                 ConsumeToken();
-                Console.WriteLine($"=>{currentToken}");
                 PrimaryExpressionPrime();
             }else if( ConsumeOnMatch(TokenType.PAREN_OPEN)){
                 printDebug("\t==> '(' Detected");
