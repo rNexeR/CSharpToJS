@@ -17,10 +17,35 @@ namespace CStoJS.ParserLibraries{
             }
         }
 
+        private void OptionalVariableInitializerList()
+        {
+            printDebug("Optional Variable Initializer List ==TODO");
+            if( MatchAny(this.expression_operators) ){
+                VariableInitializerList();
+            }else{
+                //epsilon
+            }
+        }
+
+        private void VariableInitializerList()
+        {
+            VariableInitializer();
+            VariableInitializerPrime();
+        }
+
+        private void VariableInitializerPrime()
+        {
+            if(ConsumeOnMatch(TokenType.COMMA)){
+                VariableInitializerList();
+            }else{
+                //epsilomn
+            }
+        }
+
         void VariableAssigner(){
             printDebug("Variable Assigner");
             if( Match(TokenType.OP_ASSIGN) ){
-                currentToken = lexer.GetNextToken();
+                ConsumeToken();
                 VariableInitializer();
             }else{
                 //EPSILON
@@ -29,7 +54,7 @@ namespace CStoJS.ParserLibraries{
         void VariableDeclaratorListPrime(){
             printDebug("Variable Declarator List Prime");
             if(Match(TokenType.COMMA)){
-                currentToken = lexer.GetNextToken();
+                ConsumeToken();
                 VariableDeclaratorList();
             }else{
                 //EPSILON
@@ -39,7 +64,7 @@ namespace CStoJS.ParserLibraries{
         void VariableInitializer(){
             printDebug("Variable Initializer");
             //Change this after
-            if( MatchAny(this.literals) ){
+            if( MatchAny(this.expression_operators) ){
                 Expression();
             }else{
                 ArrayInitializer();

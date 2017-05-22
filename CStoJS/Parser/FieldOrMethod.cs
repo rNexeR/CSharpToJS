@@ -10,8 +10,10 @@ namespace CStoJS.ParserLibraries
     {
         void FieldOrMethodFactorized(){
             printDebug("Field Or Method Factorized");
+            IdentifierAttribute();
+            OptionalRankSpecifierList();
             if (Match(TokenType.ID)){
-                currentToken = lexer.GetNextToken();
+                ConsumeToken();
                 FieldOrMethod();
             }
         }

@@ -15,7 +15,7 @@ namespace CStoJS.Tests
             var input = new InputString("=\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_ASSIGN == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_ASSIGN, lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace CStoJS.Tests
             var input = new InputString("==\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_CONDITIONAL_EQUAL == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_CONDITIONAL_EQUAL , lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace CStoJS.Tests
             var input = new InputString("<\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_LESS_THAN == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_LESS_THAN , lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace CStoJS.Tests
             var input = new InputString("<=\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_LESS_EQUAL_THAN == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_LESS_EQUAL_THAN , lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace CStoJS.Tests
             var input = new InputString("<<\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_BITS_SHIFT_LEFT == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_BITS_SHIFT_LEFT , lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace CStoJS.Tests
             var input = new InputString(">\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_GREATER_THAN == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_GREATER_THAN , lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace CStoJS.Tests
             var input = new InputString(">=\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_GREATER_EQUAL_THAN == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_GREATER_EQUAL_THAN , lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace CStoJS.Tests
             var input = new InputString(">>\0");
             var lexer = new Lexer(input);
 
-            Assert.True(TokenType.OP_BITS_SHIFT_RIGHT == lexer.GetNextToken().type);
+            Assert.Equal(TokenType.OP_BITS_SHIFT_RIGHT , lexer.GetNextToken().type);
         }
 
         [Fact]
@@ -84,11 +84,11 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken().type;
             var i = 0;
             while(current != TokenType.EOF  && i < expectedTypes.Length){
-                Assert.True(expectedTypes[i++] == current);
+                Assert.Equal(expectedTypes[i++] , current);
                 current = lexer.GetNextToken().type;
             }
 
-            Assert.True(i == expectedTypes.Length);
+            Assert.Equal(i , expectedTypes.Length);
         }
 
         [Fact]
@@ -101,11 +101,11 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken().type;
             var i = 0;
             while(current != TokenType.EOF && i < expectedTypes.Length){
-                Assert.True(expectedTypes[i++] == current);
+                Assert.Equal(expectedTypes[i++] , current);
                 current = lexer.GetNextToken().type;
             }
 
-            Assert.True(i == expectedTypes.Length);
+            Assert.Equal(i , expectedTypes.Length);
         }
 
         [Fact]
@@ -118,11 +118,11 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken().type;
             var i = 0;
             while(current != TokenType.EOF && i < expectedTypes.Length){
-                Assert.True(expectedTypes[i++] == current);
+                Assert.Equal(expectedTypes[i++] , current);
                 current = lexer.GetNextToken().type;
             }
 
-            Assert.True(i == expectedTypes.Length);
+            Assert.Equal(i , expectedTypes.Length);
         }
 
         [Fact]
@@ -131,18 +131,18 @@ namespace CStoJS.Tests
             var lexer = new Lexer(input);
 
             var expectedTypes = new TokenType[]{TokenType.OP_SUM, TokenType.OP_INC_PP, TokenType.OP_ASSIGN_PLUS, TokenType.OP_SUBSTRACT, TokenType.OP_INC_MM,
-                                                TokenType.OP_ASSIGN, TokenType.OP_CONDITIONAL_EQUAL, TokenType.OP_CONDITIONAL, TokenType.OP_NULL_COALESCING,
+                                                TokenType.OP_ASSIGN, TokenType.OP_CONDITIONAL_EQUAL, TokenType.OP_TERNARY, TokenType.OP_NULL_COALESCING,
                                                 TokenType.OP_NEGATION, TokenType.OP_CONDITIONAL_NOT_EQUAL, TokenType.OP_BITS_OR, TokenType.OP_CONDITIONAL_OR,
                                                 TokenType.OP_BITS_AND, TokenType.OP_CONDITIONAL_AND};
 
             var current = lexer.GetNextToken().type;
             var i = 0;
             while(current != TokenType.EOF && i < expectedTypes.Length){
-                Assert.True(expectedTypes[i++] == current);
+                Assert.Equal(expectedTypes[i++] , current);
                 current = lexer.GetNextToken().type;
             }
 
-            Assert.True(i == expectedTypes.Length);
+            Assert.Equal(i , expectedTypes.Length);
         }
 
         [Fact]
@@ -155,11 +155,11 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken().type;
             var i = 0;
             while(current != TokenType.EOF && i < expectedTypes.Length){
-                Assert.True(expectedTypes[i++] == current);
+                Assert.Equal(expectedTypes[i++] , current);
                 current = lexer.GetNextToken().type;
             }
 
-            Assert.True(i == expectedTypes.Length);
+            Assert.Equal(i , expectedTypes.Length);
         }
 
         [Fact]
@@ -173,11 +173,11 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken().type;
             var i = 0;
             while(current != TokenType.EOF && i < expectedTypes.Length){
-                Assert.True(expectedTypes[i++] == current);
+                Assert.Equal(expectedTypes[i++] , current);
                 current = lexer.GetNextToken().type;
             }
 
-            Assert.True(i == expectedTypes.Length);
+            Assert.Equal(i , expectedTypes.Length);
         }
     }
 }

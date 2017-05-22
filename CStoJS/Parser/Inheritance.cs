@@ -9,7 +9,7 @@ namespace CStoJS.ParserLibraries{
         public void InheritanceBase(){
             printDebug("Inheritance Base");
             if( Match(TokenType.OP_HIERARCHY) ){
-                currentToken = lexer.GetNextToken();
+                ConsumeToken();
                 IdentifierList();
             }else{
                 //EPSILON

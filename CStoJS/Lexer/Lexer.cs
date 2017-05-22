@@ -14,11 +14,13 @@ namespace CStoJS.LexerLibraries
         private Dictionary<char, TokenType> oneSymbolDict;
         private Dictionary<string, TokenType> multipleOptionsDict;
         private List<string> escapeSequences;
+        private int max_multiple_options_chars;
 
         public Lexer(InputString inputString)
         {
             this.inputString = inputString;
             this.currentSymbol = inputString.GetNextSymbol();
+            max_multiple_options_chars = 3;
             InitReservedWordsDictionary();
             InitOneSymbolDictionary();
             InitMultipleOptionsDictionary();
@@ -52,7 +54,7 @@ namespace CStoJS.LexerLibraries
             multipleOptionsDict["-="] = TokenType.OP_ASSIGN_MINUS;
             multipleOptionsDict["="] = TokenType.OP_ASSIGN;
             multipleOptionsDict["=="] = TokenType.OP_CONDITIONAL_EQUAL;
-            multipleOptionsDict["?"] = TokenType.OP_CONDITIONAL;
+            multipleOptionsDict["?"] = TokenType.OP_TERNARY;
             multipleOptionsDict["??"] = TokenType.OP_NULL_COALESCING;
             multipleOptionsDict[">"] = TokenType.OP_GREATER_THAN;
             multipleOptionsDict[">="] = TokenType.OP_GREATER_EQUAL_THAN;
@@ -66,6 +68,9 @@ namespace CStoJS.LexerLibraries
             multipleOptionsDict["||"] = TokenType.OP_CONDITIONAL_OR;
             multipleOptionsDict["!"] = TokenType.OP_NEGATION;
             multipleOptionsDict["!="] = TokenType.OP_CONDITIONAL_NOT_EQUAL;
+
+            multipleOptionsDict["//"] = TokenType.LINE_COMMENT;
+            multipleOptionsDict["/*"] = TokenType.BLOCK_COMMENT;
 
             multipleOptionsDict["%"] = TokenType.OP_MODULO;
             multipleOptionsDict["%="] = TokenType.OP_ASSIGN_MODULO;
@@ -191,11 +196,40 @@ namespace CStoJS.LexerLibraries
             currentSymbol = inputString.GetNextSymbol();
             lexema.Append(currentSymbol.character);
 
-            if (multipleOptionsDict.ContainsKey(lexema.ToString()))
+            int i = 0;
+            while (i < max_multiple_options_chars && multipleOptionsDict.ContainsKey(lexema.ToString()))
             {
                 ret.type = multipleOptionsDict[lexema.ToString()];
                 ret.lexema = lexema.ToString();
                 currentSymbol = inputString.GetNextSymbol();
+                lexema.Append(currentSymbol.character);
+
+                if(ret.type == TokenType.LINE_COMMENT){
+                    while(currentSymbol.character != '\n'){
+                        currentSymbol = inputString.GetNextSymbol();
+                        if(currentSymbol.character == '\0'){
+                            throw new LexicalException("Block Comment must be closed");
+                        }
+                    }
+                    return GetNextToken();
+                }
+                else if(ret.type == TokenType.BLOCK_COMMENT){
+                    while(true){
+                        currentSymbol = inputString.GetNextSymbol();
+                        if(currentSymbol.character == '*'){
+                            currentSymbol = inputString.GetNextSymbol();
+                            if(currentSymbol.character == '/'){
+                                currentSymbol = inputString.GetNextSymbol();
+                                return GetNextToken();
+                            }else if(currentSymbol.character == '\0'){
+                                throw new LexicalException("Block Comment must be closed");
+                            }
+                        }else if(currentSymbol.character == '\0'){
+                            throw new LexicalException("Block Comment must be closed");
+                        }
+                    }
+                }
+                i++;
             }
 
             return ret;

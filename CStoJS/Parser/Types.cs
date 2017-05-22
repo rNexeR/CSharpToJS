@@ -10,17 +10,20 @@ namespace CStoJS.ParserLibraries
     {
         void Type(){
             printDebug("Type");
-            MatchOne( this.types, "Type or Void Expected" );
+            MatchOne( this.types, "Type Expected" );
+            IdentifierAttribute();
         }
 
         void TypeOrVoid(){
             printDebug("Type or Void");
             MatchOne( this.types.Concat( new TokenType[]{ TokenType.VOID_KEYWORD } ).ToArray(), "Type or Void Expected" );
+            IdentifierAttribute();
         }
 
         void TypeOrVar(){
             printDebug("Type or Void");
             MatchOne( this.types.Concat( new TokenType[]{ TokenType.VAR_KEYWORD } ).ToArray(), "Type or Void Expected" );
+            IdentifierAttribute();
         }
         
     }

@@ -32,7 +32,7 @@ namespace CStoJS.LexerLibraries
         OP_ASSIGN_PLUS,
         OP_BITS_COMPLEMENT,
         OP_BITS_XOR,
-        OP_CONDITIONAL,
+        OP_TERNARY,
         OP_NULL_COALESCING,
         OP_HIERARCHY,
         OP_MEMBER_ACCESS,
@@ -93,6 +93,8 @@ namespace CStoJS.LexerLibraries
         OP_ASSIGN__OR,
         OP_ASSIGN_XOR,
         OP_ASSIGN_SHIFT_LEFT,
-        OP_ASSIGN_SHIFT_RIGHT
+        OP_ASSIGN_SHIFT_RIGHT,
+        LINE_COMMENT,
+        BLOCK_COMMENT
     }
 }

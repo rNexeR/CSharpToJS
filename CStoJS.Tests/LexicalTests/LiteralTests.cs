@@ -19,8 +19,8 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken();
             var i = 0;
             while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
-                Assert.True(expectedTypes[i] == current.type);
-                Assert.True(expectedLexemas[i++] == current.lexema);
+                Assert.Equal(expectedTypes[i] , current.type);
+                Assert.Equal(expectedLexemas[i++] , current.lexema);
                 current = lexer.GetNextToken();
             }
 
@@ -40,8 +40,8 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken();
             var i = 0;
             while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
-                Assert.True(expectedTypes[i] == current.type);
-                Assert.True(expectedLexemas[i++] == current.lexema);
+                Assert.Equal(expectedTypes[i] , current.type);
+                Assert.Equal(expectedLexemas[i++] , current.lexema);
                 current = lexer.GetNextToken();
             }
 
@@ -61,8 +61,8 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken();
             var i = 0;
             while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
-                Assert.True(expectedTypes[i] == current.type);
-                Assert.True(expectedLexemas[i++] == current.lexema);
+                Assert.Equal(expectedTypes[i] , current.type);
+                Assert.Equal(expectedLexemas[i++] , current.lexema);
                 current = lexer.GetNextToken();
             }
         }
@@ -78,8 +78,8 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken();
             var i = 0;
             while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
-                Assert.True(expectedTypes[i] == current.type);
-                Assert.True(expectedLexemas[i++] == current.lexema);
+                Assert.Equal(expectedTypes[i] , current.type);
+                Assert.Equal(expectedLexemas[i++] , current.lexema);
                 current = lexer.GetNextToken();
             }
         }
@@ -95,8 +95,8 @@ namespace CStoJS.Tests
             var current = lexer.GetNextToken();
             var i = 0;
             while(current.type != TokenType.EOF && i < expectedTypes.Length-1){
-                Assert.True(expectedTypes[i] == current.type);
-                Assert.True(expectedLexemas[i++] == current.lexema);
+                Assert.Equal(expectedTypes[i] , current.type);
+                Assert.Equal(expectedLexemas[i++] , current.lexema);
                 current = lexer.GetNextToken();
             }
         }

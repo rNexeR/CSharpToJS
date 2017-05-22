@@ -41,7 +41,7 @@ namespace CStoJS.ParserLibraries
 
         void ArgumentList(){
             printDebug("Argument List");
-            if( true /* Is it a expression? */ ){
+            if( MatchAny(this.expression_operators) /* Is it a expression? */ ){
                 Expression();
                 ArgumentListPrime();
             }else{
@@ -51,6 +51,12 @@ namespace CStoJS.ParserLibraries
 
         void ArgumentListPrime(){
             printDebug("Argument List Prime");
+            if(ConsumeOnMatch(TokenType.COMMA)){
+                Expression();
+                ArgumentListPrime();
+            }else{
+                //EPSION
+            }
         }
 
     }

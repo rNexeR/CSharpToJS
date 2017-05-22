@@ -27,6 +27,7 @@ namespace CStoJS.MsTests
             var input = new InputString(@"
             namespace Hi{
                 public class Hola{
+                    Hola(int init);
                     void sayHello(){}
                     int sum(int a, int b);
                 }

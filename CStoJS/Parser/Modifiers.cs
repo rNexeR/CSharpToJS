@@ -10,7 +10,7 @@ namespace CStoJS.ParserLibraries
 		public void ClassModifier(){
 			 printDebug("Class Modifier");
 			if( MatchAny( this.class_modifiers ) ){
-				currentToken = this.lexer.GetNextToken();
+				ConsumeToken();
 			}else{
 				//EPSILON
 			}
@@ -19,7 +19,7 @@ namespace CStoJS.ParserLibraries
 		public void EncapsulationModifier(){
 			printDebug("Encapsulation Modifier");
 			if( MatchAny( this.encapsulation_modifiers ) ){
-				currentToken = this.lexer.GetNextToken();
+				ConsumeToken();
 			}else{
 				//EPSILON
 			}

@@ -19,7 +19,7 @@ namespace CStoJS.ParserLibraries{
         void TypeDeclaration(){
             printDebug("Type Declaration");
             if( MatchAny(this.encapsulation_modifiers) ){
-                this.currentToken = lexer.GetNextToken();
+                ConsumeToken();
             }
             GroupDeclaration();
         }   

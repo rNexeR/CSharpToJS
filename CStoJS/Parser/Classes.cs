@@ -40,11 +40,11 @@ namespace CStoJS.ParserLibraries{
 			EncapsulationModifier();
 			OptionalModifier();
 			if( !Match(TokenType.ID) ){
-				currentToken = lexer.GetNextToken();
+				ConsumeToken();
 				FieldOrMethodFactorized();
 			}else{
 				//It's ID
-				currentToken = lexer.GetNextToken();
+				ConsumeToken();
 				if(Match(TokenType.PAREN_OPEN)){
 					ConstructorDeclaration();
 				}else{

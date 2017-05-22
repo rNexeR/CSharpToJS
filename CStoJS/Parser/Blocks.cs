@@ -18,7 +18,7 @@ namespace CStoJS.ParserLibraries
         void  MaybeEmptyBlock(){
             printDebug("Maybe Empty Block");
             if(Match( TokenType.BRACE_OPEN )){
-                currentToken = lexer.GetNextToken();
+                ConsumeToken();
                 OptionalStatementList();
                 MatchExactly( new TokenType[]{ TokenType.BRACE_CLOSE } );
             }else{
