@@ -15,7 +15,7 @@ class stmtTests
     {
         bool hola = false;
         string mama = "adios";
-        "hola"("hola");
+        "hola"("here");
         hola("hola");
         if(true){
             if(hola);

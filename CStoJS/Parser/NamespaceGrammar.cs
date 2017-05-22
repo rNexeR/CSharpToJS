@@ -84,5 +84,14 @@ namespace CStoJS.ParserLibraries
 
             }
         }
+
+        void IdentifierAttributeLA(){
+            printDebug("Identifier Attribute LA");
+            if ( ConsumeOnMatchLA( TokenType.OP_MEMBER_ACCESS) && ConsumeOnMatchLA(TokenType.ID ) ){
+                IdentifierAttributeLA();
+            }else{
+
+            }
+        }
     }
 }

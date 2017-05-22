@@ -39,20 +39,33 @@ namespace CStoJS.ParserLibraries
             }.Concat(iteration_statements).Concat(selection_statements).Concat(jump_statements).ToArray();
 
             if ( MatchAndComsumeAnyLA( this.types.Concat(new TokenType[]{TokenType.VAR_KEYWORD}).ToArray() ) &&
-                ConsumeOnMatchLA(TokenType.ID)
+                (
+                    ConsumeOnMatchLA(TokenType.ID) 
+                    || ConsumeOnMatchLA(TokenType.OP_MEMBER_ACCESS)
+                )
              )
             {
                 // lookAhead = new Token[]{};
+                printDebug("=|HERE");
+                if(lookAhead[lookAhead.Length-1].type == TokenType.OP_MEMBER_ACCESS){
+                    // ConsumeOnMatch(TokenType.ID);
+                    IdentifierAttributeLA();
+                }
                 RollbackLA();
                 LocalVariableDeclaration();
                 MatchExactly(TokenType.END_STATEMENT);
             }
             else{
-                if(lookAhead.Length > 0 && lookAhead[0].type == TokenType.ID)
-                        RollbackLA();
+                printDebug("LA=>");
+                if(lookAhead.Length > 0 && this.types.Concat(new TokenType[]{TokenType.VAR_KEYWORD}).ToArray().Contains( lookAhead[0].type)){
+                    Console.WriteLine("Rollback");
+                    RollbackLA();
+                }else{
+                    Console.WriteLine("Erase Look ahead");
+                    lookAhead = new Token[]{};
+                }
                 printDebug("==> Llego aqui");
-                if (MatchAny( embedded.Concat(unary_expression_options).Concat(unary_operators).
-                Concat(literals).ToArray() ) )
+                if (MatchAny(new TokenType[]{TokenType.BRACE_OPEN, TokenType.END_STATEMENT}.Concat(selection_statements).Concat(iteration_statements).Concat(jump_statements).Concat(unary_operators).Concat(literals).Concat(unary_expression_options).ToArray() ) )
                 {
                     EmbeddedStatement();
                 }

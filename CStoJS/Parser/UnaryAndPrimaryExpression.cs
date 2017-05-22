@@ -24,8 +24,10 @@ namespace CStoJS.ParserLibraries
                     this.lookAhead = new Token[]{};
                     PrimaryExpression();
                 }else{
-                    if(lookAhead.Length > 0 && lookAhead[0].type == TokenType.PAREN_OPEN)
+                    if(lookAhead.Length > 0 && lookAhead[0].type == TokenType.PAREN_OPEN && lookAheadBack == false){
+                        Console.WriteLine("Rollback unary");
                         RollbackLA();
+                    }
                     PrimaryExpression();
                 }
             }
