@@ -20,13 +20,13 @@ public class BezierCurveInspector : Editor {
     }
 
     private Vector3 ShowPoint (int index) {
-        Vector3 point = handleTransform.TransformPoint(curve.points[index]);
+        Vector3 point = handleTransform.TransformPoint(curve.points);
         EditorGUI.BeginChangeCheck();
         point = Handles.DoPositionHandle(point, handleRotation);
         if (EditorGUI.EndChangeCheck()) {
             Undo.RecordObject(curve, "Move Point");
             EditorUtility.SetDirty(curve);
-            curve.points[index] = handleTransform.InverseTransformPoint(point);
+            curve.points = handleTransform.InverseTransformPoint(point);
         }
         return point;
     }

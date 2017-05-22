@@ -31,67 +31,139 @@ namespace CStoJS.ParserLibraries
             OptionalStatementList();
         }
 
+        void LocalVariableDeclarationCaller()
+        {
+            RollbackLA();
+            LocalVariableDeclaration();
+            MatchExactly(TokenType.END_STATEMENT);
+        }
+
+        void EmbeddedStatementCaller()
+        {
+            printDebug("LA=>");
+            if (lookAhead.Length > 0 && this.types.Concat(new TokenType[] { TokenType.VAR_KEYWORD }).ToArray().Contains(lookAhead[0].type))
+            {
+                Console.WriteLine("Rollback");
+                RollbackLA();
+            }
+            else
+            {
+                Console.WriteLine("Erase Look ahead");
+                lookAhead = new Token[] { };
+            }
+            printDebug("==> Llego aqui");
+            if (MatchAny(new TokenType[] { TokenType.BRACE_OPEN, TokenType.END_STATEMENT }.Concat(selection_statements).Concat(iteration_statements).Concat(jump_statements).Concat(unary_operators).Concat(literals).Concat(unary_expression_options).ToArray()))
+            {
+                EmbeddedStatement();
+            }
+            else
+            {
+                ThrowSyntaxException("Local Variable Declaration or Embedded Statement expected");
+            }
+        }
+
         private void Statement()
         {
             printDebug("Statement");
-            TokenType[] embedded= new TokenType[]{
+            TokenType[] embedded = new TokenType[]{
                 TokenType.BRACE_OPEN,TokenType.END_STATEMENT
             }.Concat(iteration_statements).Concat(selection_statements).Concat(jump_statements).ToArray();
 
-            if ( MatchAndComsumeAnyLA( this.types.Concat(new TokenType[]{TokenType.VAR_KEYWORD}).ToArray() ) &&
-                (
-                    ConsumeOnMatchLA(TokenType.ID) 
-                    || ConsumeOnMatchLA(TokenType.OP_MEMBER_ACCESS)
-                )
-             )
+            int index = lookAhead.Length;
+
+            if (MatchAndComsumeAnyLA(this.types.Concat(new TokenType[] { TokenType.VAR_KEYWORD }).ToArray()))
             {
-                // lookAhead = new Token[]{};
-                printDebug("=|HERE");
-                if(lookAhead[lookAhead.Length-1].type == TokenType.OP_MEMBER_ACCESS){
-                    // ConsumeOnMatch(TokenType.ID);
-                    IdentifierAttributeLA();
-                }
-                RollbackLA();
-                LocalVariableDeclaration();
-                MatchExactly(TokenType.END_STATEMENT);
-            }
-            else{
-                printDebug("LA=>");
-                if(lookAhead.Length > 0 && this.types.Concat(new TokenType[]{TokenType.VAR_KEYWORD}).ToArray().Contains( lookAhead[0].type)){
-                    Console.WriteLine("Rollback");
-                    RollbackLA();
-                }else{
-                    Console.WriteLine("Erase Look ahead");
-                    lookAhead = new Token[]{};
-                }
-                printDebug("==> Llego aqui");
-                if (MatchAny(new TokenType[]{TokenType.BRACE_OPEN, TokenType.END_STATEMENT}.Concat(selection_statements).Concat(iteration_statements).Concat(jump_statements).Concat(unary_operators).Concat(literals).Concat(unary_expression_options).ToArray() ) )
+                if (lookAhead[index].type != TokenType.ID)
                 {
-                    EmbeddedStatement();
+                    LocalVariableDeclarationCaller();
                 }
                 else
                 {
-                    ThrowSyntaxException("Local Variable Declaration or Embedded Statement expected");
+                    IdentifierAttributeLA();
+
+                    if (ConsumeOnMatchLA(TokenType.ID))
+                    {
+                        LocalVariableDeclarationCaller();
+                    }
+                    else
+                    {
+                        EmbeddedStatementCaller();
+                    }
                 }
             }
+            else
+            {
+                EmbeddedStatementCaller();
+            }
+
+            // if (MatchAndComsumeAnyLA(this.types.Concat(new TokenType[] { TokenType.VAR_KEYWORD }).ToArray()) &&
+            //     (
+            //         ConsumeOnMatchLA(TokenType.ID)
+            //         || ConsumeOnMatchLA(TokenType.OP_MEMBER_ACCESS)
+            //     )
+            //  )
+            // {
+            //     // lookAhead = new Token[]{};
+            //     printDebug("=|HERE");
+            //     if (lookAhead[lookAhead.Length - 1].type == TokenType.OP_MEMBER_ACCESS)
+            //     {
+            //         // ConsumeOnMatch(TokenType.ID);
+            //         IdentifierAttributeLA();
+            //     }
+            //     RollbackLA();
+            //     LocalVariableDeclaration();
+            //     MatchExactly(TokenType.END_STATEMENT);
+            // }
+            // else
+            // {
+            //     printDebug("LA=>");
+            //     if (lookAhead.Length > 0 && this.types.Concat(new TokenType[] { TokenType.VAR_KEYWORD }).ToArray().Contains(lookAhead[0].type))
+            //     {
+            //         Console.WriteLine("Rollback");
+            //         RollbackLA();
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Erase Look ahead");
+            //         lookAhead = new Token[] { };
+            //     }
+            //     printDebug("==> Llego aqui");
+            //     if (MatchAny(new TokenType[] { TokenType.BRACE_OPEN, TokenType.END_STATEMENT }.Concat(selection_statements).Concat(iteration_statements).Concat(jump_statements).Concat(unary_operators).Concat(literals).Concat(unary_expression_options).ToArray()))
+            //     {
+            //         EmbeddedStatement();
+            //     }
+            //     else
+            //     {
+            //         ThrowSyntaxException("Local Variable Declaration or Embedded Statement expected");
+            //     }
+            // }
         }
 
         private void EmbeddedStatement()
         {
             printDebug("Embedded Statement");
-            if(!MatchAny(new TokenType[]{TokenType.BRACE_OPEN, TokenType.END_STATEMENT}.Concat(selection_statements).Concat(iteration_statements).Concat(jump_statements).Concat(unary_operators).Concat(literals).Concat(unary_expression_options).ToArray()) )
+            if (!MatchAny(new TokenType[] { TokenType.BRACE_OPEN, TokenType.END_STATEMENT }.Concat(selection_statements).Concat(iteration_statements).Concat(jump_statements).Concat(unary_operators).Concat(literals).Concat(unary_expression_options).ToArray()))
                 ThrowSyntaxException("Maybe Empty Block, Statement Expression, Selection Statement, Iteration Statement or Jump Statement expected");
 
-            if(MatchAny( new TokenType[]{TokenType.BRACE_OPEN, TokenType.END_STATEMENT} )){
+            if (MatchAny(new TokenType[] { TokenType.BRACE_OPEN, TokenType.END_STATEMENT }))
+            {
                 MaybeEmptyBlock();
-            }else if( MatchAny(unary_operators.Concat(literals).Concat(unary_expression_options).ToArray()) ){
+            }
+            else if (MatchAny(unary_operators.Concat(literals).Concat(unary_expression_options).ToArray()))
+            {
                 StatementExpression();
                 MatchExactly(TokenType.END_STATEMENT);
-            }else if(MatchAny(selection_statements)){
+            }
+            else if (MatchAny(selection_statements))
+            {
                 SelectionStateMent();
-            }else if(MatchAny(iteration_statements)){
+            }
+            else if (MatchAny(iteration_statements))
+            {
                 IterationStatement();
-            }else if(MatchAny(jump_statements)){
+            }
+            else if (MatchAny(jump_statements))
+            {
                 JumpStatement();
                 MatchExactly(TokenType.END_STATEMENT);
             }
@@ -106,22 +178,30 @@ namespace CStoJS.ParserLibraries
 
         private void StatementExpressionFactorized()
         {
-            if(MatchAndComsumeAny(assignment_operators)){
+            if (MatchAndComsumeAny(assignment_operators))
+            {
                 Expression();
                 StatementExpressionPrime();
-            }else{
+            }
+            else
+            {
                 StatementExpressionPrime();
             }
         }
 
         private void StatementExpressionPrime()
         {
-            if(ConsumeOnMatch(TokenType.PAREN_OPEN)){
+            if (ConsumeOnMatch(TokenType.PAREN_OPEN))
+            {
                 ArgumentList();
-                MatchExactly(TokenType.PAREN_CLOSE);   
-            }else if(MatchAny(increment_decrement_operators)){
+                MatchExactly(TokenType.PAREN_CLOSE);
+            }
+            else if (MatchAny(increment_decrement_operators))
+            {
                 IncrementDecrement();
-            }else{
+            }
+            else
+            {
                 //epsilon
             }
         }
@@ -129,11 +209,13 @@ namespace CStoJS.ParserLibraries
         private void LocalVariableDeclaration()
         {
             printDebug("Local Variable Declaration");
-            if(!MatchAny(this.types.Concat(new TokenType[]{ TokenType.VAR_KEYWORD }).ToArray())){
+            if (!MatchAny(this.types.Concat(new TokenType[] { TokenType.VAR_KEYWORD }).ToArray()))
+            {
                 ThrowSyntaxException("Type or Var expected");
             }
 
-            if(!ConsumeOnMatch(TokenType.VAR_KEYWORD)){
+            if (!ConsumeOnMatch(TokenType.VAR_KEYWORD))
+            {
                 Type();
             }
             VariableDeclaratorList();
@@ -155,7 +237,7 @@ namespace CStoJS.ParserLibraries
         private void StatementExpressionList()
         {
             printDebug("Statement Expression List");
-             TokenType[] nuevo = new TokenType[]{
+            TokenType[] nuevo = new TokenType[]{
                 TokenType.VAR_KEYWORD, TokenType.BRACE_OPEN, TokenType.END_STATEMENT
             }.Concat(iteration_statements).Concat(selection_statements).Concat(jump_statements).ToArray();
             if (MatchAny(nuevo.Concat(types).Concat(unary_expression_options).Concat(unary_operators).

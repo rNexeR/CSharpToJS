@@ -39,8 +39,8 @@ namespace CStoJS.ParserLibraries
         private void ConstructorInitializer()
         {
             printDebug("Constructor Initializer");
-            if(Match(TokenType.OP_MEMBER_ACCESS)){
-                MatchExactly( new TokenType[]{ TokenType.OP_MEMBER_ACCESS, TokenType.BASE_KEYWORD, TokenType.PAREN_OPEN } );
+            if(Match(TokenType.OP_HIERARCHY)){
+                MatchExactly( new TokenType[]{ TokenType.OP_HIERARCHY, TokenType.BASE_KEYWORD, TokenType.PAREN_OPEN } );
                 ArgumentList();
                 MatchExactly( new TokenType[]{ TokenType.PAREN_CLOSE } );
             }else{

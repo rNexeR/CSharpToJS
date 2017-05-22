@@ -64,6 +64,7 @@ namespace CStoJS.ParserLibraries
                 PrimaryExpressionPrime();
             }else if(Match(TokenType.PAREN_OPEN)){
                 OptionalFunctCall();
+                PrimaryExpressionPrime();
             }
             else if( MatchAndComsumeAny(this.increment_decrement_operators) ){
                 PrimaryExpressionPrime();
