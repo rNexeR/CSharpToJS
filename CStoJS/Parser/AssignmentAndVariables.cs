@@ -66,7 +66,12 @@ namespace CStoJS.ParserLibraries{
             //Change this after
             if( MatchAny(this.expression_operators) ){
                 Expression();
-            }else{
+            }
+            else if (Match(TokenType.BRACE_OPEN))
+            {
+                ArrayInitializer();
+            }
+            else{
                 ThrowSyntaxException("VariableInitializer expected");
             }
         }
