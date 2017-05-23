@@ -101,10 +101,11 @@ namespace CStoJS.ParserLibraries
 
         public void printDebug(string msg){
             if (enableDebug) {
-                if(!(lookAhead.Length > 0))
-                    Console.WriteLine(msg + " at " + currentToken.row + "," + currentToken.column + $". [{currentToken.type} = {currentToken.lexema}] [LA <{lookAhead.Length}> ]");
-                else
-                    Console.WriteLine(msg + " at " + currentToken.row + "," + currentToken.column + $". [{currentToken.type} = {currentToken.lexema}] [LA <{lookAhead.Length}> <{lookAhead[0]}> ]");
+                Console.WriteLine(msg + " at " + currentToken.row + "," + currentToken.column + $". [{currentToken.type} = {currentToken.lexema}]");
+                // if(!(lookAhead.Length > 0))
+                //     Console.WriteLine(msg + " at " + currentToken.row + "," + currentToken.column + $". [{currentToken.type} = {currentToken.lexema}] [LA <{lookAhead.Length}> ]");
+                // else
+                //     Console.WriteLine(msg + " at " + currentToken.row + "," + currentToken.column + $". [{currentToken.type} = {currentToken.lexema}] [LA <{lookAhead.Length}> <{lookAhead[0]}> ]");
             }
         }
 

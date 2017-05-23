@@ -43,12 +43,10 @@ namespace CStoJS.ParserLibraries
             printDebug("LA=>");
             if (lookAhead.Length > 0 && this.types.Concat(new TokenType[] { TokenType.VAR_KEYWORD }).ToArray().Contains(lookAhead[0].type))
             {
-                Console.WriteLine("Rollback");
                 RollbackLA();
             }
             else
             {
-                Console.WriteLine("Erase Look ahead");
                 lookAhead = new Token[] { };
             }
             printDebug("==> Llego aqui");
@@ -244,10 +242,21 @@ namespace CStoJS.ParserLibraries
                 Concat(literals).ToArray()
                 ))
             {
-                StatementList();
+                StatementExpression();
+                StatementExpressionListPrime();
             }
             else
             {
+                //epsilon
+            }
+        }
+
+        private void StatementExpressionListPrime()
+        {
+            if( ConsumeOnMatch(TokenType.COMMA) ){
+                StatementExpression();
+                StatementExpressionListPrime();
+            }else{
                 //epsilon
             }
         }

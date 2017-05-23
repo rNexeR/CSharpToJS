@@ -36,12 +36,20 @@ namespace X
 
             protected SomeClass()
             {
-                
+                for(int i =0 ; i < 10; i++;){
+                    sayHello();
+                }
             }
 
             public static void main()
             {
-                
+                EditorGUI.BeginChangeCheck();
+                point = Handles.DoPositionHandle(point, handleRotation);
+                if (EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(curve, "Move Point");
+                    EditorUtility.SetDirty(curve);
+                }
+                return point;
             }
 
             private abstract int test(float x, bool what);
@@ -128,7 +136,34 @@ abstract class Test : SomeClass2, Hey, System.Some.Thing
 
     public static System.Object Function()
     {
-        
+        if(true){
+            if(hola);
+            int value;
+            if((hola?(((5 * 9 / 3) - 7 + (2 * 7 + 4) / ( (128 >> 5 * 5) - (1 << 7 * 46) / 3 )) + 15):(((mama += " como" + (9*5))=="s")?3:6)) is int)
+            {
+                value = 7;
+            }else{
+                value = 9;
+                if (look_ahead.Count > 0)
+                {
+                    hola(0);
+                }
+                else
+                {
+                    token = lexer.GetNextToken();
+                }
+            }
+            switch(value)
+            {
+                case 9:
+                    break;
+                case 8:
+                default:
+                    break;
+            }
+        }else{
+
+        }
     }
 
     private Test(int a, string str)
@@ -152,12 +187,34 @@ abstract class Test : SomeClass2, Hey, System.Some.Thing
 
         int x, y, z, i;
 
+         return nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
+            Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
+            Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
+            .Concat(literalOptions).ToArray();
+
         //Console.WriteLine("Hello!");
     }
 
     public static void Something()
     {
-        
+        for(;;);
+        for(;;)
+        {
+            while(false)
+            {
+                var ultimatum = "adios compita";
+            }
+            do{
+
+            }while(0);
+
+
+            foreach(var type in types)
+                if(type.Contains(token.type))
+                {
+
+                }
+        }
     }
 
     public abstract SomethingAbstract();
