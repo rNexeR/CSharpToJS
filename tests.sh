@@ -1,4 +1,4 @@
-dotnet build;
+# dotnet build;
 cd CStoJS.Tests;
 dotnet test;
 cd ../MsTests;

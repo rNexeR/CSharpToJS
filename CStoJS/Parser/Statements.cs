@@ -176,8 +176,9 @@ namespace CStoJS.ParserLibraries
 
         private void StatementExpressionFactorized()
         {
-            if (MatchAndComsumeAny(assignment_operators))
+            if (MatchAny(assignment_operators))
             {
+                ConsumeToken();
                 Expression();
                 StatementExpressionPrime();
             }
@@ -253,10 +254,13 @@ namespace CStoJS.ParserLibraries
 
         private void StatementExpressionListPrime()
         {
-            if( ConsumeOnMatch(TokenType.COMMA) ){
+            if (ConsumeOnMatch(TokenType.COMMA))
+            {
                 StatementExpression();
                 StatementExpressionListPrime();
-            }else{
+            }
+            else
+            {
                 //epsilon
             }
         }

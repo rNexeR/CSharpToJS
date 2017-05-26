@@ -2,18 +2,21 @@ using CStoJS.Exceptions;
 using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
+using System.Collections.Generic;
+using CStoJS.Tree;
 
 namespace CStoJS.ParserLibraries{
 	public partial class Parser
     {
-        void AssignmentOptions(){
+        void AssignmentOptions(ref List<EnumNode> identifier, ref EnumNode actual){
             printDebug("Assignment Options");
             if( !Match( TokenType.OP_ASSIGN ) ){
-                OptionalAssignableIdentifiersListPrime();
+                OptionalAssignableIdentifiersListPrime(ref identifier);
             }else{
                 MatchExactly(new TokenType[]{ TokenType.OP_ASSIGN });
+                actual.assignment = new ExpressionNode();
                 Expression();
-                OptionalAssignableIdentifiersListPrime();
+                OptionalAssignableIdentifiersListPrime(ref identifier);
             }
         }
 

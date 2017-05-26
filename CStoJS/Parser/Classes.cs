@@ -26,7 +26,7 @@ namespace CStoJS.ParserLibraries{
         private void OptionalClassMemberDeclarationList()
         {
 			printDebug("Optional Class Member Declaration List");
-            if( MatchAny( this.encapsulation_modifiers.Concat(this.types).Concat(new TokenType[]{TokenType.VOID_KEYWORD}).ToArray() ) ){
+            if( MatchAny( this.encapsulation_modifiers.Concat(optional_modifiers).Concat(this.types).Concat(new TokenType[]{TokenType.VOID_KEYWORD}).ToArray() ) ){
 				ClassMemberDeclaration();
 				OptionalClassMemberDeclarationList();
 			}else{

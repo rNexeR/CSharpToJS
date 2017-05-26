@@ -3,6 +3,7 @@ using CStoJS.Inputs;
 using CStoJS.Exceptions;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace CStoJS.ParserLibraries
 {
@@ -25,59 +26,64 @@ namespace CStoJS.ParserLibraries
             return false;
 		}
 
-        public bool MatchExactly( TokenType expected){
+        public Token MatchExactly( TokenType expected){
 			if( expected == currentToken.type){
+                var ret = currentToken;
                 ConsumeToken();
-                return true;
+                return ret;
             }
             ThrowSyntaxException($"{expected} expected");
-            return false;
+            return null;
 		}
 
-        public void MatchOne(TokenType[] expectedTokens, string msg){
+        public Token MatchOne(TokenType[] expectedTokens, string msg){
             foreach(var expected in expectedTokens){
                 if(currentToken.type == expected){
+                    var ret = currentToken;
                     ConsumeToken();
-                    return;
+                    return ret;
                 }
                 
             }
             ThrowSyntaxException(msg);
+            return null;
         }
 
         public bool MatchAny( TokenType[] expectedList){
 			return expectedList.Contains(currentToken.type);
 		}
 
-        public bool MatchAndComsumeAny( TokenType[] expectedList){
-			if( expectedList.Contains(currentToken.type) ){
-                ConsumeToken();
-                return true;
-            }
-            return false;
-		}
+        // public bool MatchAndComsumeAny( TokenType[] expectedList){
+		// 	if( expectedList.Contains(currentToken.type) ){
+        //         ConsumeToken();
+        //         return true;
+        //     }
+        //     return false;
+		// }
 
-        public bool MatchExactly(TokenType[] expectedTokens){
+        public List<Token> MatchExactly(TokenType[] expectedTokens){
+            var ret = new List<Token>();
             foreach(var expected in expectedTokens){
                 if(currentToken.type != expected){
                     ThrowSyntaxException($"{expected} expected");
                 }
+                ret.Add(currentToken);
                 ConsumeToken();
             }
-            return true;
+            return ret;
         }
 
-        public bool OptionalMatchExactly(TokenType[] expectedTokens){
-            foreach(var expected in expectedTokens){
-                if(currentToken.type != expected){
-                    if(expected == expectedTokens[0])
-                        return false;
-                    ThrowSyntaxException($"{expected} expected");
-                }
-                ConsumeToken();
-            }
-            return true;
-        }
+        // public bool OptionalMatchExactly(TokenType[] expectedTokens){
+        //     foreach(var expected in expectedTokens){
+        //         if(currentToken.type != expected){
+        //             if(expected == expectedTokens[0])
+        //                 return false;
+        //             ThrowSyntaxException($"{expected} expected");
+        //         }
+        //         ConsumeToken();
+        //     }
+        //     return true;
+        // }
 
         public bool ConsumeOnMatchLA(TokenType expected){
             var tok = currentToken;

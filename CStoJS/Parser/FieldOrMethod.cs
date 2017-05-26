@@ -3,6 +3,7 @@ using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace CStoJS.ParserLibraries
 {
@@ -10,7 +11,10 @@ namespace CStoJS.ParserLibraries
     {
         void FieldOrMethodFactorized(){
             printDebug("Field Or Method Factorized");
-            IdentifierAttribute();
+            
+            var identifier = new List<Token>();
+            IdentifierAttribute(ref identifier);
+            
             if (Match(TokenType.ID)){
                 ConsumeToken();
                 FieldOrMethod();

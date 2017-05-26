@@ -9,8 +9,10 @@ namespace CStoJS.ParserLibraries
     {
         void OptionalBodyEnd(){
             printDebug("OptionalBodyEnd");
-            if( !OptionalMatchExactly(new TokenType[]{ TokenType.END_STATEMENT }) ){
-                //EPSILON
+            if( Match( TokenType.END_STATEMENT) ){
+                ConsumeToken();
+            }else{
+                //epsilon
             }
 
         }

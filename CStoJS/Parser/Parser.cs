@@ -3,6 +3,7 @@ using CStoJS.Inputs;
 using CStoJS.Exceptions;
 using System.Linq;
 using System;
+using CStoJS.Tree;
 
 namespace CStoJS.ParserLibraries
 {
@@ -25,7 +26,7 @@ namespace CStoJS.ParserLibraries
             this.InitializeArrays();
             this.lookAhead = new Token[]{};
             this.lookAheadBack = false;
-            enableDebug = true;
+            // enableDebug = true;
         }
 
         public void InitializeArrays(){
@@ -53,16 +54,17 @@ namespace CStoJS.ParserLibraries
 
         }
 
-        public void parse(){
+        public NamespaceNode parse(){
             this.currentToken = lexer.GetNextToken();
-            Code();
+            return Code();
         }
 
-        public void Code(){
+        public NamespaceNode Code(){
             printDebug("Code");
-            CompilationUnit();
+            var ret = CompilationUnit();
             if(!MatchAny( new TokenType[]{TokenType.EOF} ) )
                 ThrowSyntaxException("End of File expected");
+            return ret;
         }
     }
 }

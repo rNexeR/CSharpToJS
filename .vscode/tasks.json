@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/rnexer.csproj"
+                "${workspaceRoot}"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

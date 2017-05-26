@@ -3,10 +3,12 @@ using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
 
-namespace CStoJS.ParserLibraries{
-	public partial class Parser
+namespace CStoJS.ParserLibraries
+{
+    public partial class Parser
     {
-        void Expression(){
+        void Expression()
+        {
             printDebug("Expression");
             ConditionalExpression();
         }
@@ -21,11 +23,14 @@ namespace CStoJS.ParserLibraries{
         private void ConditionalExpressionPrime()
         {
             printDebug("Conditional Expression Prime");
-            if(ConsumeOnMatch(TokenType.OP_TERNARY)){
+            if (ConsumeOnMatch(TokenType.OP_TERNARY))
+            {
                 Expression();
                 MatchExactly(TokenType.OP_HIERARCHY);
                 Expression();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -40,9 +45,12 @@ namespace CStoJS.ParserLibraries{
         private void NullCoalescingExpressionPrime()
         {
             printDebug("Null Coalescing Expression Prime");
-            if(ConsumeOnMatch(TokenType.OP_NULL_COALESCING)){
+            if (ConsumeOnMatch(TokenType.OP_NULL_COALESCING))
+            {
                 NullCoalescingExpression();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -57,10 +65,13 @@ namespace CStoJS.ParserLibraries{
         private void ConditionalOrExpressionPrime()
         {
             printDebug("Conditional Or ExpressionPrime");
-            if(ConsumeOnMatch(TokenType.OP_CONDITIONAL_OR)){
+            if (ConsumeOnMatch(TokenType.OP_CONDITIONAL_OR))
+            {
                 ConditionalAndExpression();
                 ConditionalOrExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -82,10 +93,13 @@ namespace CStoJS.ParserLibraries{
         private void ConditionalAndExpressionPrime()
         {
             printDebug("Conditional And Expression Prime");
-            if(ConsumeOnMatch(TokenType.OP_CONDITIONAL_AND)){
+            if (ConsumeOnMatch(TokenType.OP_CONDITIONAL_AND))
+            {
                 InclusiveOrExpression();
                 ConditionalAndExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -93,10 +107,13 @@ namespace CStoJS.ParserLibraries{
         private void InclusiveOrExpressionPrime()
         {
             printDebug("Inclusive Or Expression Prime");
-            if(ConsumeOnMatch(TokenType.OP_BITS_OR)){
+            if (ConsumeOnMatch(TokenType.OP_BITS_OR))
+            {
                 ExclusiveOrExpression();
                 InclusiveOrExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -111,10 +128,13 @@ namespace CStoJS.ParserLibraries{
         private void ExclusiveOrExpressionPrime()
         {
             printDebug("Exclusive Or Expression Prime");
-            if(ConsumeOnMatch(TokenType.OP_BITS_XOR)){
+            if (ConsumeOnMatch(TokenType.OP_BITS_XOR))
+            {
                 AndExpression();
                 ExclusiveOrExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -129,10 +149,13 @@ namespace CStoJS.ParserLibraries{
         private void AndExpressionPrime()
         {
             printDebug("And Expression Prime");
-            if(ConsumeOnMatch(TokenType.OP_BITS_AND)){
+            if (ConsumeOnMatch(TokenType.OP_BITS_AND))
+            {
                 EquialityExpression();
                 AndExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -147,10 +170,14 @@ namespace CStoJS.ParserLibraries{
         private void EquialityExpressionPrime()
         {
             printDebug("Equality Expression Prime");
-            if( MatchAndComsumeAny(this.equality_operators) ){
+            if (MatchAny(this.equality_operators))
+            {
+                ConsumeToken();
                 RelationalExpression();
                 EquialityExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -165,13 +192,20 @@ namespace CStoJS.ParserLibraries{
         private void RelationalExpressionPrime()
         {
             printDebug("Relational Expression Prime");
-            if( MatchAndComsumeAny(this.relational_operators) ){
+            if (MatchAny(this.relational_operators))
+            {
+                ConsumeToken();
                 ShiftExpression();
                 RelationalExpressionPrime();
-            }else if( MatchAndComsumeAny(this.is_as_operators) ){
+            }
+            else if (MatchAny(this.is_as_operators))
+            {
+                ConsumeToken();
                 Type();
                 RelationalExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -186,10 +220,14 @@ namespace CStoJS.ParserLibraries{
         private void ShiftExpressionPrime()
         {
             printDebug("Shift Expression Prime");
-            if( MatchAndComsumeAny(this.shift_operators) ){
+            if (MatchAny(this.shift_operators))
+            {
+                ConsumeToken();
                 AdditiveExpression();
                 ShiftExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
@@ -204,10 +242,14 @@ namespace CStoJS.ParserLibraries{
         private void AdditiveExpressionPrime()
         {
             printDebug("Additive Expression Prime");
-            if( MatchAndComsumeAny(this.additive_operators) ){
+            if (MatchAny(this.additive_operators))
+            {
+                ConsumeToken();
                 MultiplicativeExpression();
                 AdditiveExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //epsilon
             }
         }
@@ -222,10 +264,14 @@ namespace CStoJS.ParserLibraries{
         private void MultiplicativeExpressionFactorized()
         {
             printDebug("Multiplicative Expression Factorized");
-            if( MatchAndComsumeAny(this.assignment_operators) ){
+            if (MatchAny(this.assignment_operators))
+            {
+                ConsumeToken();
                 Expression();
                 MultiplicativeExpressionPrime();
-            }else{
+            }
+            else
+            {
                 MultiplicativeExpressionPrime();
             }
         }
@@ -233,26 +279,38 @@ namespace CStoJS.ParserLibraries{
         private void MultiplicativeExpressionPrime()
         {
             printDebug("Multiplicative Expression Prime");
-             if( MatchAndComsumeAny(this.multiplicative_operators) ){
+            if (MatchAny(this.multiplicative_operators))
+            {
+                ConsumeToken();
                 UnaryExpression();
                 MultiplicativeExpressionPrime();
-            }else{
+            }
+            else
+            {
                 //epsilon
             }
         }
 
-        void OptionalExpression(){
-            if( MatchAny(this.expression_operators) ){
+        void OptionalExpression()
+        {
+            if (MatchAny(this.expression_operators))
+            {
                 Expression();
-            }else{
+            }
+            else
+            {
                 //epsilon
             }
         }
-        void Literals(){
+        void Literals()
+        {
             printDebug("Literlas");
-            if( MatchAny(this.literals) ){
+            if (MatchAny(this.literals))
+            {
                 ConsumeToken();
-            }else{
+            }
+            else
+            {
                 ThrowSyntaxException("Literal Expected");
             }
         }
