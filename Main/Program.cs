@@ -16,7 +16,9 @@ namespace Main
             using Text.Test.Test;
             using Nx;
             using Test2;
-            public class Nexer{}
+            public interface Nexer : Kevin, Kevin.Cantillano{
+                void sayHello(string msg);
+            }
             namespace N1{
                 using Here;
                 namespace N1.L2{
@@ -34,6 +36,10 @@ namespace Main
                 public enum Hola2{
                     HOLA,
                     ADIOS,
+                }
+
+                public interface Hola3 : Hola2, Hola1{
+
                 }
             }
 

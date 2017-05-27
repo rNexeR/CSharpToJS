@@ -60,9 +60,11 @@ namespace CStoJS.ParserLibraries
                 TokenType.OP_CONDITIONAL_AND, TokenType.OP_BITS_OR,
                 TokenType.OP_BITS_XOR, TokenType.OP_BITS_AND, TokenType.ID
             };
-            if(MatchAny(types.Concat(new TokenType[]{TokenType.VAR_KEYWORD}).ToArray())){
+            if(MatchAndComsumeAnyLA(types.Concat(new TokenType[]{TokenType.VAR_KEYWORD}).ToArray()) && ConsumeOnMatchLA(TokenType.ID) ){
+                RollbackLA();
                 LocalVariableDeclaration();
             }else if(MatchAny(nuevo.Concat(expression_operators).ToArray())){
+                RollbackLA();
                 StatementExpressionList();
             }else{
                 //epsilon

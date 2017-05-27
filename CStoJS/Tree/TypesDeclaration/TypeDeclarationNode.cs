@@ -12,7 +12,7 @@ namespace CStoJS.Tree
     {
         public EncapsulationNode encapsulation_modifier;
         public IdentifierNode identifier;
-        protected string type;
+        public string type;
 
         public TypeDeclarationNode(){
             this.encapsulation_modifier = new EncapsulationNode();

@@ -44,41 +44,55 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        void IdentifierList()
+        List<IdentifierNode> IdentifierList()
         {
+            // var identifier = new List<IdentifierNode>();
             printDebug("Identifier List");
-            MatchExactly(new TokenType[] { TokenType.ID });
-            IdentifierListPrime();
+            
+            var tokens = new List<Token>();
+            var token = MatchExactly(TokenType.ID);
+            
+            tokens.Add(token);
+            IdentifierAttribute(ref tokens);
+            
+            var inherit = IdentifierListPrime();
+            inherit.Add(new IdentifierNode(tokens));
+            return inherit;
+
         }
 
-        void OptionalIdentifierList()
+        List<IdentifierNode> OptionalIdentifierList()
         {
             printDebug("Optional Identifier List");
             if (Match(TokenType.ID))
             {
-                IdentifierList();
+                return IdentifierList();
             }
             else
             {
-                //EPSILON
+                return new List<IdentifierNode>();
             }
         }
 
-        void IdentifierListPrime()
+        List<IdentifierNode> IdentifierListPrime()
         {
             printDebug("Identifier List Prime");
             if (Match(TokenType.COMMA))
             {
-                MatchExactly(new TokenType[] { TokenType.COMMA, TokenType.ID });
+                var tokens = new List<Token>();
+                var tokens_t = MatchExactly(new TokenType[] { TokenType.COMMA, TokenType.ID });
+                tokens.Add(tokens_t[1]);
+                
+                IdentifierAttribute(ref tokens);
 
-                var identifier = new List<Token>();
-                IdentifierAttribute(ref identifier);
+                var identifiers = IdentifierListPrime();
+                identifiers.Add(new IdentifierNode(tokens));
 
-                IdentifierListPrime();
+                return identifiers;
             }
             else
             {
-                //EPSILON
+                return new List<IdentifierNode>();
             }
         }
     }

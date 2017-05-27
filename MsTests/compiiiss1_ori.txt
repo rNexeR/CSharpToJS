@@ -514,6 +514,7 @@ namespace RectangleApplication
       { }
       public float GetCost()
       {
+          int[][] x = new int[1][];
          float cost;
          cost = GetArea() * 70;
          return cost;

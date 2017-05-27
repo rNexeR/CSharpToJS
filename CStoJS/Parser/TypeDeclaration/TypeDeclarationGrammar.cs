@@ -15,10 +15,10 @@ namespace CStoJS.ParserLibraries
             printDebug("Type Declaration List");
             if (MatchAny(this.class_modifiers.Concat(this.encapsulation_modifiers).Concat(new TokenType[] { TokenType.CLASS_KEYWORD, TokenType.ENUM_KEYWORD, TokenType.INTERFACE_KEYWORD }).ToArray()))
             {
-                var lista = new List<TypeDeclarationNode>();
-                lista.Add(TypeDeclaration());
-                lista.AddRange(TypeDeclarationList());
-                return lista;
+                var decl = TypeDeclaration();
+                var decls = TypeDeclarationList();
+                decls.Insert(0, decl);
+                return decls;
             }
             else
             {
@@ -56,8 +56,8 @@ namespace CStoJS.ParserLibraries
             }
             else if (MatchAny(new TokenType[] { TokenType.INTERFACE_KEYWORD }))
             {
-                InterfaceDeclaration();
-                return new InterfaceNode();
+                return InterfaceDeclaration();
+                // return new InterfaceNode();
             }
             else
             {

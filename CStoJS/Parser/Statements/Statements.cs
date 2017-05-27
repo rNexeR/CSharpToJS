@@ -14,6 +14,7 @@ namespace CStoJS.ParserLibraries
             TokenType[] nuevo = new TokenType[]{
                 TokenType.VAR_KEYWORD, TokenType.BRACE_OPEN, TokenType.END_STATEMENT
             }.Concat(iteration_statements).Concat(selection_statements).Concat(jump_statements).ToArray();
+            
             if (MatchAny(nuevo.Concat(unary_operators).Concat(types).Concat(literals).Concat(unary_expression_options).ToArray()))
             {
                 StatementList();
@@ -81,6 +82,8 @@ namespace CStoJS.ParserLibraries
 
                     if (ConsumeOnMatchLA(TokenType.ID))
                     {
+                        LocalVariableDeclarationCaller();
+                    }else if(ConsumeOnMatchLA(TokenType.BRACKET_OPEN) && (ConsumeOnMatchLA(TokenType.BRACKET_CLOSE) || ConsumeOnMatchLA(TokenType.COMMA))){
                         LocalVariableDeclarationCaller();
                     }
                     else

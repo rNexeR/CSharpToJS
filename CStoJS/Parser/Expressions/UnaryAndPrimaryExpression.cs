@@ -3,6 +3,7 @@ using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
 using System.Collections.Generic;
+using CStoJS.Tree;
 
 namespace CStoJS.ParserLibraries
 {
@@ -49,8 +50,9 @@ namespace CStoJS.ParserLibraries
         private void PrimaryExpression()
         {
             printDebug($"Primary Expression {currentToken.lexema}");
-            if (ConsumeOnMatch(TokenType.NEW_KEYWORD))
+            if (Match(TokenType.NEW_KEYWORD))
             {
+                ConsumeToken();
                 InstanceExpression();
                 PrimaryExpressionPrime();
             }
@@ -59,12 +61,14 @@ namespace CStoJS.ParserLibraries
                 ConsumeToken();
                 PrimaryExpressionPrime();
             }
-            else if (ConsumeOnMatch(TokenType.ID))
+            else if (Match(TokenType.ID))
             {
+                ConsumeToken();
                 PrimaryExpressionPrime();
             }
-            else if (ConsumeOnMatch(TokenType.PAREN_OPEN))
+            else if (Match(TokenType.PAREN_OPEN))
             {
+                ConsumeToken();
                 printDebug("\t==> '(' Detected");
                 Expression();
                 printDebug("\t==> After Expression must be )");
@@ -74,6 +78,11 @@ namespace CStoJS.ParserLibraries
             else if (Match(TokenType.THIS_KEYWORD))
             {
                 MatchExactly(TokenType.THIS_KEYWORD);
+                PrimaryExpressionPrime();
+            }
+            else if (Match(TokenType.BASE_KEYWORD))
+            {
+                MatchExactly(TokenType.BASE_KEYWORD);
                 PrimaryExpressionPrime();
             }
             else
@@ -90,9 +99,9 @@ namespace CStoJS.ParserLibraries
                 MatchExactly(new TokenType[] { TokenType.OP_MEMBER_ACCESS, TokenType.ID });
                 PrimaryExpressionPrime();
             }
-            else if (Match(TokenType.PAREN_OPEN))
+            else if (Match(TokenType.PAREN_OPEN) || Match(TokenType.BRACKET_OPEN) )
             {
-                OptionalFunctCall();
+                OPtionalFuncOrArrayCall();
                 PrimaryExpressionPrime();
             }
             else if (MatchAny(this.increment_decrement_operators))
@@ -109,8 +118,9 @@ namespace CStoJS.ParserLibraries
         private void OptionalFunctCall()
         {
             printDebug("Optional Funct Call");
-            if (ConsumeOnMatch(TokenType.PAREN_OPEN))
+            if (Match(TokenType.PAREN_OPEN))
             {
+                MatchExactly(TokenType.PAREN_OPEN);
                 ArgumentList();
                 MatchExactly(TokenType.PAREN_CLOSE);
             }
@@ -122,19 +132,79 @@ namespace CStoJS.ParserLibraries
 
         private void InstanceExpression()
         {
-            Type();
+            printDebug("Instance Expression");
+            // Type();
+            if(Match(TokenType.ID)){
+                ConsumeToken();
+                var x = new List<Token>();
+                IdentifierAttribute(ref x);
+            }else{
+                ConsumeToken();
+            }
             InstanceExpressionFactorized();
         }
 
         private void InstanceExpressionFactorized()
         {
-            MatchExactly(TokenType.PAREN_OPEN);
-            ArgumentList();
-            MatchExactly(TokenType.PAREN_CLOSE);
+            printDebug("Instance Expression Factorized");
+            // MatchExactly(TokenType.PAREN_OPEN);
+            // ArgumentList();
+            // MatchExactly(TokenType.PAREN_CLOSE);
+
+            if (Match(TokenType.BRACKET_OPEN))
+            {
+                MatchExactly(TokenType.BRACKET_OPEN);
+                InstanceExpressionFactorizedPrime();
+            }
+            else if (Match(TokenType.PAREN_OPEN))
+            {
+                MatchExactly(TokenType.PAREN_OPEN);
+                ArgumentList();
+                MatchExactly(TokenType.PAREN_CLOSE);
+            }
+            else
+            {
+                ThrowSyntaxException("Open bracket or Open brace expected");
+            }
+
+
+        }
+
+        private void InstanceExpressionFactorizedPrime()
+        {
+            printDebug("Instance Expression Factorized Prime");
+            var nuevo = new TokenType[]{ TokenType.OP_TERNARY, TokenType.OP_HIERARCHY,
+                TokenType.OP_NULL_COALESCING, TokenType.OP_CONDITIONAL_OR,
+                TokenType.OP_CONDITIONAL_OR, TokenType.OP_BITS_OR,
+                TokenType.OP_BITS_XOR, TokenType.OP_BITS_AND,
+                TokenType.PAREN_OPEN, TokenType.NEW_KEYWORD,
+                TokenType.ID, TokenType.THIS_KEYWORD
+            };
+
+            
+            if (MatchAny(this.expression_operators))
+            {
+                ExpressionList();
+                MatchExactly(TokenType.BRACKET_CLOSE);
+                var arr = new ArrayType();
+
+                OptionalRankSpecifierList(ref arr);
+                OptionalArrayInitializer();
+
+            }else if(Match(TokenType.BRACKET_CLOSE) || Match(TokenType.COMMA)){
+
+                var arr = new ArrayType();
+                RankSpecifierList(ref arr);
+                
+                ArrayInitializer();
+            }else{
+                ThrowSyntaxException("Expression or rank specifier expected");
+            }
         }
 
         private void ExpressionList()
         {
+            printDebug("Expression List");
             Expression();
             // MatchExactly(TokenType.COMMA);
             ExpressionListPrime();
@@ -142,6 +212,7 @@ namespace CStoJS.ParserLibraries
 
         private void ExpressionListPrime()
         {
+            printDebug("Expression List Prime");
             if (ConsumeOnMatch(TokenType.COMMA))
             {
                 ExpressionList();
@@ -154,6 +225,7 @@ namespace CStoJS.ParserLibraries
 
         private void OptionalExpressionList()
         {
+            printDebug("Optional Expression List");
             if (MatchAny(this.expression_operators))
             {
                 ExpressionList();

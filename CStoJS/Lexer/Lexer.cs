@@ -93,8 +93,8 @@ namespace CStoJS.LexerLibraries
             oneSymbolDict[')'] = TokenType.PAREN_CLOSE;
             oneSymbolDict['{'] = TokenType.BRACE_OPEN;
             oneSymbolDict['}'] = TokenType.BRACE_CLOSE;
-            // oneSymbolDict[']'] = TokenType.BRACKET_CLOSE;
-            // oneSymbolDict['['] = TokenType.BRACKET_OPEN;
+            oneSymbolDict[']'] = TokenType.BRACKET_CLOSE;
+            oneSymbolDict['['] = TokenType.BRACKET_OPEN;
             oneSymbolDict['~'] = TokenType.OP_BITS_COMPLEMENT;
             oneSymbolDict[';'] = TokenType.END_STATEMENT;
             oneSymbolDict[':'] = TokenType.OP_HIERARCHY;

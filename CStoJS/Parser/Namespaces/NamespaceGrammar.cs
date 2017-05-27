@@ -97,7 +97,7 @@ namespace CStoJS.ParserLibraries
             }
             else
             {
-                namespace_node.types_declaration_array = TypeDeclarationList();
+                namespace_node.types_declaration_array.AddRange(TypeDeclarationList());
                 OptionalNamespaceMemberDeclaration(ref namespace_node);
             }
         }
@@ -126,7 +126,7 @@ namespace CStoJS.ParserLibraries
             
             if (MatchAny(this.class_modifiers.Concat(this.encapsulation_modifiers).Concat(new TokenType[] { TokenType.CLASS_KEYWORD, TokenType.ENUM_KEYWORD, TokenType.INTERFACE_KEYWORD }).ToArray()))
             {
-                TypeDeclarationList();
+                namespace_node.types_declaration_array.AddRange(TypeDeclarationList());
             }
             MatchExactly(new TokenType[] { TokenType.BRACE_CLOSE });
         }

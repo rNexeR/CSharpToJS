@@ -5,15 +5,20 @@ using System;
 using System.Collections.Generic;
 using CStoJS.Tree;
 
-namespace CStoJS.ParserLibraries{
-	public partial class Parser
+namespace CStoJS.ParserLibraries
+{
+    public partial class Parser
     {
-        void AssignmentOptions(ref List<EnumNode> identifier, ref EnumNode actual){
+        void AssignmentOptions(ref List<EnumNode> identifier, ref EnumNode actual)
+        {
             printDebug("Assignment Options");
-            if( !Match( TokenType.OP_ASSIGN ) ){
+            if (!Match(TokenType.OP_ASSIGN))
+            {
                 OptionalAssignableIdentifiersListPrime(ref identifier);
-            }else{
-                MatchExactly(new TokenType[]{ TokenType.OP_ASSIGN });
+            }
+            else
+            {
+                MatchExactly(new TokenType[] { TokenType.OP_ASSIGN });
                 actual.assignment = new ExpressionNode();
                 Expression();
                 OptionalAssignableIdentifiersListPrime(ref identifier);
@@ -23,9 +28,12 @@ namespace CStoJS.ParserLibraries{
         private void OptionalVariableInitializerList()
         {
             printDebug("Optional Variable Initializer List ==TODO");
-            if( MatchAny(this.expression_operators) ){
+            if (MatchAny(this.expression_operators))
+            {
                 VariableInitializerList();
-            }else{
+            }
+            else
+            {
                 //epsilon
             }
         }
@@ -38,45 +46,66 @@ namespace CStoJS.ParserLibraries{
 
         private void VariableInitializerPrime()
         {
-            if(ConsumeOnMatch(TokenType.COMMA)){
+            if (ConsumeOnMatch(TokenType.COMMA))
+            {
                 VariableInitializerList();
-            }else{
+            }
+            else
+            {
                 //epsilomn
             }
         }
 
-        void VariableAssigner(){
+        void VariableAssigner()
+        {
             printDebug("Variable Assigner");
-            if( Match(TokenType.OP_ASSIGN) ){
+            if (Match(TokenType.OP_ASSIGN))
+            {
                 ConsumeToken();
                 VariableInitializer();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
-        void VariableDeclaratorListPrime(){
+        void VariableDeclaratorListPrime()
+        {
             printDebug("Variable Declarator List Prime");
-            if(Match(TokenType.COMMA)){
+            if (Match(TokenType.COMMA))
+            {
                 ConsumeToken();
                 VariableDeclaratorList();
-            }else{
+            }
+            else
+            {
                 //EPSILON
             }
         }
 
-        void VariableInitializer(){
+        void VariableInitializer()
+        {
             printDebug("Variable Initializer");
             //Change this after
-            if( MatchAny(this.expression_operators) ){
+            if (MatchAny(this.expression_operators))
+            {
                 Expression();
-            }else{
+            }
+            else if (Match(TokenType.BRACE_OPEN))
+            {
+                ArrayInitializer();
+            }
+            else
+            {
                 ThrowSyntaxException("VariableInitializer expected");
             }
+
         }
 
-        void VariableDeclaratorList(){
+        void VariableDeclaratorList()
+        {
             printDebug("Variable Declarator List");
-            MatchExactly( new TokenType[]{ TokenType.ID } );
+            MatchExactly(new TokenType[] { TokenType.ID });
             VariableAssigner();
             VariableDeclaratorListPrime();
         }

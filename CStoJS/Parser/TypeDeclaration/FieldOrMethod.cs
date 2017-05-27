@@ -4,6 +4,7 @@ using CStoJS.Inputs;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using CStoJS.Tree;
 
 namespace CStoJS.ParserLibraries
 {
@@ -14,6 +15,8 @@ namespace CStoJS.ParserLibraries
             
             var identifier = new List<Token>();
             IdentifierAttribute(ref identifier);
+            var arr = new ArrayType();
+            OptionalRankSpecifierList(ref arr);
             
             if (Match(TokenType.ID)){
                 ConsumeToken();
