@@ -17,7 +17,7 @@ namespace Main
             using Nx;
             using Test2;
             public interface Nexer : Kevin, Kevin.Cantillano{
-                void sayHello(string msg);
+                void sayHello(string[] msg);
             }
             namespace N1{
                 using Here;
