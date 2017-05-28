@@ -10,7 +10,7 @@ namespace CStoJS.ParserLibraries
 {
     public partial class Parser
     {
-        private List<TypeDeclarationNode> FixedParameters()
+        private List<ParameterNode> FixedParameters()
         {
             printDebug("Fixed Parameters");
             if (MatchAny(this.types))
@@ -24,23 +24,22 @@ namespace CStoJS.ParserLibraries
             else
             {
                 //EPSILON 
-                return new List<TypeDeclarationNode>();
+                return new List<ParameterNode>();
             }
         }
 
-        private TypeDeclarationNode FixedParameter()
+        private ParameterNode FixedParameter()
         {
             printDebug("Fixed Parameter");
-
-            var parameter = Type();
+            var parameter_type = Type();
 
             var token = MatchExactly(TokenType.ID );
-            parameter.identifier = new IdentifierNode(token);
+            var identifier = new IdentifierNode(token);
 
-            return parameter;
+            return new ParameterNode(parameter_type, identifier);
         }
 
-        private List<TypeDeclarationNode> FixedParametersPrime()
+        private List<ParameterNode> FixedParametersPrime()
         {
             printDebug("Fixed ParametersPrime");
             if (Match(TokenType.COMMA))
@@ -55,36 +54,40 @@ namespace CStoJS.ParserLibraries
             else
             {
                 //EPSILON
-                return new List<TypeDeclarationNode>();
+                return new List<ParameterNode>();
             }
 
         }
 
-        void ArgumentList()
+        List<ArgumentNode> ArgumentList()
         {
             printDebug("Argument List");
             if (MatchAny(this.expression_operators) /* Is it a expression? */ )
             {
-                Expression();
-                ArgumentListPrime();
+                var arg = Expression();
+                var args = ArgumentListPrime();
+                args.Insert(0, new ArgumentNode(arg));
+                return args;
             }
             else
             {
-                //EPSILON
+                return new List<ArgumentNode>();
             }
         }
 
-        void ArgumentListPrime()
+        List<ArgumentNode> ArgumentListPrime()
         {
             printDebug("Argument List Prime");
             if (ConsumeOnMatch(TokenType.COMMA))
             {
-                Expression();
-                ArgumentListPrime();
+                var arg = Expression();
+                var args = ArgumentListPrime();
+                args.Insert(0, new ArgumentNode(arg));
+                return args;
             }
             else
             {
-                //EPSION
+                return new List<ArgumentNode>();
             }
         }
 

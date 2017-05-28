@@ -9,7 +9,7 @@ namespace CStoJS.ParserLibraries
 {
     public partial class Parser
     {
-        private void OPtionalFuncOrArrayCall()
+        private void FuncOrArrayCall()
         {
             printDebug("Optional Func Or Array Call");
             if (ConsumeOnMatch(TokenType.PAREN_OPEN))
@@ -23,7 +23,7 @@ namespace CStoJS.ParserLibraries
             }
             else
             {
-                //epsilon
+                ThrowSyntaxException("Function call or Array Access expected");
             }
         }
 

@@ -101,7 +101,7 @@ namespace CStoJS.ParserLibraries
             }
             else if (Match(TokenType.PAREN_OPEN) || Match(TokenType.BRACKET_OPEN) )
             {
-                OPtionalFuncOrArrayCall();
+                FuncOrArrayCall();
                 PrimaryExpressionPrime();
             }
             else if (MatchAny(this.increment_decrement_operators))

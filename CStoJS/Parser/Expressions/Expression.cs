@@ -2,15 +2,17 @@ using CStoJS.Exceptions;
 using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
+using CStoJS.Tree;
 
 namespace CStoJS.ParserLibraries
 {
     public partial class Parser
     {
-        void Expression()
+        ExpressionNode Expression()
         {
             printDebug("Expression");
             ConditionalExpression();
+            return null;
         }
 
         private void ConditionalExpression()
@@ -291,15 +293,15 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        void OptionalExpression()
+        ExpressionNode OptionalExpression()
         {
             if (MatchAny(this.expression_operators))
             {
-                Expression();
+                return Expression();
             }
             else
             {
-                //epsilon
+                return null;
             }
         }
         void Literals()

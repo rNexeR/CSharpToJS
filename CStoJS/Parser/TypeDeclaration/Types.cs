@@ -43,13 +43,14 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        void TypeOrVar()
+        TypeDeclarationNode TypeOrVar()
         {
             printDebug("Type or Void");
             if (!Match(TokenType.VAR_KEYWORD))
-                Type();
+                return Type();
             else{
                 var token = MatchExactly(TokenType.VAR_KEYWORD);
+                return new VarType(new IdentifierNode(token));
             }
         }
 

@@ -47,8 +47,7 @@ namespace CStoJS.ParserLibraries
             printDebug("Group Declaration");
             if (MatchAny(this.class_modifiers.Concat(new TokenType[] { TokenType.CLASS_KEYWORD }).ToArray()))
             {
-                ClassDeclaration();
-                return new ClassNode();
+                return ClassDeclaration();
             }
             else if (MatchAny(new TokenType[] { TokenType.ENUM_KEYWORD }))
             {

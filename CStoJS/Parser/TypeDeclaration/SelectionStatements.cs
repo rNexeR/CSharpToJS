@@ -3,12 +3,14 @@ using CStoJS.Inputs;
 using CStoJS.Exceptions;
 using System.Linq;
 using System;
+using CStoJS.Tree;
+using System.Collections.Generic;
 
 namespace CStoJS.ParserLibraries
 {
     public partial class Parser
     {
-        private void SelectionStateMent()
+        private StatementNode SelectionStateMent()
         {
             printDebug("Selection Statement");
 
@@ -16,87 +18,100 @@ namespace CStoJS.ParserLibraries
                 ThrowSyntaxException("Conditional Statement expected");
 
             if(Match(TokenType.IF_KEYWORD)){
-                IfStatement();
+                return IfStatement();
             }else{
-                SwitchStatement();
+                return SwitchStatement();
             }
         }
 
-        private void SwitchStatement()
+        private StatementNode SwitchStatement()
         {
             printDebug("Switch Statement");
             MatchExactly(new TokenType[]{TokenType.SWITCH_KEYWORD, TokenType.PAREN_OPEN});
-            Expression();
+            var constantExpression = Expression();
             MatchExactly(new TokenType[]{TokenType.PAREN_CLOSE, TokenType.BRACE_OPEN});
-            OptionalSwitchSectionList();
+            var cases = OptionalSwitchSectionList();
             MatchExactly(TokenType.BRACE_CLOSE);
+            return new SwitchStatementNode(constantExpression, cases);
         }
 
-        private void OptionalSwitchSectionList()
+        private List<CaseExpressionNode> OptionalSwitchSectionList()
         {
             printDebug("Optional Switch Section List");
             if(MatchAny(new TokenType[]{TokenType.CASE_KEYWORD, TokenType.DEFAULT_KEYWORD})){
-                SwitchLabelList();
-                StatementList();
-                OptionalSwitchSectionList();
+                var toCompare = SwitchLabelList();
+                var body = StatementList();
+                var otherCases = OptionalSwitchSectionList();
+
+                otherCases.Insert(0, new CaseExpressionNode(toCompare, body));
+                return otherCases;
+
             }else{
-                //epsilon
+                return new List<CaseExpressionNode>();
             }
         }
 
-        private void SwitchLabelList()
+        private List<CaseNode> SwitchLabelList()
         {
             printDebug("Switch Label List");
-            SwitchLabel();
+            var label = SwitchLabel();
             MatchExactly(TokenType.OP_HIERARCHY);
-            SwitchLabelListPrime();
+            var otherLabels = SwitchLabelListPrime();
+            
+            otherLabels.Insert(0, label);
+            return otherLabels;
         }
 
-        private void SwitchLabelListPrime()
+        private List<CaseNode> SwitchLabelListPrime()
         {
             printDebug("Switch Label List Prime");
             if(MatchAny(new TokenType[]{TokenType.CASE_KEYWORD, TokenType.DEFAULT_KEYWORD})){
-                SwitchLabelList();
+                return SwitchLabelList();
             }else{
-                //epsilon
+                return new List<CaseNode>();
             }
         }
 
-        private void SwitchLabel()
+        private CaseNode SwitchLabel()
         {
             printDebug("Switch Label");
-            if(ConsumeOnMatch(TokenType.CASE_KEYWORD)){
-                Expression();
+            if(Match(TokenType.CASE_KEYWORD)){
+                var token = MatchExactly(TokenType.CASE_KEYWORD);
+                var expr = Expression();
+                return new CaseNode(token, expr);
             }else{
-                MatchExactly(TokenType.DEFAULT_KEYWORD);
+                var token = MatchExactly(TokenType.DEFAULT_KEYWORD);
+                return new CaseNode(token, null);
             }
         }
 
-        private void IfStatement()
+        private StatementNode IfStatement()
         {
             printDebug("If Statement");
             MatchExactly(new TokenType[]{TokenType.IF_KEYWORD, TokenType.PAREN_OPEN});
-            Expression();
+            var condition = Expression();
             MatchExactly(TokenType.PAREN_CLOSE);
-            EmbeddedStatement();
-            OptionalElsePart();
+            var body = EmbeddedStatement();
+            var elsePart = OptionalElsePart();
+
+            return new IfStatementNode(condition, body as EmbeddedStatementNode, elsePart);
         }
 
-        private void OptionalElsePart()
+        private ElseNode OptionalElsePart()
         {
             printDebug("Optional Else Part");
             if(Match(TokenType.ELSE_KEYWORD)){
-                ElsePart();
+                return ElsePart();
             }else{
-                //epsilon
+                return null;
             }
         }
 
-        private void ElsePart()
+        private ElseNode ElsePart()
         {
             printDebug("Else Part");
             MatchExactly(TokenType.ELSE_KEYWORD);
-            EmbeddedStatement();
+            return new ElseNode(EmbeddedStatement() as EmbeddedStatementNode);
         }
     }
 }

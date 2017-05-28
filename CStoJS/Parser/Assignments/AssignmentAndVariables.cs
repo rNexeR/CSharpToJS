@@ -56,7 +56,7 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        void VariableAssigner()
+        void VariableAssigner(ref FieldNode field)
         {
             printDebug("Variable Assigner");
             if (Match(TokenType.OP_ASSIGN))
@@ -69,17 +69,18 @@ namespace CStoJS.ParserLibraries
                 //EPSILON
             }
         }
-        void VariableDeclaratorListPrime()
+        List<FieldNode> VariableDeclaratorListPrime(Token encap, Token modifier, TypeDeclarationNode type)
         {
             printDebug("Variable Declarator List Prime");
             if (Match(TokenType.COMMA))
             {
                 ConsumeToken();
-                VariableDeclaratorList();
+                return VariableDeclaratorList(encap, modifier, type);
             }
             else
             {
                 //EPSILON
+                return new List<FieldNode>();
             }
         }
 
@@ -102,12 +103,18 @@ namespace CStoJS.ParserLibraries
 
         }
 
-        void VariableDeclaratorList()
+        List<FieldNode> VariableDeclaratorList(Token encap, Token modifier, TypeDeclarationNode type)
         {
             printDebug("Variable Declarator List");
-            MatchExactly(new TokenType[] { TokenType.ID });
-            VariableAssigner();
-            VariableDeclaratorListPrime();
+            var token = MatchExactly(TokenType.ID );
+            var field = new FieldNode(type, new IdentifierNode(token), new EncapsulationNode(encap), modifier);
+            
+            VariableAssigner(ref field);
+            
+            var fields = VariableDeclaratorListPrime(encap, modifier, type);
+
+            fields.Insert(0, field);
+            return fields;
         }
     }
 }

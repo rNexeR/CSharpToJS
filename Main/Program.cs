@@ -17,7 +17,7 @@ namespace Main
             using Nx;
             using Test2;
             public interface Nexer : Kevin, Kevin.Cantillano{
-                void sayHello(string[] msg);
+                Nx sayHello(string[] msg);
             }
             namespace N1{
                 using Here;
@@ -25,7 +25,22 @@ namespace Main
                     using Here2;
                 }
             }
-            namespace N2{}
+            namespace N2{
+                public class Nexer : Rodriguez{
+                    public int x1;
+                    public int x, y, z;
+                    public Nexer NewNexer(){
+                        x++;
+                        myfunc(x);
+                        ++x;
+                    }
+                    public Nexer(int x, Nexer nx){}
+                }
+
+                public abstract class Rodriguez{
+
+                }
+            }
             namespace N3{}
             namespace Hi{
                 public enum Hola{

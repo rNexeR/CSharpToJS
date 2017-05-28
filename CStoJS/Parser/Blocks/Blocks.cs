@@ -2,6 +2,7 @@ using CStoJS.Exceptions;
 using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
+using CStoJS.Tree;
 
 namespace CStoJS.ParserLibraries
 {
@@ -17,14 +18,16 @@ namespace CStoJS.ParserLibraries
 
         }
 
-        void  MaybeEmptyBlock(){
+        StatementNode MaybeEmptyBlock(){
             printDebug("Maybe Empty Block");
             if(Match( TokenType.BRACE_OPEN )){
                 ConsumeToken();
-                OptionalStatementList();
+                var smts = OptionalStatementList();
                 MatchExactly( new TokenType[]{ TokenType.BRACE_CLOSE } );
+                return new BlockStatementNode(smts);
             }else{
                 MatchExactly( new TokenType[]{ TokenType.END_STATEMENT } );
+                return null;
             }
         }
     }

@@ -3,7 +3,7 @@ using CStoJS.LexerLibraries;
 
 namespace CStoJS.Tree
 {
-    public class MethodNode
+    public class ConstructorNode
     {
         public IdentifierNode identifier;
         public TypeDeclarationNode  returnType;
@@ -11,27 +11,18 @@ namespace CStoJS.Tree
         public Token modifier;
         public List<ParameterNode> parameters;
         public List<StatementTypeNode> body;
-
-        public MethodNode(){
+        public List<ArgumentNode> initializer;
+        
+        public ConstructorNode()
+        {
             this.parameters = new List<ParameterNode>();
             this.body = new List<StatementTypeNode>();
         }
-
-        public MethodNode(IdentifierNode identifier, TypeDeclarationNode returnType, EncapsulationNode encapsulation, Token modifier) : this(){
+        public ConstructorNode(IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier)
+        {
             this.identifier = identifier;
-            this.returnType = returnType;
             this.encapsulation = encapsulation;
             this.modifier = modifier;
-        }
-
-
-        public override string ToString(){
-            string ret = "";
-            ret += $"{returnType.identifier} {identifier}(";
-            foreach(var x in parameters){
-                ret += $" {x.type} {x.identifier}, ";
-            }
-            return ret;
         }
     }
 }

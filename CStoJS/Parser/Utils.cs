@@ -135,8 +135,9 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        private void ConsumeToken()
+        private Token ConsumeToken()
         {
+            var token = currentToken;
             if (lookAheadBack && lookAhead.Length > 0)
             {
                 currentToken = lookAhead[0];
@@ -150,6 +151,7 @@ namespace CStoJS.ParserLibraries
             {
                 currentToken = lexer.GetNextToken();
             }
+            return token;
         }
 
         private void RollbackLA()
