@@ -12,5 +12,9 @@ namespace CStoJS.Tree
             this.type = type;
             this.args = args;
         }
+
+        public ConstructorCallExpressionNode(){
+            
+        }
     }
 }

@@ -8,5 +8,9 @@ namespace CStoJS.Tree
         {
             this.expressionNode = expressionNode;
         }
+
+        public ParenthesizedExpressionNode(){
+            
+        }
     }
 }

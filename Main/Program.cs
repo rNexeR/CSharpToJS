@@ -99,6 +99,7 @@ namespace Main
             try
             {
                 tree = parser.parse();
+                SerializeTree(tree);
             }
             catch (Exception ex)
             {
@@ -118,22 +119,23 @@ namespace Main
             // Console.WriteLine(current_token);
         }
 
-        // private static void SerializeTree(NamespaceNode tree)
-        // {
-        //     System.Type[] types = { typeof(UsingNode), typeof(NamespaceNode), typeof(EnumDefinitionNode)
-        //     , typeof(EnumNode), typeof(InterfaceNode), typeof(ClassNode), typeof(FieldNode)
-        //     , typeof(MethodNode), typeof(ConstructorNode),typeof(ConstructorInitializerNode), typeof(IdentifierNode), typeof(Token)
-        //     , typeof(ExpressionNode), typeof(ParameterNode), typeof(IdentifierNode), typeof(PrimitiveType)
-        //     , typeof(LiteralNode), typeof(StatementExpressionNode), typeof(FunctionCallExpression), typeof(AccessMemory)
-        //     , typeof(ReferenceAccessNode), typeof(ForStatementNode), typeof(ForeachStatementNode), typeof(WhileStatementNode)
-        //     , typeof(DoStatementNode), typeof(IfStatementNode),typeof(SwitchStatementNode) , typeof(BodyStatement), typeof(LocalVariableNode)
-        //     , typeof(EmbeddedStatementNode), typeof(IdentifierTypeNode), typeof(ClassInstantiation), typeof(ArrayInstantiation), typeof(ConditionExpression)
-        //     , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(ExpressionUnaryNode)};
-        //     var serializer = new XmlSerializer(typeof(NamespaceNode), types);
-        //     var logPath = System.IO.Path.GetTempFileName();
-        //     var logFile = System.IO.File.Create("hola.xml");
-        //     var writer = new System.IO.StreamWriter(logFile);
-        //     serializer.Serialize(writer, tree);
-        // }
+        private static void SerializeTree(NamespaceNode tree)
+        {
+            // System.Type[] types = { typeof(UsingNode), typeof(NamespaceNode), typeof(EnumDefinitionNode)
+            // , typeof(EnumNode), typeof(InterfaceNode), typeof(ClassNode), typeof(FieldNode)
+            // , typeof(MethodNode), typeof(ConstructorNode),typeof(ConstructorInitializerNode), typeof(IdentifierNode), typeof(Token)
+            // , typeof(ExpressionNode), typeof(ParameterNode), typeof(IdentifierNode), typeof(PrimitiveType)
+            // , typeof(LiteralNode), typeof(StatementExpressionNode), typeof(FunctionCallExpression), typeof(AccessMemory)
+            // , typeof(ReferenceAccessNode), typeof(ForStatementNode), typeof(ForeachStatementNode), typeof(WhileStatementNode)
+            // , typeof(DoStatementNode), typeof(IfStatementNode),typeof(SwitchStatementNode) , typeof(BodyStatement), typeof(LocalVariableNode)
+            // , typeof(EmbeddedStatementNode), typeof(IdentifierTypeNode), typeof(ClassInstantiation), typeof(ArrayInstantiation), typeof(ConditionExpression)
+            // , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(ExpressionUnaryNode)};
+            System.Type[] types = {typeof(NamespaceNode)};
+            var serializer = new XmlSerializer(typeof(NamespaceNode), types);
+            var logPath = System.IO.Path.GetTempFileName();
+            var logFile = System.IO.File.Create("Tree.xml");
+            var writer = new System.IO.StreamWriter(logFile);
+            serializer.Serialize(writer, tree);
+        }
     }
 }

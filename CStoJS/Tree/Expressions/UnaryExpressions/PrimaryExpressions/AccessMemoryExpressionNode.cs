@@ -17,5 +17,9 @@ namespace CStoJS.Tree
             this.identifierExpressionNode = identifierExpressionNode;
             this.token = token;
         }
+
+        public AccessMemoryExpressionNode(){
+            
+        }
     }
 }

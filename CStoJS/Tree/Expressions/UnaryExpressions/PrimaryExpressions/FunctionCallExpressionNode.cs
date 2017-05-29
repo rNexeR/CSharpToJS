@@ -12,5 +12,9 @@ namespace CStoJS.Tree
             this.left = left;
             this.args = args;
         }
+
+        public FunctionCallExpressionNode(){
+            
+        }
     }
 }

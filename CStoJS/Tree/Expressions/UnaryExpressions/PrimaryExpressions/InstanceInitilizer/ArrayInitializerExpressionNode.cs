@@ -10,5 +10,9 @@ namespace CStoJS.Tree
             this.arr = arr;
             this.initializer = initializer;
         }
+
+        public ArrayInitializerExpressionNode(){
+            
+        }
     }
 }

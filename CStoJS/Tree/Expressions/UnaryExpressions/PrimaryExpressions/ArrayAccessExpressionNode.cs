@@ -10,5 +10,9 @@ namespace CStoJS.Tree
         {
             this.list = list;
         }
+
+        public ArrayAccessExpressionNode(){
+            
+        }
     }
 }

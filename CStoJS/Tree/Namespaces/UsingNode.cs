@@ -10,6 +10,10 @@ namespace CStoJS.Tree
             this.identifier = identifier;
         }
 
+        public UsingNode(){
+            
+        }
+
         public override string ToString(){
             return identifier.ToString();
         }

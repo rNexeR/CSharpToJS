@@ -2,9 +2,9 @@ namespace CStoJS.Tree
 {
     public class TernaryExpressionNode : ExpressionNode
     {
-        private ExpressionNode before;
-        private ExpressionNode truth;
-        private ExpressionNode lie;
+        private ExpressionNode conditionalExpression;
+        private ExpressionNode trueExpression;
+        private ExpressionNode falseExpression;
 
         public TernaryExpressionNode() : base(){
 
@@ -12,9 +12,9 @@ namespace CStoJS.Tree
 
         public TernaryExpressionNode(ExpressionNode before, ExpressionNode truth, ExpressionNode lie)
         {
-            this.before = before;
-            this.truth = truth;
-            this.lie = lie;
+            this.conditionalExpression = before;
+            this.trueExpression = truth;
+            this.falseExpression = lie;
         }
     }
 }
