@@ -19,54 +19,55 @@ namespace CStoJS.ParserLibraries
             else
             {
                 MatchExactly(new TokenType[] { TokenType.OP_ASSIGN });
-                actual.assignment = new ExpressionNode();
-                Expression();
+                actual.assignment = Expression();
                 OptionalAssignableIdentifiersListPrime(ref identifier);
             }
         }
 
-        private void OptionalVariableInitializerList()
+        private List<VariableInitializer> OptionalVariableInitializerList()
         {
             printDebug("Optional Variable Initializer List ==TODO");
             if (MatchAny(this.expression_operators))
             {
-                VariableInitializerList();
+                return VariableInitializerList();
             }
             else
             {
-                //epsilon
+                return new List<VariableInitializer>();
             }
         }
 
-        private void VariableInitializerList()
+        private List<VariableInitializer> VariableInitializerList()
         {
-            VariableInitializer();
-            VariableInitializerPrime();
+            var variable = VariableInitializer();
+            var lista = VariableInitializerPrime();
+            lista.Insert(0, variable);
+            return lista;
         }
 
-        private void VariableInitializerPrime()
+        private List<VariableInitializer> VariableInitializerPrime()
         {
             if (ConsumeOnMatch(TokenType.COMMA))
             {
-                VariableInitializerList();
+                return VariableInitializerList();
             }
             else
             {
-                //epsilomn
+                return new List<VariableInitializer>();
             }
         }
 
-        void VariableAssigner(ref FieldNode field)
+        VariableInitializer VariableAssigner()
         {
             printDebug("Variable Assigner");
             if (Match(TokenType.OP_ASSIGN))
             {
                 ConsumeToken();
-                VariableInitializer();
+                return VariableInitializer();
             }
             else
             {
-                //EPSILON
+                return null;
             }
         }
         List<FieldNode> VariableDeclaratorListPrime(Token encap, Token modifier, TypeDeclarationNode type)
@@ -84,21 +85,22 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        void VariableInitializer()
+        VariableInitializer VariableInitializer()
         {
             printDebug("Variable Initializer");
             //Change this after
             if (MatchAny(this.expression_operators))
             {
-                Expression();
+                return Expression();
             }
             else if (Match(TokenType.BRACE_OPEN))
             {
-                ArrayInitializer();
+                return ArrayInitializer();
             }
             else
             {
                 ThrowSyntaxException("VariableInitializer expected");
+                return null;
             }
 
         }
@@ -109,7 +111,7 @@ namespace CStoJS.ParserLibraries
             var token = MatchExactly(TokenType.ID );
             var field = new FieldNode(type, new IdentifierNode(token), new EncapsulationNode(encap), modifier);
             
-            VariableAssigner(ref field);
+            field.assignment = VariableAssigner();
             
             var fields = VariableDeclaratorListPrime(encap, modifier, type);
 

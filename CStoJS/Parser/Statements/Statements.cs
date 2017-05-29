@@ -142,45 +142,42 @@ namespace CStoJS.ParserLibraries
         private StatementNode StatementExpression()
         {
             printDebug("Statement Expression");
-            UnaryExpression();
-            StatementExpressionFactorized();
-            return null;
+            var left = UnaryExpression();
+            return new StatementExpressionNode(StatementExpressionFactorized(ref left));
+            // return StatementExpressionFactorized(ref left);
         }
 
-        private StatementNode StatementExpressionFactorized()
+        private ExpressionNode StatementExpressionFactorized(ref ExpressionNode left)
         {
             if (MatchAny(assignment_operators))
             {
-                ConsumeToken();
-                Expression();
-                StatementExpressionPrime();
-                return null;
+                var operador = ConsumeToken();
+                var right = Expression();
+                return new AssignationExpressionNode(left, operador, right) as ExpressionNode;
+                
             }
             else
             {
-                StatementExpressionPrime();
-                return null;
+                return left;
             }
         }
 
-        private StatementNode StatementExpressionPrime()
-        {
-            if (ConsumeOnMatch(TokenType.PAREN_OPEN))
-            {
-                ArgumentList();
-                MatchExactly(TokenType.PAREN_CLOSE);
-                return null;
-            }
-            else if (MatchAny(increment_decrement_operators))
-            {
-                IncrementDecrement();
-                return null;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        // private StatementNode StatementExpressionPrime(ref ExpressionNode left)
+        // {
+        //     if (ConsumeOnMatch(TokenType.PAREN_OPEN))
+        //     {
+        //         var args = ArgumentList();
+        //         MatchExactly(TokenType.PAREN_CLOSE);
+        //     }
+        //     else if (MatchAny(increment_decrement_operators))
+        //     {
+        //         IncrementDecrement();
+        //     }
+        //     else
+        //     {
+        //         return null;
+        //     }
+        // }
 
         private StatementNode LocalVariableDeclaration()
         {
@@ -190,12 +187,24 @@ namespace CStoJS.ParserLibraries
                 ThrowSyntaxException("Type or Var expected");
             }
 
-            if (!ConsumeOnMatch(TokenType.VAR_KEYWORD))
+            TypeDeclarationNode type = null;
+
+            if (Match(TokenType.VAR_KEYWORD))
             {
-                Type();
+                var token = ConsumeToken();
+                type = TypeDetector(token.type, new IdentifierNode(token));
+            }else{
+                type = Type();
             }
-            VariableDeclaratorList(null, null, null);
-            return null;
+            var variables = VariableDeclaratorList(null, null, type);
+            var variablesNodes = new List<LocalVariableNode>();
+
+            foreach(var x in variables){
+                var y = new LocalVariableNode(x.type, x.identifier, x.assignment);
+                variablesNodes.Add(y);
+            }
+
+            return new LocalVariablesNode(variablesNodes);
         }
 
         private List<StatementNode> OptionalStatementExpressionList()

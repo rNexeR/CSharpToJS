@@ -4,50 +4,57 @@ using CStoJS.Inputs;
 using System;
 using System.Linq;
 using CStoJS.Tree;
+using System.Collections.Generic;
 
 namespace CStoJS.ParserLibraries
 {
     public partial class Parser
     {
-        private void FuncOrArrayCall()
+        private ExpressionNode FuncOrArrayCall(ref ExpressionNode left)
         {
             printDebug("Optional Func Or Array Call");
             if (ConsumeOnMatch(TokenType.PAREN_OPEN))
             {
-                ArgumentList();
+                var args = ArgumentList();
                 MatchExactly(TokenType.PAREN_CLOSE);
+                return new FunctionCallExpressionNode(left, args);
             }
             else if (Match(TokenType.BRACKET_OPEN))
             {
-                OptionalArrayAccessList();
+                return new ArrayAccessExpressionNode(OptionalArrayAccessList());
             }
             else
             {
                 ThrowSyntaxException("Function call or Array Access expected");
+                return null;
             }
         }
 
-        private void OptionalArrayAccessList()
+        private List<ArrayAccessNode> OptionalArrayAccessList()
         {
             printDebug("Optional Array Access List");
             if (ConsumeOnMatch(TokenType.BRACKET_OPEN))
             {
-                ExpressionList();
+                var exprs = ExpressionList();
                 MatchExactly(TokenType.BRACKET_CLOSE);
-                OptionalArrayAccessList();
+                var access = new ArrayAccessNode(exprs);
+                var lista = OptionalArrayAccessList();
+                lista.Insert(0, access);
+                return lista;
             }
             else
             {
-                //epsilon
+                return new List<ArrayAccessNode>();
             }
         }
 
-        private void ArrayInitializer()
+        private ArrayInitializerNode ArrayInitializer()
         {
             printDebug("Optional Array Access List");
             MatchExactly(TokenType.BRACE_OPEN);
-            OptionalVariableInitializerList();
+            var initializers = OptionalVariableInitializerList();
             MatchExactly(TokenType.BRACE_CLOSE);
+            return new ArrayInitializerNode(initializers);
         }
 
         private void RankSpecifier(ref ArrayType arr)
@@ -75,11 +82,11 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        private void OptionalArrayInitializer(){
+        private ArrayInitializerNode OptionalArrayInitializer(){
             if(Match(TokenType.BRACE_OPEN)){
-                ArrayInitializer();
+                return ArrayInitializer();
             }else{
-                //epsilon
+                return null;
             }
         }
 

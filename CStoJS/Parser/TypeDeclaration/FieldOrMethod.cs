@@ -85,7 +85,8 @@ namespace CStoJS.ParserLibraries
             method.parameters = parameters;
 
             MatchExactly( new TokenType[]{ TokenType.PAREN_CLOSE } );
-            MaybeEmptyBlock();
+            var body = MaybeEmptyBlock();
+            method.body = body as BlockStatementNode;
 
             clase.methods.Add(method);
         }
@@ -93,7 +94,7 @@ namespace CStoJS.ParserLibraries
         void FieldDeclaration(Token encap, Token modifier, TypeDeclarationNode type, Token name, ref ClassNode clase){
             printDebug("Field Declaration");
             var field = new FieldNode(type, new IdentifierNode(name), new EncapsulationNode(encap), modifier);
-            VariableAssigner(ref field);
+            field.assignment = VariableAssigner();
             var fields = VariableDeclaratorListPrime(encap, modifier, type);
 
             fields.Insert(0, field);

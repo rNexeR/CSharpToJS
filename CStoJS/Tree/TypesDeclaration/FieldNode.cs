@@ -8,7 +8,7 @@ namespace CStoJS.Tree
         public IdentifierNode identifier;
         public EncapsulationNode encapsulation;
         public Token modifier; 
-        public AssignmentNode assignment;
+        public VariableInitializer assignment;
 
         public FieldNode(){
             
@@ -21,7 +21,7 @@ namespace CStoJS.Tree
             this.modifier = modifier;
         }
 
-        public FieldNode(TypeDeclarationNode type, IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier, AssignmentNode assignment) : this(type, identifier, encapsulation, modifier){
+        public FieldNode(TypeDeclarationNode type, IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier, VariableInitializer assignment) : this(type, identifier, encapsulation, modifier){
             this.assignment = assignment;
         }
     }

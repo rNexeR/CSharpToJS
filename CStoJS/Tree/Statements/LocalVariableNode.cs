@@ -4,7 +4,7 @@ namespace CStoJS.Tree
     {
         public TypeDeclarationNode type;
         public IdentifierNode identifier;
-        public ExpressionNode assignation;
+        public VariableInitializer assignation;
         public LocalVariableNode(){
             
         }
@@ -14,7 +14,7 @@ namespace CStoJS.Tree
             this.type = type;
         }
 
-        public LocalVariableNode(TypeDeclarationNode type, IdentifierNode identifier, ExpressionNode assignation) : this(type, identifier){
+        public LocalVariableNode(TypeDeclarationNode type, IdentifierNode identifier, VariableInitializer assignation) : this(type, identifier){
             this.assignation = assignation;
         }
     }

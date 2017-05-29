@@ -12,7 +12,7 @@ namespace CStoJS.ParserLibraries
         private Lexer lexer;
         private Token currentToken;
         private TokenType[] encapsulation_modifiers, class_modifiers, optional_modifiers;
-        private TokenType[] types; 
+        private TokenType[] types, buildInTypes; 
         private TokenType[] literals, unary_operators, assignment_operators, increment_decrement_operators;
         private TokenType[] relational_operators, equality_operators, shift_operators, additive_operators;
         private TokenType[] multiplicative_operators, is_as_operators, expression_operators, unary_expression_options;
@@ -26,13 +26,15 @@ namespace CStoJS.ParserLibraries
             this.InitializeArrays();
             this.lookAhead = new Token[]{};
             this.lookAheadBack = false;
-            // enableDebug = true;
+            enableDebug = true;
         }
 
         public void InitializeArrays(){
+            this.buildInTypes = new TokenType[]{TokenType.INT_KEYWORD, TokenType.CHAR_KEYWORD, TokenType.STRING_KEYWORD, TokenType.FLOAT_KEYWORD, TokenType.BOOL_KEYWORD};
+            this.types = new TokenType[]{ TokenType.ID }.Concat(buildInTypes).ToArray();
+            
             this.encapsulation_modifiers = new TokenType[] { TokenType.PRIVATE_KEYWORD, TokenType.PROTECTED_KEYWORD, TokenType.PUBLIC_KEYWORD };
             this.class_modifiers = new TokenType[] { TokenType.ABSTRACT_KEYWORD };
-            this.types = new TokenType[]{ TokenType.INT_KEYWORD, TokenType.FLOAT_KEYWORD, TokenType.CHAR_KEYWORD, TokenType.STRING_KEYWORD, TokenType.BOOL_KEYWORD, TokenType.ID };
             this.optional_modifiers = new TokenType[]{ TokenType.STATIC_KEYWORD, TokenType.VIRTUAL_KEYWORD, TokenType.OVERRIDE_KEYWORD, TokenType.ABSTRACT_KEYWORD };
             this.literals = new TokenType[]{ TokenType.LITERAL_INT, TokenType.LITERAL_CHAR, TokenType.LITERAL_FLOAT, TokenType.LITERAL_STRING, TokenType.LITERAL_STRING_VERBATIM, TokenType.TRUE_KEYWORD, TokenType.FALSE_KEYWORD };
             

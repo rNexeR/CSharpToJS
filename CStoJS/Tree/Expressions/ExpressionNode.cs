@@ -1,6 +1,9 @@
 namespace CStoJS.Tree
 {
-    public class ExpressionNode
+    public abstract class ExpressionNode : VariableInitializer
     {
+        public ExpressionNode(){
+            
+        }
     }
 }

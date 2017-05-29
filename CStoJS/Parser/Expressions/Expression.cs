@@ -11,285 +11,312 @@ namespace CStoJS.ParserLibraries
         ExpressionNode Expression()
         {
             printDebug("Expression");
-            ConditionalExpression();
-            return null;
+            return ConditionalExpression();
+            // return null;
         }
 
-        private void ConditionalExpression()
+        private ExpressionNode ConditionalExpression()
         {
             printDebug("Conditional Expression");
-            NullCoalescingExpression();
-            ConditionalExpressionPrime();
+            var first = NullCoalescingExpression();
+            return ConditionalExpressionPrime(ref first);
         }
 
-        private void ConditionalExpressionPrime()
+        private ExpressionNode ConditionalExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Conditional Expression Prime");
             if (ConsumeOnMatch(TokenType.OP_TERNARY))
             {
-                Expression();
+                var truth = Expression();
                 MatchExactly(TokenType.OP_HIERARCHY);
-                Expression();
+                var lie = Expression();
+                return new TernaryExpressionNode(left, truth, lie);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void NullCoalescingExpression()
+        private ExpressionNode NullCoalescingExpression()
         {
             printDebug("Null Coalescing Expression");
-            ConditionalOrExpression();
-            NullCoalescingExpressionPrime();
+            var first = ConditionalOrExpression();
+            return NullCoalescingExpressionPrime(ref first);
         }
 
-        private void NullCoalescingExpressionPrime()
+        private ExpressionNode NullCoalescingExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Null Coalescing Expression Prime");
-            if (ConsumeOnMatch(TokenType.OP_NULL_COALESCING))
+            if (Match(TokenType.OP_NULL_COALESCING))
             {
-                NullCoalescingExpression();
+                var operador = ConsumeToken();
+                var right = NullCoalescingExpression();
+                return new ConditionalExpressionNode(left, operador, right);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void ConditionalOrExpression()
+        private ExpressionNode ConditionalOrExpression()
         {
             printDebug("Conditional Or Expression");
-            ConditionalAndExpression();
-            ConditionalOrExpressionPrime();
+            var first = ConditionalAndExpression();
+            return ConditionalOrExpressionPrime(ref first);
         }
 
-        private void ConditionalOrExpressionPrime()
+        private ExpressionNode ConditionalOrExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Conditional Or ExpressionPrime");
-            if (ConsumeOnMatch(TokenType.OP_CONDITIONAL_OR))
+            if (Match(TokenType.OP_CONDITIONAL_OR))
             {
-                ConditionalAndExpression();
-                ConditionalOrExpressionPrime();
+                var operador = ConsumeToken();
+                var right = ConditionalAndExpression();
+                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                return ConditionalOrExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void ConditionalAndExpression()
+        private ExpressionNode ConditionalAndExpression()
         {
             printDebug("Conditional And Expression");
-            InclusiveOrExpression();
-            ConditionalAndExpressionPrime();
+            var first = InclusiveOrExpression();
+            return ConditionalAndExpressionPrime(ref first);
         }
 
-        private void InclusiveOrExpression()
+        private ExpressionNode InclusiveOrExpression()
         {
             printDebug("Inclusive Or Expression");
-            ExclusiveOrExpression();
-            InclusiveOrExpressionPrime();
+            var first = ExclusiveOrExpression();
+            return InclusiveOrExpressionPrime(ref first);
         }
 
-        private void ConditionalAndExpressionPrime()
+        private ExpressionNode ConditionalAndExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Conditional And Expression Prime");
-            if (ConsumeOnMatch(TokenType.OP_CONDITIONAL_AND))
+            if (Match(TokenType.OP_CONDITIONAL_AND))
             {
-                InclusiveOrExpression();
-                ConditionalAndExpressionPrime();
+                var operador = ConsumeToken();
+                var right = InclusiveOrExpression();
+                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                return ConditionalAndExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void InclusiveOrExpressionPrime()
+        private ExpressionNode InclusiveOrExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Inclusive Or Expression Prime");
-            if (ConsumeOnMatch(TokenType.OP_BITS_OR))
+            if (Match(TokenType.OP_BITS_OR))
             {
-                ExclusiveOrExpression();
-                InclusiveOrExpressionPrime();
+                var operador = ConsumeToken();
+                var right = ExclusiveOrExpression();
+                var first = new BitwiseExpressionNode(left, operador, right) as ExpressionNode;
+                return InclusiveOrExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void ExclusiveOrExpression()
+        private ExpressionNode ExclusiveOrExpression()
         {
             printDebug("Exclusive Or Expression");
-            AndExpression();
-            ExclusiveOrExpressionPrime();
+            var first = AndExpression();
+            return ExclusiveOrExpressionPrime(ref first);
         }
 
-        private void ExclusiveOrExpressionPrime()
+        private ExpressionNode ExclusiveOrExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Exclusive Or Expression Prime");
-            if (ConsumeOnMatch(TokenType.OP_BITS_XOR))
+            if (Match(TokenType.OP_BITS_XOR))
             {
-                AndExpression();
-                ExclusiveOrExpressionPrime();
+                var operador = ConsumeToken();
+                var right = AndExpression();
+                var first = new BitwiseExpressionNode(left, operador, right) as ExpressionNode;
+                return ExclusiveOrExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void AndExpression()
+        private ExpressionNode AndExpression()
         {
             printDebug("And Expression");
-            EquialityExpression();
-            AndExpressionPrime();
+            var first = EquialityExpression();
+            return AndExpressionPrime(ref first);
         }
 
-        private void AndExpressionPrime()
+        private ExpressionNode AndExpressionPrime(ref ExpressionNode left)
         {
             printDebug("And Expression Prime");
-            if (ConsumeOnMatch(TokenType.OP_BITS_AND))
+            if (Match(TokenType.OP_BITS_AND))
             {
-                EquialityExpression();
-                AndExpressionPrime();
+                var operador = ConsumeToken();
+                var right = EquialityExpression();
+                var first = new BitwiseExpressionNode(left, operador, right) as ExpressionNode;
+                return AndExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void EquialityExpression()
+        private ExpressionNode EquialityExpression()
         {
             printDebug("Equality Expression");
-            RelationalExpression();
-            EquialityExpressionPrime();
+            var first = RelationalExpression();
+            return EquialityExpressionPrime(ref first);
         }
 
-        private void EquialityExpressionPrime()
+        private ExpressionNode EquialityExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Equality Expression Prime");
             if (MatchAny(this.equality_operators))
             {
-                ConsumeToken();
-                RelationalExpression();
-                EquialityExpressionPrime();
+                var operador = ConsumeToken();
+                var right = RelationalExpression();
+                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                return EquialityExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void RelationalExpression()
+        private ExpressionNode RelationalExpression()
         {
             printDebug("Relational Expression");
-            ShiftExpression();
-            RelationalExpressionPrime();
+            var first = ShiftExpression();
+            return RelationalExpressionPrime(ref first);
         }
 
-        private void RelationalExpressionPrime()
+        private ExpressionNode RelationalExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Relational Expression Prime");
             if (MatchAny(this.relational_operators))
             {
-                ConsumeToken();
-                ShiftExpression();
-                RelationalExpressionPrime();
+                var operador = ConsumeToken();
+                var right = ShiftExpression();
+                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                return RelationalExpressionPrime(ref first);
             }
-            else if (MatchAny(this.is_as_operators))
+            else if (Match(TokenType.IS_KEYWORD))
             {
-                ConsumeToken();
-                Type();
-                RelationalExpressionPrime();
+                var operador = ConsumeToken();
+                var type = Type();
+                var first = new ConditionalExpressionNode(left, operador, type) as ExpressionNode;
+                return RelationalExpressionPrime(ref first);
+            }
+            else if (Match(TokenType.AS_KEYWORD))
+            {
+                var operador = ConsumeToken();
+                var type = Type();
+                var first = new CastingExpressionNode(type, left) as ExpressionNode;
+                return RelationalExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void ShiftExpression()
+        private ExpressionNode ShiftExpression()
         {
             printDebug("Shift Expression");
-            AdditiveExpression();
-            ShiftExpressionPrime();
+            var first = AdditiveExpression();
+            return ShiftExpressionPrime(ref first);
         }
 
-        private void ShiftExpressionPrime()
+        private ExpressionNode ShiftExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Shift Expression Prime");
             if (MatchAny(this.shift_operators))
             {
-                ConsumeToken();
-                AdditiveExpression();
-                ShiftExpressionPrime();
+                var operador = ConsumeToken();
+                var right = AdditiveExpression();
+                var first = new BitwiseExpressionNode(left, operador, right) as ExpressionNode;
+                return ShiftExpressionPrime(ref first);
             }
             else
             {
-                //EPSILON
+                return left;
             }
         }
 
-        private void AdditiveExpression()
+        private ExpressionNode AdditiveExpression()
         {
             printDebug("Additive Expression");
-            MultiplicativeExpression();
-            AdditiveExpressionPrime();
+            var first = MultiplicativeExpression();
+            return AdditiveExpressionPrime(ref first);
         }
 
-        private void AdditiveExpressionPrime()
+        private ExpressionNode AdditiveExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Additive Expression Prime");
             if (MatchAny(this.additive_operators))
             {
-                ConsumeToken();
-                MultiplicativeExpression();
-                AdditiveExpressionPrime();
+                var operador = ConsumeToken();
+                var right = MultiplicativeExpression();
+                var first = new ArithmeticExpressionNode(left, operador, right) as ExpressionNode;
+                return AdditiveExpressionPrime(ref first);
             }
             else
             {
-                //epsilon
+                return left;
             }
         }
 
-        private void MultiplicativeExpression()
+        private ExpressionNode MultiplicativeExpression()
         {
             printDebug("Multiplicative Expression");
-            UnaryExpression();
-            MultiplicativeExpressionFactorized();
+            var first = UnaryExpression();
+            return MultiplicativeExpressionFactorized(ref first);
         }
 
-        private void MultiplicativeExpressionFactorized()
+        private ExpressionNode MultiplicativeExpressionFactorized(ref ExpressionNode left)
         {
             printDebug("Multiplicative Expression Factorized");
             if (MatchAny(this.assignment_operators))
             {
-                ConsumeToken();
-                Expression();
-                MultiplicativeExpressionPrime();
+                var operador = ConsumeToken();
+                var right = Expression();
+                var first = new AssignationExpressionNode(left, operador, right) as ExpressionNode;
+                return MultiplicativeExpressionPrime(ref first);
             }
             else
             {
-                MultiplicativeExpressionPrime();
+                return MultiplicativeExpressionPrime(ref left);
             }
         }
 
-        private void MultiplicativeExpressionPrime()
+        private ExpressionNode MultiplicativeExpressionPrime(ref ExpressionNode left)
         {
             printDebug("Multiplicative Expression Prime");
             if (MatchAny(this.multiplicative_operators))
             {
-                ConsumeToken();
-                UnaryExpression();
-                MultiplicativeExpressionPrime();
+                var operador = ConsumeToken();
+                var right = UnaryExpression();
+                var first = new ArithmeticExpressionNode(left, operador, right) as ExpressionNode;
+                return MultiplicativeExpressionPrime(ref first);
             }
             else
             {
-                //epsilon
+                return left;
             }
         }
 
@@ -304,16 +331,18 @@ namespace CStoJS.ParserLibraries
                 return null;
             }
         }
-        void Literals()
+        ExpressionNode Literals()
         {
             printDebug("Literlas");
             if (MatchAny(this.literals))
             {
-                ConsumeToken();
+                var literal = ConsumeToken();
+                return new LiteralExpressionNode(literal);
             }
             else
             {
                 ThrowSyntaxException("Literal Expected");
+                return null;
             }
         }
     }
