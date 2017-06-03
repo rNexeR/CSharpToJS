@@ -5,7 +5,7 @@ namespace CStoJS
 {
     public class LocalVariablesNode : StatementNode
     {
-        private List<LocalVariableNode> variablesNodes;
+        public List<LocalVariableNode> variablesNodes;
 
         public LocalVariablesNode(){
             this.variablesNodes = new List<LocalVariableNode>();

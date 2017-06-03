@@ -4,8 +4,8 @@ namespace CStoJS.Tree
 {
     public class ConstructorCallExpressionNode : InstanceInitilizerExpressionNode
     {
-        private List<ArgumentNode> args;
-        private TypeDeclarationNode type;
+        public List<ArgumentNode> args;
+        public TypeDeclarationNode type;
 
         public ConstructorCallExpressionNode(TypeDeclarationNode type, List<ArgumentNode> args)
         {

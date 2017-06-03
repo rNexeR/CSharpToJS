@@ -4,8 +4,8 @@ namespace CStoJS.Tree
 {
     public class FunctionCallExpressionNode : PrimaryExpressionNode
     {
-        private ExpressionNode left;
-        private List<ArgumentNode> args;
+        public List<ArgumentNode> args;
+        public ExpressionNode left;
 
         public FunctionCallExpressionNode(ExpressionNode left, List<ArgumentNode> args)
         {

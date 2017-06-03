@@ -2,7 +2,7 @@ namespace CStoJS.Tree
 {
     public class ParenthesizedExpressionNode : PrimaryExpressionNode
     {
-        private ExpressionNode expressionNode;
+        public ExpressionNode expressionNode;
 
         public ParenthesizedExpressionNode(ExpressionNode expressionNode)
         {

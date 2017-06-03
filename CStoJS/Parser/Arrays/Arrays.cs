@@ -21,7 +21,7 @@ namespace CStoJS.ParserLibraries
             }
             else if (Match(TokenType.BRACKET_OPEN))
             {
-                return new ArrayAccessExpressionNode(OptionalArrayAccessList());
+                return new ArrayAccessExpressionNode(left, OptionalArrayAccessList());
             }
             else
             {

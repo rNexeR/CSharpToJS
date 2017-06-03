@@ -7,6 +7,10 @@ namespace CStoJS.Tree
         public Token operador;
         public ExpressionNode expression;
 
+        public PreOperatorExpressionNode(){
+            
+        }
+
         public PreOperatorExpressionNode(Token operador, ExpressionNode expr)
         {
             this.operador = operador;

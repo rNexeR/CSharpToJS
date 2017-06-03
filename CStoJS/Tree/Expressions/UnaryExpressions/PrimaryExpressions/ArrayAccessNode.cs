@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class ArrayAccessNode
     {
-        private List<ExpressionNode> exprs;
+        public List<ExpressionNode> exprs;
 
         public ArrayAccessNode(List<ExpressionNode> exprs)
         {

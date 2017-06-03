@@ -179,8 +179,8 @@ namespace Heap_sort
 	{
 		public static void Main (string[] args)
 		{
+            a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
 			int[] mykeys = new int[] {2, 5, -4, 11, 0, 18, 22, 67, 51, 6};
-
 			float[] mykeys = new float[] {2.22f, 0.5f, 2.7f, -1.0f, 11.2f};
 
 		    string[] mykeys = new string[] {"Red", "White", "Black", "Green", "Orange"};

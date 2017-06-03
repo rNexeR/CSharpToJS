@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class BuiltInTypeExpressionNode : PrimaryExpressionNode
     {
-        private Token token;
+        public Token token;
 
         public BuiltInTypeExpressionNode() : base(){
 

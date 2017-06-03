@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class ReferenceAccessNode : PrimaryExpressionNode
     {
-        private Token token;
+        public Token token;
 
         public ReferenceAccessNode(Token token)
         {

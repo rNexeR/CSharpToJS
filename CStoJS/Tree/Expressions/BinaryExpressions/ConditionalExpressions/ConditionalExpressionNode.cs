@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class ConditionalExpressionNode : BinaryExpressionNode
     {
-        private TypeDeclarationNode type;
+        public TypeDeclarationNode type;
 
         public ConditionalExpressionNode() : base(){
             

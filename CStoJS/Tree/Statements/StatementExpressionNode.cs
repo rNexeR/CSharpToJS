@@ -2,7 +2,7 @@ namespace CStoJS.Tree
 {
     public class StatementExpressionNode : StatementNode
     {
-        private ExpressionNode expressionNode;
+        public ExpressionNode expressionNode;
 
         public StatementExpressionNode(){
             

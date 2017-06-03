@@ -1,12 +1,16 @@
+
 namespace CStoJS.LexerLibraries
 {
     public class Token
     {
-        public TokenType type;
-        public int column;
+        internal TokenType type;
+        internal int column;
         public int row;
         public string lexema;
 
+        public Token(){
+            
+        }
         public Token(TokenType type, string lexema, int row, int column)
         {
             this.type = type;

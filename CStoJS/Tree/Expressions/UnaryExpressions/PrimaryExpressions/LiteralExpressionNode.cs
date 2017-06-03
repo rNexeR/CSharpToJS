@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class LiteralExpressionNode : PrimaryExpressionNode
     {
-        private Token literal;
+        public Token literal;
 
         public LiteralExpressionNode() : base(){
             

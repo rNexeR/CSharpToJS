@@ -112,7 +112,7 @@ namespace CStoJS.ParserLibraries
             if (Match(TokenType.OP_MEMBER_ACCESS))
             {
                 var tokens = MatchExactly(new TokenType[] { TokenType.OP_MEMBER_ACCESS, TokenType.ID });
-                var new_left = new AccessMemoryExpressionNode(left as AccessMemoryExpressionNode, tokens[1]) as ExpressionNode;
+                var new_left = new AccessMemoryExpressionNode(left, tokens[1]) as ExpressionNode;
                 return PrimaryExpressionPrime(ref new_left);
             }
             else if (Match(TokenType.PAREN_OPEN) || Match(TokenType.BRACKET_OPEN))

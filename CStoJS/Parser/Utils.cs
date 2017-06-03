@@ -175,6 +175,7 @@ namespace CStoJS.ParserLibraries
                 case TokenType.STRING_KEYWORD: return new StringType(identifier);
                 case TokenType.FLOAT_KEYWORD: return new FloatType(identifier);
                 case TokenType.VOID_KEYWORD: return new VoidType(identifier);
+                case TokenType.BOOL_KEYWORD: return new BoolType(identifier);
                 default: return new IdentifierTypeNode(identifier);
             }
         }

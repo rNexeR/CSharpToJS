@@ -4,8 +4,8 @@ namespace CStoJS.Tree
 {
     public class IdentifierExpressionNode : PrimaryExpressionNode
     {
-        private Token token;
-        private IdentifierExpressionNode left;
+        public Token token;
+        public IdentifierExpressionNode left;
 
         public IdentifierExpressionNode() : base(){
 

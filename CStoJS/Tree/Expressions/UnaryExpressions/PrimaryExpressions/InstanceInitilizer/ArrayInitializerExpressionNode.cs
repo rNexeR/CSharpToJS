@@ -2,8 +2,8 @@ namespace CStoJS.Tree
 {
     public class ArrayInitializerExpressionNode : InstanceInitilizerExpressionNode
     {
-        private ArrayType arr;
-        private ArrayInitializerNode initializer;
+        public ArrayInitializerNode initializer;
+        private readonly ArrayType arr;
 
         public ArrayInitializerExpressionNode(ArrayType arr, ArrayInitializerNode initializer)
         {
@@ -11,8 +11,9 @@ namespace CStoJS.Tree
             this.initializer = initializer;
         }
 
-        public ArrayInitializerExpressionNode(){
-            
+        public ArrayInitializerExpressionNode()
+        {
+
         }
     }
 }

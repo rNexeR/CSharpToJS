@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class ArrayInitializerNode : VariableInitializer
     {
-        private List<VariableInitializer> initializers;
+        public List<VariableInitializer> initializers;
 
         public ArrayInitializerNode(List<VariableInitializer> initializers)
         {
