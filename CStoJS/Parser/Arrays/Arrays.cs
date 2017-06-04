@@ -10,18 +10,18 @@ namespace CStoJS.ParserLibraries
 {
     public partial class Parser
     {
-        private ExpressionNode FuncOrArrayCall(ref ExpressionNode left)
+        private ExpressionNode FuncOrArrayCall()
         {
             printDebug("Optional Func Or Array Call");
             if (ConsumeOnMatch(TokenType.PAREN_OPEN))
             {
                 var args = ArgumentList();
                 MatchExactly(TokenType.PAREN_CLOSE);
-                return new FunctionCallExpressionNode(left, args);
+                return new FunctionCallExpressionNode(args);
             }
             else if (Match(TokenType.BRACKET_OPEN))
             {
-                return new ArrayAccessExpressionNode(left, OptionalArrayAccessList());
+                return new ArrayAccessExpressionNode(OptionalArrayAccessList());
             }
             else
             {

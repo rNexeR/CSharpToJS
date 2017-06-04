@@ -155,6 +155,7 @@ namespace Main
             , typeof(BoolType), typeof(FloatType)
             , typeof(MethodNode), typeof(ConstructorNode), typeof(Token)
             ,  typeof(StringType), typeof(CharType), typeof(IntType)
+            , typeof(UnaryStatement)
             };
 
             var serializer = new XmlSerializer(typeof(NamespaceNode), types);

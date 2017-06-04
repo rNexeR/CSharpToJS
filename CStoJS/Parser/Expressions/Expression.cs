@@ -3,6 +3,7 @@ using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using System;
 using CStoJS.Tree;
+using System.Collections.Generic;
 
 namespace CStoJS.ParserLibraries
 {
@@ -226,7 +227,9 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var type = Type();
-                var first = new CastingExpressionNode(type, left) as ExpressionNode;
+                var new_left = new List<ExpressionNode>();
+                new_left.Add(left);
+                var first = new CastingExpressionNode(type, new_left) as ExpressionNode;
                 return RelationalExpressionPrime(ref first);
             }
             else

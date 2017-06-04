@@ -16,7 +16,9 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var expr = UnaryExpression();
-                return new PreOperatorExpressionNode(operador, expr);
+                var ret =  new List<ExpressionNode>();
+                ret.Add( new PreOperatorExpressionNode(operador, expr));
+                return new UnaryStatement(ret);
             }
             else
             {
@@ -37,7 +39,9 @@ namespace CStoJS.ParserLibraries
                     }
                     this.lookAhead = new Token[] { };
                     var expr = PrimaryExpression();
-                    return new CastingExpressionNode(new IdentifierTypeNode(new IdentifierNode(identifier)), expr);
+                    var ret = new List<ExpressionNode>();
+                    ret.Add(new CastingExpressionNode(new IdentifierTypeNode(new IdentifierNode(identifier)), expr));
+                    return new UnaryStatement(ret);
                 }
                 else
                 {
@@ -46,58 +50,100 @@ namespace CStoJS.ParserLibraries
                         // Console.WriteLine("Rollback unary");
                         RollbackLA();
                     }
-                    return PrimaryExpression();
+                    return new UnaryStatement(PrimaryExpression());
                 }
             }
         }
 
-        private ExpressionNode PrimaryExpression()
+        private List<ExpressionNode> PrimaryExpression()
         {
             printDebug("Primary Expression");
             if (Match(TokenType.NEW_KEYWORD))
             {
                 ConsumeToken();
                 var left = InstanceExpression();
-                return PrimaryExpressionPrime(ref left);
+                var right =  PrimaryExpressionPrime();
+                
+                var ret = new List<ExpressionNode>();
+                
+                ret.Add(left);
+                ret.AddRange(right);
+                
+                return ret;
             }
             else if (MatchAny(this.literals))
             {
                 var token = ConsumeToken();
                 var left = new LiteralExpressionNode(token) as ExpressionNode;
-                return PrimaryExpressionPrime(ref left);
+                var right = PrimaryExpressionPrime();
+                
+                var ret = new List<ExpressionNode>();
+
+                ret.Add(left);
+                ret.AddRange(right);
+                return ret;
+
             }
             else if (Match(TokenType.ID))
             {
                 var token = ConsumeToken();
                 var left = new AccessMemoryExpressionNode(token) as ExpressionNode;
-                return PrimaryExpressionPrime(ref left);
+                var right = PrimaryExpressionPrime();
+                
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
             }
             else if (Match(TokenType.PAREN_OPEN))
             {
                 ConsumeToken();
-                printDebug("\t==> '(' Detected");
                 var expr = Expression();
-                printDebug("\t==> After Expression must be )");
                 MatchExactly(TokenType.PAREN_CLOSE);
-                return new ParenthesizedExpressionNode(PrimaryExpressionPrime(ref expr));
+
+                var right = new ParenthesizedExpressionNode(PrimaryExpressionPrime());
+
+                var ret = new List<ExpressionNode>();
+                ret.Add(expr);
+                ret.Add(right);
+
+                return ret;
             }
             else if (Match(TokenType.THIS_KEYWORD))
             {
                 var token = MatchExactly(TokenType.THIS_KEYWORD);
                 var left = new ReferenceAccessNode(token) as ExpressionNode;
-                return PrimaryExpressionPrime(ref left);
+                var right = PrimaryExpressionPrime();
+
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
             }
             else if (Match(TokenType.BASE_KEYWORD))
             {
                 var token = MatchExactly(TokenType.BASE_KEYWORD);
                 var left = new ReferenceAccessNode(token) as ExpressionNode;
-                return PrimaryExpressionPrime(ref left);
+                var right = PrimaryExpressionPrime();
+
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
             }
             else if (MatchAny(this.buildInTypes))
             {
                 var token = ConsumeToken();
                 var left = new BuiltInTypeExpressionNode(token) as ExpressionNode;
-                return PrimaryExpressionPrime(ref left);
+                var right = PrimaryExpressionPrime();
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
             }
             else
             {
@@ -106,29 +152,47 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        private ExpressionNode PrimaryExpressionPrime(ref ExpressionNode left)
+        private List<ExpressionNode> PrimaryExpressionPrime()
         {
             printDebug("Primary Expression Prime");
             if (Match(TokenType.OP_MEMBER_ACCESS))
             {
                 var tokens = MatchExactly(new TokenType[] { TokenType.OP_MEMBER_ACCESS, TokenType.ID });
-                var new_left = new AccessMemoryExpressionNode(left, tokens[1]) as ExpressionNode;
-                return PrimaryExpressionPrime(ref new_left);
+                var left = new AccessMemoryExpressionNode(tokens[1]) as ExpressionNode;
+                var right = PrimaryExpressionPrime();
+                
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
             }
             else if (Match(TokenType.PAREN_OPEN) || Match(TokenType.BRACKET_OPEN))
             {
-                var new_left = FuncOrArrayCall(ref left);
-                return PrimaryExpressionPrime(ref new_left);
+                var left = FuncOrArrayCall();
+                var right =  PrimaryExpressionPrime();
+
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
             }
             else if (MatchAny(this.increment_decrement_operators))
             {
                 var token = ConsumeToken();
-                var new_left = new PostAdditiveExpressionNode(left, token) as ExpressionNode;
-                return PrimaryExpressionPrime(ref new_left);
+                var left = new PostAdditiveExpressionNode(token) as ExpressionNode;
+                var right = PrimaryExpressionPrime();
+                
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
             }
             else
             {
-                return left;
+                return new List<ExpressionNode>();
             }
         }
 

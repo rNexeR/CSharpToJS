@@ -5,7 +5,6 @@ namespace CStoJS.Tree
     public class ArrayAccessExpressionNode : PrimaryExpressionNode
     {
         public List<ArrayAccessNode> indexes;
-        public ExpressionNode left;
 
         public ArrayAccessExpressionNode(List<ArrayAccessNode> indexes)
         {
@@ -14,12 +13,6 @@ namespace CStoJS.Tree
 
         public ArrayAccessExpressionNode(){
             
-        }
-
-        public ArrayAccessExpressionNode(ExpressionNode left, List<ArrayAccessNode> indexes)
-        {
-            this.left = left;
-            this.indexes = indexes;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CStoJS.LexerLibraries;
 
 namespace CStoJS.Tree
