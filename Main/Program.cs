@@ -7,6 +7,7 @@ using CStoJS.ParserLibraries;
 using CStoJS.Tree;
 using System.Xml.Serialization;
 using System.IO;
+using Utils;
 
 namespace Main
 {
@@ -61,13 +62,13 @@ namespace Main
             //     public interface Hola3 : Hola2, Hola1{
 
             //     }
-            // }
+            // // }
 
-            // public enum Hola2{
-            //         HOLA,
-            //         ADIOS,
-            //     }
-            // ";
+            // // public enum Hola2{
+            // //         HOLA,
+            // //         ADIOS,
+            // //     }
+            // // ";
             // var txtContent = @"
             // using System.IO;
             // using Test.Test;
@@ -91,7 +92,7 @@ namespace Main
             //     }
             // }
             // ";
-            var txtContent =  System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/MsTests/compiiiss1_ori.txt");
+            var txtContent =  System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/MsTests/Testing.txt");
             var input = new InputString(txtContent);
             var lexer = new Lexer(input);
             var parser = new Parser(lexer);
@@ -101,6 +102,8 @@ namespace Main
             {
                 tree = parser.parse();
                 SerializeTree(tree);
+                var namespaces = SemanticUtils.GetNamespaces(tree);
+                Console.WriteLine();
             }
             catch (Exception ex)
             {

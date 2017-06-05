@@ -85,7 +85,7 @@ namespace CStoJS.ParserLibraries
             else if (Match(TokenType.ID))
             {
                 var token = ConsumeToken();
-                var left = new AccessMemoryExpressionNode(token) as ExpressionNode;
+                var left = new IdentifierExpressionNode(token) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();

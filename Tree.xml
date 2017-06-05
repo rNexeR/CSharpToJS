@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NamespaceNode xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <identifier>
+    <identifiers />
+  </identifier>
+  <using_array />
+  <namespace_array>
+    <NamespaceNode>
+      <identifier>
+        <identifiers>
+          <Token>
+            <type>ID</type>
+            <column>12</column>
+            <row>66</row>
+            <lexema>N1</lexema>
+          </Token>
+        </identifiers>
+      </identifier>
+      <using_array />
+      <namespace_array>
+        <NamespaceNode>
+          <identifier>
+            <identifiers>
+              <Token>
+                <type>ID</type>
+                <column>16</column>
+                <row>67</row>
+                <lexema>N2</lexema>
+              </Token>
+            </identifiers>
+          </identifier>
+          <using_array />
+          <namespace_array>
+            <NamespaceNode>
+              <identifier>
+                <identifiers>
+                  <Token>
+                    <type>ID</type>
+                    <column>20</column>
+                    <row>68</row>
+                    <lexema>N3</lexema>
+                  </Token>
+                </identifiers>
+              </identifier>
+              <using_array />
+              <namespace_array />
+              <types_declaration_array />
+              <parent_position>-1</parent_position>
+            </NamespaceNode>
+          </namespace_array>
+          <types_declaration_array />
+          <parent_position>-1</parent_position>
+        </NamespaceNode>
+      </namespace_array>
+      <types_declaration_array />
+      <parent_position>-1</parent_position>
+    </NamespaceNode>
+    <NamespaceNode>
+      <identifier>
+        <identifiers>
+          <Token>
+            <type>ID</type>
+            <column>12</column>
+            <row>74</row>
+            <lexema>N4</lexema>
+          </Token>
+        </identifiers>
+      </identifier>
+      <using_array />
+      <namespace_array>
+        <NamespaceNode>
+          <identifier>
+            <identifiers>
+              <Token>
+                <type>ID</type>
+                <column>16</column>
+                <row>75</row>
+                <lexema>N5</lexema>
+              </Token>
+            </identifiers>
+          </identifier>
+          <using_array />
+          <namespace_array />
+          <types_declaration_array />
+          <parent_position>-1</parent_position>
+        </NamespaceNode>
+      </namespace_array>
+      <types_declaration_array />
+      <parent_position>-1</parent_position>
+    </NamespaceNode>
+  </namespace_array>
+  <types_declaration_array>
+    <TypeDeclarationNode xsi:type="ClassNode">
+      <encapsulation_modifier />
+      <identifier>
+        <identifiers>
+          <Token>
+            <type>ID</type>
+            <column>8</column>
+            <row>62</row>
+            <lexema>Node</lexema>
+          </Token>
+        </identifiers>
+      </identifier>
+      <type>class</type>
+      <inherit />
+      <methods />
+      <fields />
+      <constructors />
+      <isAbstract>false</isAbstract>
+    </TypeDeclarationNode>
+  </types_declaration_array>
+  <parent_position>-1</parent_position>
+</NamespaceNode>
