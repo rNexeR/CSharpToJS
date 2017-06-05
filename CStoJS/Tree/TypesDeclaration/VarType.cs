@@ -4,7 +4,7 @@ namespace CStoJS.Tree
     {
         public VarType()
         {
-            this.type = "void";
+            this.type = "var";
         }
 
         public VarType(IdentifierNode identifier) : this()

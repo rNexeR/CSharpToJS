@@ -16,9 +16,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var expr = UnaryExpression();
-                var ret =  new List<ExpressionNode>();
-                ret.Add( new PreOperatorExpressionNode(operador, expr));
-                return new UnaryStatement(ret);
+                return new PreOperatorExpressionNode(operador, expr);
             }
             else
             {
@@ -41,7 +39,7 @@ namespace CStoJS.ParserLibraries
                     var expr = PrimaryExpression();
                     var ret = new List<ExpressionNode>();
                     ret.Add(new CastingExpressionNode(new IdentifierTypeNode(new IdentifierNode(identifier)), expr));
-                    return new UnaryStatement(ret);
+                    return new InlineExpressionNode(ret);
                 }
                 else
                 {
@@ -50,7 +48,7 @@ namespace CStoJS.ParserLibraries
                         // Console.WriteLine("Rollback unary");
                         RollbackLA();
                     }
-                    return new UnaryStatement(PrimaryExpression());
+                    return new InlineExpressionNode(PrimaryExpression());
                 }
             }
         }
@@ -62,13 +60,13 @@ namespace CStoJS.ParserLibraries
             {
                 ConsumeToken();
                 var left = InstanceExpression();
-                var right =  PrimaryExpressionPrime();
-                
+                var right = PrimaryExpressionPrime();
+
                 var ret = new List<ExpressionNode>();
-                
+
                 ret.Add(left);
                 ret.AddRange(right);
-                
+
                 return ret;
             }
             else if (MatchAny(this.literals))
@@ -76,7 +74,7 @@ namespace CStoJS.ParserLibraries
                 var token = ConsumeToken();
                 var left = new LiteralExpressionNode(token) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
-                
+
                 var ret = new List<ExpressionNode>();
 
                 ret.Add(left);
@@ -89,9 +87,20 @@ namespace CStoJS.ParserLibraries
                 var token = ConsumeToken();
                 var left = new AccessMemoryExpressionNode(token) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
-                
+
                 var ret = new List<ExpressionNode>();
-                ret.Add(left);
+                if (right.Count > 0 && ( (right[0] is FunctionCallExpressionNode && ((FunctionCallExpressionNode)right[0]).identifier == null) || (right[0] is ArrayAccessExpressionNode && ((ArrayAccessExpressionNode)right[0]).identifier == null)))
+                {
+                    if(right[0] is FunctionCallExpressionNode ){
+                        ((FunctionCallExpressionNode)right[0]).identifier = token;
+                    }else if(right[0] is ArrayAccessExpressionNode){
+                        ((ArrayAccessExpressionNode)right[0]).identifier = token;
+                    }
+                }
+                else
+                {
+                    ret.Add(left);
+                }
                 ret.AddRange(right);
 
                 return ret;
@@ -160,9 +169,22 @@ namespace CStoJS.ParserLibraries
                 var tokens = MatchExactly(new TokenType[] { TokenType.OP_MEMBER_ACCESS, TokenType.ID });
                 var left = new AccessMemoryExpressionNode(tokens[1]) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
-                
+
                 var ret = new List<ExpressionNode>();
-                ret.Add(left);
+                
+                if (right.Count > 0 && (right[0] is FunctionCallExpressionNode || right[0] is ArrayAccessExpressionNode))
+                {
+                    if(right[0] is FunctionCallExpressionNode ){
+                        ((FunctionCallExpressionNode)right[0]).identifier = tokens[1];
+                    }else if(right[0] is ArrayAccessExpressionNode){
+                        ((ArrayAccessExpressionNode)right[0]).identifier = tokens[1];
+                    }
+                }
+                else
+                {
+                    ret.Add(left);
+                }
+
                 ret.AddRange(right);
 
                 return ret;
@@ -170,7 +192,7 @@ namespace CStoJS.ParserLibraries
             else if (Match(TokenType.PAREN_OPEN) || Match(TokenType.BRACKET_OPEN))
             {
                 var left = FuncOrArrayCall();
-                var right =  PrimaryExpressionPrime();
+                var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();
                 ret.Add(left);
@@ -183,7 +205,7 @@ namespace CStoJS.ParserLibraries
                 var token = ConsumeToken();
                 var left = new PostAdditiveExpressionNode(token) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
-                
+
                 var ret = new List<ExpressionNode>();
                 ret.Add(left);
                 ret.AddRange(right);
@@ -231,7 +253,7 @@ namespace CStoJS.ParserLibraries
                 return InstanceExpressionFactorized(ref type);
                 // return new InstanceExpressionNode(type, initializer);
             }
-            
+
         }
 
         private InstanceInitilizerExpressionNode InstanceExpressionFactorized(ref TypeDeclarationNode type)
