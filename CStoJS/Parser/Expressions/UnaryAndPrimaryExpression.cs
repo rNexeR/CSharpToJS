@@ -89,12 +89,23 @@ namespace CStoJS.ParserLibraries
                 var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();
-                if (right.Count > 0 && ( (right[0] is FunctionCallExpressionNode && ((FunctionCallExpressionNode)right[0]).identifier == null) || (right[0] is ArrayAccessExpressionNode && ((ArrayAccessExpressionNode)right[0]).identifier == null)))
+                if (right.Count > 0 &&
+                    (
+                        (right[0] is FunctionCallExpressionNode && ((FunctionCallExpressionNode)right[0]).identifier == null)
+                        || (right[0] is ArrayAccessExpressionNode && ((ArrayAccessExpressionNode)right[0]).identifier == null)
+                        || (right[0] is PostAdditiveExpressionNode && ((PostAdditiveExpressionNode)right[0]).indentifier == null )
+                    )
+                )
                 {
-                    if(right[0] is FunctionCallExpressionNode ){
-                        ((FunctionCallExpressionNode)right[0]).identifier = token;
-                    }else if(right[0] is ArrayAccessExpressionNode){
-                        ((ArrayAccessExpressionNode)right[0]).identifier = token;
+                    if (right[0] is FunctionCallExpressionNode)
+                    {
+                        ((FunctionCallExpressionNode)right[0]).identifier = left;
+                    }
+                    else if (right[0] is ArrayAccessExpressionNode)
+                    {
+                        ((ArrayAccessExpressionNode)right[0]).identifier = left;
+                    }else{
+                        ((PostAdditiveExpressionNode)right[0]).indentifier = left;
                     }
                 }
                 else
@@ -111,7 +122,9 @@ namespace CStoJS.ParserLibraries
                 var expr = Expression();
                 MatchExactly(TokenType.PAREN_CLOSE);
 
-                var right = new ParenthesizedExpressionNode(PrimaryExpressionPrime());
+                var internal_expression = PrimaryExpressionPrime();
+
+                var right = new ParenthesizedExpressionNode(internal_expression);
 
                 var ret = new List<ExpressionNode>();
                 ret.Add(expr);
@@ -167,17 +180,22 @@ namespace CStoJS.ParserLibraries
             if (Match(TokenType.OP_MEMBER_ACCESS))
             {
                 var tokens = MatchExactly(new TokenType[] { TokenType.OP_MEMBER_ACCESS, TokenType.ID });
-                var left = new AccessMemoryExpressionNode(tokens[1]) as ExpressionNode;
+                var left = new AccessMemoryExpressionNode(new IdentifierExpressionNode(tokens[1])) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();
-                
-                if (right.Count > 0 && (right[0] is FunctionCallExpressionNode || right[0] is ArrayAccessExpressionNode))
+
+                if (right.Count > 0 && (right[0] is FunctionCallExpressionNode || right[0] is ArrayAccessExpressionNode || (right[0] is PostAdditiveExpressionNode )))
                 {
-                    if(right[0] is FunctionCallExpressionNode ){
-                        ((FunctionCallExpressionNode)right[0]).identifier = tokens[1];
-                    }else if(right[0] is ArrayAccessExpressionNode){
-                        ((ArrayAccessExpressionNode)right[0]).identifier = tokens[1];
+                    if (right[0] is FunctionCallExpressionNode)
+                    {
+                        ((FunctionCallExpressionNode)right[0]).identifier = new IdentifierExpressionNode(tokens[1]);
+                    }
+                    else if (right[0] is ArrayAccessExpressionNode)
+                    {
+                        ((ArrayAccessExpressionNode)right[0]).identifier = new IdentifierExpressionNode(tokens[1]);
+                    }else{
+                        ((PostAdditiveExpressionNode)right[0]).indentifier = left;
                     }
                 }
                 else

@@ -4,11 +4,11 @@ namespace CStoJS.Tree
 {
     public class AccessMemoryExpressionNode : PrimaryExpressionNode
     {
-        public Token token;
+        public ExpressionNode identifier;
 
-        public AccessMemoryExpressionNode(Token token)
+        public AccessMemoryExpressionNode(ExpressionNode token)
         {
-            this.token = token;
+            this.identifier = token;
         }
 
         public AccessMemoryExpressionNode(){

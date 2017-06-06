@@ -5,7 +5,7 @@ namespace CStoJS.Tree
 {
     public class ArrayAccessExpressionNode : PrimaryExpressionNode
     {
-        public Token identifier;
+        public ExpressionNode identifier;
         public List<ArrayAccessNode> indexes;
 
         public ArrayAccessExpressionNode(List<ArrayAccessNode> indexes)

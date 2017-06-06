@@ -20,7 +20,7 @@ namespace CStoJS.Tree
         }
 
         public override string ToString(){
-            return $"{encapsulation_modifier} {type} {identifier}";
+            return $"{identifier}";
         }
     }
 }

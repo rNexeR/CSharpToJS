@@ -55,7 +55,8 @@ namespace CStoJS.ParserLibraries
             
             var args = ConstructorInitializer();
             
-            MaybeEmptyBlock();
+            var body = MaybeEmptyBlock();
+            ctor.body = body;
 
             ctor.parameters = paremeters;
             clase.constructors.Add(ctor);

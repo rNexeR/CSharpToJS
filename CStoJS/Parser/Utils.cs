@@ -179,5 +179,29 @@ namespace CStoJS.ParserLibraries
                 default: return new IdentifierTypeNode(identifier);
             }
         }
+
+        private BinaryExpressionNode BinaryNodeDetector(ExpressionNode left, Token operador, ExpressionNode right){
+
+            switch(operador.type){
+                case TokenType.OP_NULL_COALESCING: return new NullCoalescingExpressionNode(left, operador, right);
+                case TokenType.OP_CONDITIONAL_OR: return new ConditionalOrExpressionNode(left, operador, right);
+                case TokenType.OP_CONDITIONAL_AND: return new ConditionalAndExpressionNode(left, operador, right);
+                case TokenType.OP_CONDITIONAL_EQUAL: return new ConditionalEqualExpressionNode(left, operador, right);
+                case TokenType.OP_CONDITIONAL_NOT_EQUAL: return new ConditionalNotEqualExpressionNode(left, operador, right);
+                
+                case TokenType.OP_BITS_OR: return new BitwiseOrExpressionNode(left, operador, right);
+                case TokenType.OP_BITS_XOR: return new BitwiseXorExpressionNode(left, operador, right);
+                case TokenType.OP_BITS_AND: return new BitwiseAndExpressionNode(left, operador, right);
+                case TokenType.OP_BITS_SHIFT_LEFT: return new BitwiseShiftLeftExpressionNode(left, operador, right);
+                case TokenType.OP_BITS_SHIFT_RIGHT: return new BitwiseShiftRightExpressionNode(left, operador, right);
+
+                case TokenType.OP_SUM: return new ArithmeticSumExpressionNode(left, operador, right);
+                case TokenType.OP_SUBSTRACT: return new ArithmeticSubstractExpressionNode(left, operador, right);
+                case TokenType.OP_DIVISION: return new ArithmeticDivisionExpressionNode(left, operador, right);
+                case TokenType.OP_MULTIPLICATION: return new ArithmeticMultiplicationExpressionNode(left, operador, right);
+                case TokenType.OP_MODULO: return new ArithmeticModuloExpressionNode(left, operador, right);
+                default: throw new SemanticException($"Cannot detect the Binary Expression that correspond to the operator {operador.lexema}");
+            }
+        }
     }
 }

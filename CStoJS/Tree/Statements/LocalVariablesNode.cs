@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using CStoJS.Tree;
 
-namespace CStoJS
+namespace CStoJS.Tree
 {
     public class LocalVariablesNode : StatementNode
     {

@@ -10,13 +10,12 @@ namespace CStoJS.Tree
         public EncapsulationNode encapsulation;
         public Token modifier;
         public List<ParameterNode> parameters;
-        public List<StatementTypeNode> body;
+        public StatementNode body;
         public List<ArgumentNode> initializer;
         
         public ConstructorNode()
         {
             this.parameters = new List<ParameterNode>();
-            this.body = new List<StatementTypeNode>();
         }
         public ConstructorNode(IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier)
         {

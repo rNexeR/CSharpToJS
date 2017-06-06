@@ -5,5 +5,7 @@ namespace CStoJS.Tree
         public ExpressionNode(){
             
         }
+
+        public abstract TypeDeclarationNode EvaluateType();
     }
 }

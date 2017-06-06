@@ -53,7 +53,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = NullCoalescingExpression();
-                return new ConditionalExpressionNode(left, operador, right);
+                return BinaryNodeDetector(left, operador, right);
             }
             else
             {
@@ -75,7 +75,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = ConditionalAndExpression();
-                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return ConditionalOrExpressionPrime(ref first);
             }
             else
@@ -105,7 +105,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = InclusiveOrExpression();
-                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return ConditionalAndExpressionPrime(ref first);
             }
             else
@@ -121,7 +121,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = ExclusiveOrExpression();
-                var first = new BitwiseExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return InclusiveOrExpressionPrime(ref first);
             }
             else
@@ -144,7 +144,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = AndExpression();
-                var first = new BitwiseExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return ExclusiveOrExpressionPrime(ref first);
             }
             else
@@ -190,7 +190,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = RelationalExpression();
-                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return EquialityExpressionPrime(ref first);
             }
             else
@@ -213,14 +213,14 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = ShiftExpression();
-                var first = new ConditionalExpressionNode(left, operador, right) as ExpressionNode;
+                var first = new ConditionalRelationalExpressionNode(left, operador, right) as ExpressionNode;
                 return RelationalExpressionPrime(ref first);
             }
             else if (Match(TokenType.IS_KEYWORD))
             {
                 var operador = ConsumeToken();
                 var type = Type();
-                var first = new ConditionalExpressionNode(left, operador, type) as ExpressionNode;
+                var first = new ConditionalIsExpressionNode(left, operador, type) as ExpressionNode;
                 return RelationalExpressionPrime(ref first);
             }
             else if (Match(TokenType.AS_KEYWORD))
@@ -252,7 +252,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = AdditiveExpression();
-                var first = new BitwiseExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return ShiftExpressionPrime(ref first);
             }
             else
@@ -275,7 +275,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = MultiplicativeExpression();
-                var first = new ArithmeticExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return AdditiveExpressionPrime(ref first);
             }
             else
@@ -314,7 +314,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = UnaryExpression();
-                var first = new ArithmeticExpressionNode(left, operador, right) as ExpressionNode;
+                var first = BinaryNodeDetector(left, operador, right) as ExpressionNode;
                 return MultiplicativeExpressionPrime(ref first);
             }
             else

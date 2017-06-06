@@ -70,11 +70,25 @@ public class Node{
 namespace N1{
     namespace N2{
         namespace N3{
-
+            public class Node{
+                public Node(){
+                    a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
+                    ++a;
+                    a++;
+                }
+            }
         }
     }
 }
 
 namespace N4{
-    namespace N5{}
+    namespace N5{
+        public class Node{
+            public Node(){
+                a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
+                ++a;
+                a++;
+            }
+        }
+    }
 }

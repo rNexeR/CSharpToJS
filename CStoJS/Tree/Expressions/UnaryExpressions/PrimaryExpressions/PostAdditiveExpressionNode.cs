@@ -4,11 +4,12 @@ namespace CStoJS.Tree
 {
     public class PostAdditiveExpressionNode : PrimaryExpressionNode
     {
-        public Token token;
+        public Token operador;
+        public ExpressionNode indentifier;
 
         public PostAdditiveExpressionNode(Token token)
         {
-            this.token = token;
+            this.operador = token;
         }
 
         public PostAdditiveExpressionNode(){

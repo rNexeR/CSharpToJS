@@ -11,7 +11,7 @@
           <Token>
             <type>ID</type>
             <column>12</column>
-            <row>66</row>
+            <row>70</row>
             <lexema>N1</lexema>
           </Token>
         </identifiers>
@@ -24,7 +24,7 @@
               <Token>
                 <type>ID</type>
                 <column>16</column>
-                <row>67</row>
+                <row>71</row>
                 <lexema>N2</lexema>
               </Token>
             </identifiers>
@@ -37,7 +37,7 @@
                   <Token>
                     <type>ID</type>
                     <column>20</column>
-                    <row>68</row>
+                    <row>72</row>
                     <lexema>N3</lexema>
                   </Token>
                 </identifiers>
@@ -61,7 +61,7 @@
           <Token>
             <type>ID</type>
             <column>12</column>
-            <row>74</row>
+            <row>78</row>
             <lexema>N4</lexema>
           </Token>
         </identifiers>
@@ -74,7 +74,7 @@
               <Token>
                 <type>ID</type>
                 <column>16</column>
-                <row>75</row>
+                <row>79</row>
                 <lexema>N5</lexema>
               </Token>
             </identifiers>
@@ -91,12 +91,19 @@
   </namespace_array>
   <types_declaration_array>
     <TypeDeclarationNode xsi:type="ClassNode">
-      <encapsulation_modifier />
+      <encapsulation_modifier>
+        <token>
+          <type>PUBLIC_KEYWORD</type>
+          <column>2</column>
+          <row>62</row>
+          <lexema>public</lexema>
+        </token>
+      </encapsulation_modifier>
       <identifier>
         <identifiers>
           <Token>
             <type>ID</type>
-            <column>8</column>
+            <column>15</column>
             <row>62</row>
             <lexema>Node</lexema>
           </Token>
@@ -106,7 +113,265 @@
       <inherit />
       <methods />
       <fields />
-      <constructors />
+      <constructors>
+        <ConstructorNode>
+          <identifier>
+            <identifiers>
+              <Token>
+                <type>ID</type>
+                <column>13</column>
+                <row>63</row>
+                <lexema>Node</lexema>
+              </Token>
+            </identifiers>
+          </identifier>
+          <encapsulation>
+            <token>
+              <type>PUBLIC_KEYWORD</type>
+              <column>6</column>
+              <row>63</row>
+              <lexema>public</lexema>
+            </token>
+          </encapsulation>
+          <parameters />
+          <body xsi:type="BlockStatementNode">
+            <statements>
+              <StatementNode xsi:type="StatementExpressionNode">
+                <expressionNode xsi:type="InlineExpressionNode">
+                  <expressions>
+                    <ExpressionNode xsi:type="IdentifierExpressionNode">
+                      <token>
+                        <type>ID</type>
+                        <column>10</column>
+                        <row>64</row>
+                        <lexema>a</lexema>
+                      </token>
+                    </ExpressionNode>
+                    <ExpressionNode xsi:type="ArrayAccessExpressionNode">
+                      <identifier xsi:type="IdentifierExpressionNode">
+                        <token>
+                          <type>ID</type>
+                          <column>12</column>
+                          <row>64</row>
+                          <lexema>x</lexema>
+                        </token>
+                      </identifier>
+                      <indexes>
+                        <ArrayAccessNode>
+                          <exprs>
+                            <ExpressionNode xsi:type="InlineExpressionNode">
+                              <expressions>
+                                <ExpressionNode xsi:type="IdentifierExpressionNode">
+                                  <token>
+                                    <type>ID</type>
+                                    <column>14</column>
+                                    <row>64</row>
+                                    <lexema>a</lexema>
+                                  </token>
+                                </ExpressionNode>
+                                <ExpressionNode xsi:type="ArrayAccessExpressionNode">
+                                  <identifier xsi:type="IdentifierExpressionNode">
+                                    <token>
+                                      <type>ID</type>
+                                      <column>16</column>
+                                      <row>64</row>
+                                      <lexema>x</lexema>
+                                    </token>
+                                  </identifier>
+                                  <indexes>
+                                    <ArrayAccessNode>
+                                      <exprs>
+                                        <ExpressionNode xsi:type="InlineExpressionNode">
+                                          <expressions>
+                                            <ExpressionNode xsi:type="LiteralExpressionNode">
+                                              <literal>
+                                                <type>LITERAL_INT</type>
+                                                <column>18</column>
+                                                <row>64</row>
+                                                <lexema>0</lexema>
+                                              </literal>
+                                            </ExpressionNode>
+                                          </expressions>
+                                        </ExpressionNode>
+                                        <ExpressionNode xsi:type="InlineExpressionNode">
+                                          <expressions>
+                                            <ExpressionNode xsi:type="LiteralExpressionNode">
+                                              <literal>
+                                                <type>LITERAL_INT</type>
+                                                <column>20</column>
+                                                <row>64</row>
+                                                <lexema>0</lexema>
+                                              </literal>
+                                            </ExpressionNode>
+                                          </expressions>
+                                        </ExpressionNode>
+                                      </exprs>
+                                    </ArrayAccessNode>
+                                  </indexes>
+                                </ExpressionNode>
+                                <ExpressionNode xsi:type="AccessMemoryExpressionNode">
+                                  <identifier xsi:type="IdentifierExpressionNode">
+                                    <token>
+                                      <type>ID</type>
+                                      <column>23</column>
+                                      <row>64</row>
+                                      <lexema>y</lexema>
+                                    </token>
+                                  </identifier>
+                                </ExpressionNode>
+                              </expressions>
+                            </ExpressionNode>
+                          </exprs>
+                        </ArrayAccessNode>
+                      </indexes>
+                    </ExpressionNode>
+                    <ExpressionNode xsi:type="FunctionCallExpressionNode">
+                      <identifier xsi:type="IdentifierExpressionNode">
+                        <token>
+                          <type>ID</type>
+                          <column>26</column>
+                          <row>64</row>
+                          <lexema>setX</lexema>
+                        </token>
+                      </identifier>
+                      <args>
+                        <ArgumentNode>
+                          <argument xsi:type="InlineExpressionNode">
+                            <expressions>
+                              <ExpressionNode xsi:type="FunctionCallExpressionNode">
+                                <identifier xsi:type="IdentifierExpressionNode">
+                                  <token>
+                                    <type>ID</type>
+                                    <column>32</column>
+                                    <row>64</row>
+                                    <lexema>getY</lexema>
+                                  </token>
+                                </identifier>
+                                <args>
+                                  <ArgumentNode>
+                                    <argument xsi:type="InlineExpressionNode">
+                                      <expressions>
+                                        <ExpressionNode xsi:type="ArrayAccessExpressionNode">
+                                          <identifier xsi:type="IdentifierExpressionNode">
+                                            <token>
+                                              <type>ID</type>
+                                              <column>37</column>
+                                              <row>64</row>
+                                              <lexema>x</lexema>
+                                            </token>
+                                          </identifier>
+                                          <indexes>
+                                            <ArrayAccessNode>
+                                              <exprs>
+                                                <ExpressionNode xsi:type="InlineExpressionNode">
+                                                  <expressions>
+                                                    <ExpressionNode xsi:type="FunctionCallExpressionNode">
+                                                      <identifier xsi:type="IdentifierExpressionNode">
+                                                        <token>
+                                                          <type>ID</type>
+                                                          <column>39</column>
+                                                          <row>64</row>
+                                                          <lexema>fn</lexema>
+                                                        </token>
+                                                      </identifier>
+                                                      <args>
+                                                        <ArgumentNode>
+                                                          <argument xsi:type="InlineExpressionNode">
+                                                            <expressions>
+                                                              <ExpressionNode xsi:type="LiteralExpressionNode">
+                                                                <literal>
+                                                                  <type>LITERAL_INT</type>
+                                                                  <column>42</column>
+                                                                  <row>64</row>
+                                                                  <lexema>1</lexema>
+                                                                </literal>
+                                                              </ExpressionNode>
+                                                            </expressions>
+                                                          </argument>
+                                                        </ArgumentNode>
+                                                        <ArgumentNode>
+                                                          <argument xsi:type="InlineExpressionNode">
+                                                            <expressions>
+                                                              <ExpressionNode xsi:type="LiteralExpressionNode">
+                                                                <literal>
+                                                                  <type>LITERAL_INT</type>
+                                                                  <column>44</column>
+                                                                  <row>64</row>
+                                                                  <lexema>2</lexema>
+                                                                </literal>
+                                                              </ExpressionNode>
+                                                            </expressions>
+                                                          </argument>
+                                                        </ArgumentNode>
+                                                      </args>
+                                                    </ExpressionNode>
+                                                  </expressions>
+                                                </ExpressionNode>
+                                              </exprs>
+                                            </ArrayAccessNode>
+                                          </indexes>
+                                        </ExpressionNode>
+                                      </expressions>
+                                    </argument>
+                                  </ArgumentNode>
+                                </args>
+                              </ExpressionNode>
+                            </expressions>
+                          </argument>
+                        </ArgumentNode>
+                      </args>
+                    </ExpressionNode>
+                  </expressions>
+                </expressionNode>
+              </StatementNode>
+              <StatementNode xsi:type="StatementExpressionNode">
+                <expressionNode xsi:type="PreOperatorExpressionNode">
+                  <operador>
+                    <type>OP_INC_PP</type>
+                    <column>10</column>
+                    <row>65</row>
+                    <lexema>++</lexema>
+                  </operador>
+                  <expression xsi:type="InlineExpressionNode">
+                    <expressions>
+                      <ExpressionNode xsi:type="IdentifierExpressionNode">
+                        <token>
+                          <type>ID</type>
+                          <column>12</column>
+                          <row>65</row>
+                          <lexema>a</lexema>
+                        </token>
+                      </ExpressionNode>
+                    </expressions>
+                  </expression>
+                </expressionNode>
+              </StatementNode>
+              <StatementNode xsi:type="StatementExpressionNode">
+                <expressionNode xsi:type="InlineExpressionNode">
+                  <expressions>
+                    <ExpressionNode xsi:type="PostAdditiveExpressionNode">
+                      <operador>
+                        <type>OP_INC_PP</type>
+                        <column>11</column>
+                        <row>66</row>
+                        <lexema>++</lexema>
+                      </operador>
+                      <indentifier xsi:type="IdentifierExpressionNode">
+                        <token>
+                          <type>ID</type>
+                          <column>10</column>
+                          <row>66</row>
+                          <lexema>a</lexema>
+                        </token>
+                      </indentifier>
+                    </ExpressionNode>
+                  </expressions>
+                </expressionNode>
+              </StatementNode>
+            </statements>
+          </body>
+        </ConstructorNode>
+      </constructors>
       <isAbstract>false</isAbstract>
     </TypeDeclarationNode>
   </types_declaration_array>

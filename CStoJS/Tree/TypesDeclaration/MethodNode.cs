@@ -26,10 +26,12 @@ namespace CStoJS.Tree
 
         public override string ToString(){
             string ret = "";
-            ret += $"{returnType.identifier} {identifier}(";
-            foreach(var x in parameters){
-                ret += $" {x.type} {x.identifier}, ";
+            ret += $"{identifier.ToString()}(";
+            var parameters = new List<string>();
+            foreach(var x in this.parameters){
+                parameters.Add($"{x.type.ToString()}");
             }
+            ret += string.Join(",", parameters) + ")";
             return ret;
         }
     }

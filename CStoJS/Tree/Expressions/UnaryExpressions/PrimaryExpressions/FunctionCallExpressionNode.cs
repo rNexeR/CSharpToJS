@@ -5,7 +5,7 @@ namespace CStoJS.Tree
 {
     public class FunctionCallExpressionNode : PrimaryExpressionNode
     {
-        public Token identifier;
+        public ExpressionNode identifier;
         public List<ArgumentNode> args;
 
         public FunctionCallExpressionNode(List<ArgumentNode> args)
