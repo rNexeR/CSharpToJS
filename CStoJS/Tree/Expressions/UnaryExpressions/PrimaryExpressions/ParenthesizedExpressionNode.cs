@@ -4,9 +4,9 @@ namespace CStoJS.Tree
 {
     public class ParenthesizedExpressionNode : PrimaryExpressionNode
     {
-        public List<ExpressionNode> expressionNode;
+        public ExpressionNode expressionNode;
 
-        public ParenthesizedExpressionNode(List<ExpressionNode> expressionNode)
+        public ParenthesizedExpressionNode(ExpressionNode expressionNode)
         {
             this.expressionNode = expressionNode;
         }

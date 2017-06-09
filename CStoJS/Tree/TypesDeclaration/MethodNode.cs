@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using CStoJS.LexerLibraries;
+using CStoJS.Semantic;
 
 namespace CStoJS.Tree
 {
@@ -33,6 +35,11 @@ namespace CStoJS.Tree
             }
             ret += string.Join(",", parameters) + ")";
             return ret;
+        }
+
+        public void EvaluateSemantic(API api, ContextManager context_manager)
+        {
+            // throw new NotImplementedException();
         }
     }
 }

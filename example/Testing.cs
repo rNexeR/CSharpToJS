@@ -59,36 +59,44 @@
 //     }
 // }
 
-public class Node{
-    public Node(){
-        a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
-        ++a;
-        a++;
-    }
-}
+namespace Tests
+{
+    public class Node{
+        int val;
+        Node left;
+        Node right;
+        
+        public Node(){
 
-namespace N1{
-    namespace N2{
-        namespace N3{
-            public class Node{
-                public Node(){
-                    a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
-                    ++a;
-                    a++;
-                }
-            }
         }
     }
-}
 
-namespace N4{
-    namespace N5{
-        public class Node{
-            public Node(){
-                a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
-                ++a;
-                a++;
-            }
+    namespace Testing{
+        enum types{
+            HOLA,
+            ADIOS = 5,
+            OTRO,
+        }
+    }
+
+    public interface IAlgoMas{
+
+    }
+
+    public interface IAlgo: IAlgoMas{
+        void SayHello();
+        void SayHello(string greeting);
+        // void SayHello();
+    }
+
+    public class Tree{
+        Node root;
+        
+        public Tree(){
+            (x)++;
+            ((int)x) = 5;
+            (hola.adios).cambiarTodo();
+            (hola.adios)++;
         }
     }
 }

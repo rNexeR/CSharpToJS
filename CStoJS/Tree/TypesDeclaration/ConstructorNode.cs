@@ -23,5 +23,18 @@ namespace CStoJS.Tree
             this.encapsulation = encapsulation;
             this.modifier = modifier;
         }
+
+        public override string ToString(){
+            var ret = "(";
+
+            var param = new List<string>();
+            foreach(var parameter in parameters){
+                param.Add(parameter.type.ToString());
+            }
+
+            ret += string.Join(",",param) + ")";
+            
+            return ret;
+        }
     }
 }

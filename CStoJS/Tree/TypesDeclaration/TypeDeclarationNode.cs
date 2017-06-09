@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using CStoJS.Semantic;
 
 namespace CStoJS.Tree
 {
@@ -13,6 +15,7 @@ namespace CStoJS.Tree
         public EncapsulationNode encapsulation_modifier;
         public IdentifierNode identifier;
         public string type;
+        public int namespace_index;
 
         public TypeDeclarationNode(){
             this.encapsulation_modifier = new EncapsulationNode();
@@ -21,6 +24,10 @@ namespace CStoJS.Tree
 
         public override string ToString(){
             return $"{identifier}";
+        }
+
+        public virtual void EvaluateSemantic(API api){
+            Console.WriteLine($"Evaluating {identifier} from TypeDeclarationNode");
         }
     }
 }

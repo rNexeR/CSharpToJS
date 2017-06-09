@@ -24,5 +24,9 @@ namespace CStoJS.Tree
         public FieldNode(TypeDeclarationNode type, IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier, VariableInitializer assignment) : this(type, identifier, encapsulation, modifier){
             this.assignment = assignment;
         }
+
+        public override string ToString(){
+            return this.identifier.ToString();
+        }
     }
 }

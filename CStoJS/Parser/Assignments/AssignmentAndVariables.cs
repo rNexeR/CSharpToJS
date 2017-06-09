@@ -19,7 +19,9 @@ namespace CStoJS.ParserLibraries
             else
             {
                 MatchExactly(new TokenType[] { TokenType.OP_ASSIGN });
-                actual.assignment = Expression();
+                if(!Match(TokenType.LITERAL_INT))
+                    ThrowSyntaxException("Int Literal expected.");
+                actual.assignment = int.Parse(this.ConsumeToken().lexema);
                 OptionalAssignableIdentifiersListPrime(ref identifier);
             }
         }

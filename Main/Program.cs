@@ -8,7 +8,7 @@ using CStoJS.LexerLibraries;
 using CStoJS.Inputs;
 using CStoJS.ParserLibraries;
 using CStoJS.Tree;
-using FilesAPI;
+using CStoJS.Semantic;
 using System.Collections.Generic;
 
 namespace Main
@@ -37,29 +37,14 @@ namespace Main
                 }
             }
 
-            List<NamespaceNode> trees = new List<NamespaceNode>();
 
-            foreach (var file in CSFiles)
-            {
-                var txtContent = System.IO.File.ReadAllText(file);
-                var input = new InputString(txtContent);
-                var lexer = new Lexer(input);
-                var parser = new Parser(lexer);
-                try
-                {
-                    trees.Add(parser.parse());
-                    // SerializeTree(tree);
-                    // var namespaces = SemanticUtils.GetNamespaces(tree);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return;
-                }
+            var semantic_evaluator = new SemanticEvaluator(CSFiles);
+            semantic_evaluator.Evaluate();
 
-            }
-
-            var api = new API(trees);
+            // var api = new API(trees);
+            // api.types["System.Object"] = new ClassNode();
+            // var contexts = new ContextManager(api);
+            // contexts.Push(new Context(ContextType.CLASS_CONTEXT, "Tests.Node"), "Tests.Node");
 
             Console.WriteLine("EXIT!");
         }
