@@ -1,0 +1,80 @@
+// using Text.Test.Test;
+// using Nx;
+// using Test2;
+// public interface Nexer : Kevin, Kevin.Cantillano
+// {
+//     Nx sayHello(string[] msg);
+// }
+// namespace N1
+// {
+//     using Here;
+//     namespace L2
+//     {
+//         using Here2;
+//     }
+// }
+// namespace N2
+// {
+//     public class Nexer : Rodriguez
+//     {
+//         public int x1;
+//         public int x, y, z;
+//         public Nexer NewNexer()
+//         {
+//             if (x == 0)
+//             {
+//                 while (x <= 5)
+//                 {
+//                     ++x;
+//                     x++;
+//                 }
+//             }
+//         }
+//         public Nexer(int x, Nexer nx) { }
+//     }
+
+//     public abstract class Rodriguez
+//     {
+
+//     }
+// }
+// namespace N3 { }
+// namespace Hi
+// {
+//     public enum Hola
+//     {
+//         HOLA,
+//         ADIOS,
+//     }
+
+//     public enum Hola2
+//     {
+//         HOLA,
+//         ADIOS,
+//     }
+
+//     public interface Hola3 : Hola2, Hola1
+//     {
+
+//     }
+// }
+
+public class Node{
+    public Node(){
+        a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
+        ++a;
+        a++;
+    }
+}
+
+namespace N1{
+    namespace N2{
+        namespace N3{
+
+        }
+    }
+}
+
+namespace N4{
+    namespace N5{}
+}

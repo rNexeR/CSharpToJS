@@ -74,6 +74,7 @@ namespace CStoJS.MsTests
         [TestMethod]
         public void VariousEnums(){
             var input = new InputString(@"
+            using Text;
             namespace Hi{
                 public enum Hola{
                     HOLA,
@@ -85,6 +86,10 @@ namespace CStoJS.MsTests
                     ADIOS,
                 }
             }
+            public enum Hola2{
+                    HOLA,
+                    ADIOS,
+                }
             ");
             var lexer = new Lexer(input);
             var parser = new Parser(lexer);

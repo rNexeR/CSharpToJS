@@ -39,5 +39,25 @@ namespace CStoJS.MsTests
 
             parser.parse();
         }
+
+        [TestMethod]
+        public void AllInOneTest4(){
+            var txtContent =  System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/MsTests/compiiiss1.txt");
+            var input = new InputString(txtContent);
+            var lexer = new Lexer(input);
+            var parser = new Parser(lexer);
+
+            parser.parse();
+        }
+
+        [TestMethod]
+        public void ArrayTests(){
+            var txtContent =  System.IO.File.ReadAllText(@"/home/rnexer/DEV/Compi/CSharpToJS/MsTests/compiiiss1_ori.txt");
+            var input = new InputString(txtContent);
+            var lexer = new Lexer(input);
+            var parser = new Parser(lexer);
+
+            parser.parse();
+        }        
     }
 }
