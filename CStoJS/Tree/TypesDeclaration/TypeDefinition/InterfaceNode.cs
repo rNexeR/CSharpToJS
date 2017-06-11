@@ -6,16 +6,13 @@ using CStoJS.Semantic;
 
 namespace CStoJS.Tree
 {
-    public class InterfaceNode : TypeDeclarationNode
+    public class InterfaceNode : TypeDefinitionNode
     {
-        public IdentifierNode namespace_name;
-        public List<IdentifierNode> inherit;
-        public List<MethodNode> methods;
-        public InterfaceNode()
+        
+        public InterfaceNode() : base()
         {
             this.type = "interface";
-            this.inherit = new List<IdentifierNode>();
-            this.methods = new List<MethodNode>();
+            this.encapsulation_modifier = new EncapsulationNode(new Token(TokenType.PRIVATE_KEYWORD, "private", 0, 0));
         }
 
         public InterfaceNode(IdentifierNode identifier, List<IdentifierNode> inherit, List<MethodNode> methods) : this()
@@ -37,7 +34,7 @@ namespace CStoJS.Tree
 
         public override void EvaluateSemantic(API api)
         {
-            Console.WriteLine($"Evaluating {identifier}");
+            Console.WriteLine($"Evaluating interface {identifier}");
             //TO-DO: inherits
             var methods = new List<string>();
             foreach (var base_type in inherit)

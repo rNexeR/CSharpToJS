@@ -53,7 +53,7 @@ namespace CStoJS.ParserLibraries
             
             MatchExactly( new TokenType[]{ TokenType.PAREN_CLOSE } );
             
-            var args = ConstructorInitializer();
+            ctor.initializer = ConstructorInitializer();
             
             var body = MaybeEmptyBlock();
             ctor.body = body;
@@ -62,14 +62,15 @@ namespace CStoJS.ParserLibraries
             clase.constructors.Add(ctor);
         }
 
-        private List<ArgumentNode> ConstructorInitializer()
+        private ConstructorInitializerNode ConstructorInitializer()
         {
             printDebug("Constructor Initializer");
             if(Match(TokenType.OP_HIERARCHY)){
-                MatchExactly( new TokenType[]{ TokenType.OP_HIERARCHY, TokenType.BASE_KEYWORD, TokenType.PAREN_OPEN } );
+                MatchExactly(TokenType.OP_HIERARCHY);
+                var tokens = MatchExactly(new TokenType[]{TokenType.BASE_KEYWORD, TokenType.PAREN_OPEN } );
                 var args = ArgumentList();
                 MatchExactly( new TokenType[]{ TokenType.PAREN_CLOSE } );
-                return args;
+                return new ConstructorInitializerNode(new IdentifierNode(tokens[0]), args);
             }else{
                 return null;
             }

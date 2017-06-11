@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CStoJS.Exceptions;
+using CStoJS.LexerLibraries;
 using CStoJS.Tree;
 
 namespace CStoJS.Semantic
@@ -26,11 +27,62 @@ namespace CStoJS.Semantic
             if (context.type == ContextType.CLASS_CONTEXT)
             {
                 this.AddClassMembers(class_name);
-                this.PushParentClasses(class_name);
+                if (class_name != "System.Object")
+                {
+                    this.PushParentClasses(class_name);
+                    this.contexts.Insert(0, new Context(ContextType.PARENT_CLASS_CONTEXT, "System.Object"));
+                    this.AddClassMembers("System.Object", true, false, 0);
+                }
+
             }
         }
 
-        private void AddClassMembers(string class_name, bool last_context = true, bool AddBase = false)
+        public List<Context> getParentsContexts()
+        {
+            var ret = new List<Context>();
+            foreach (var ctx in this.contexts)
+            {
+                if (ctx.type != ContextType.PARENT_CLASS_CONTEXT && ctx.type != ContextType.PARENT_INTERFACE_CONTEXT)
+                    break;
+                ret.Add(ctx);
+            }
+            return ret;
+        }
+
+        private void AddClassMembers(string class_name, bool AddBase = false, bool CurrentContext = true, int ctx_id = 0)
+        {
+            var ctx = CurrentContext ? this.contexts.Count - 1 : ctx_id;
+            if (!this.api.TypeDeclarationExists(class_name))
+            {
+                Console.WriteLine($"Class {class_name} not found in api.");
+                return;
+            }
+
+            var clase = this.api.GetTypeDeclaration(class_name) as TypeDefinitionNode;
+
+            foreach (var field in clase.fields)
+            {
+                if (AddBase && field.encapsulation.token.lexema == "private")
+                    continue;
+                this.AddVariableToContext(ctx, field.ToString(), field.type, AddBase);
+            }
+
+            foreach (var method in clase.methods)
+            {
+                if (AddBase && method.encapsulation.token.lexema == "private")
+                    continue;
+                this.AddMethodToContext(ctx, method.ToString(), method.returnType, AddBase);
+            }
+
+            foreach (var ctor in clase.constructors)
+            {
+                if (AddBase && ctor.encapsulation.token.lexema == "private")
+                    continue;
+                this.AddConstructorToContext(ctx, ctor.ToString(), AddBase);
+            }
+        }
+
+        private void AddClassMembersToContext(int ctx_id, string class_name, bool AddBase = false)
         {
             if (!this.api.TypeDeclarationExists(class_name))
             {
@@ -42,18 +94,58 @@ namespace CStoJS.Semantic
 
             foreach (var field in clase.fields)
             {
-                this.AddVariableToCurrentContext(field.identifier.ToString(), field.type, AddBase);
+                this.AddVariableToContext(ctx_id, field.identifier.ToString(), field.type, AddBase);
             }
 
             foreach (var method in clase.methods)
             {
-                this.AddVariableToCurrentContext(method.identifier.ToString(), method.returnType, AddBase);
+                this.AddVariableToContext(ctx_id, method.identifier.ToString(), method.returnType, AddBase);
             }
 
             foreach (var ctor in clase.constructors)
             {
-                this.AddConstructorToCurrentContext(ctor.ToString(), AddBase);
+                this.AddConstructorToContext(ctx_id, ctor.ToString(), AddBase);
             }
+        }
+
+        private void AddVariableToContext(int ctx_id, string var_name, TypeDeclarationNode type, bool AddBase = false)
+        {
+            if (this.contexts.Count == 0 || this.contexts.Count < ctx_id)
+            {
+                Console.WriteLine("Context Not Found");
+                return;
+            }
+            this.contexts[ctx_id].AddVariable(var_name, type, AddBase);
+        }
+
+        public void AddMethodToContext(int ctx_id, string name, TypeDeclarationNode return_type, bool AddBase = false)
+        {
+            if (this.contexts.Count == 0 || this.contexts.Count < ctx_id)
+            {
+                Console.WriteLine("Context Not Found");
+                return;
+            }
+
+            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
+            if (!expected_contexts_types.Contains(this.contexts[this.contexts.Count - 1].type))
+                throw new SemanticException("Method only can be added to Class or Interface Context", return_type.identifier.identifiers[0]);
+
+            this.contexts[ctx_id].AddMethod(name, return_type, AddBase);
+        }
+
+        public void AddConstructorToContext(int ctx_id, string name, bool AddBase = false)
+        {
+            if (this.contexts.Count == 0 || this.contexts.Count < ctx_id)
+            {
+                Console.WriteLine("Context Not Found");
+                return;
+            }
+
+            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
+            if (!expected_contexts_types.Contains(this.contexts[this.contexts.Count - 1].type))
+                throw new SemanticException("Method only can be added to Class or Interface Context");
+
+            this.contexts[ctx_id].AddConstructor(name, AddBase);
         }
 
         private void PushParentClasses(string class_name)
@@ -63,47 +155,45 @@ namespace CStoJS.Semantic
                 Console.WriteLine($"Class {class_name} not found in api.");
                 return;
             }
-            if (class_name == "System.Object")
-                return;
-            var clase = this.api.GetTypeDeclaration(class_name) as ClassNode;
+            var clase = this.api.GetTypeDeclaration(class_name) as TypeDefinitionNode;
             var parent_class_name_identifiers = clase.inherit;
-            var parent_class_name = "System.Object";
 
-            var identifiers = new List<string>();
-            foreach (var identifier in parent_class_name_identifiers)
+            foreach (var parent in parent_class_name_identifiers)
             {
-                identifiers.Add(identifier.ToString());
-            }
+                var parent_class_name = parent.ToString();
+                bool found = this.api.TypeDeclarationExists(parent.ToString());
 
-            if (identifiers.Count > 0)
-            {
-                parent_class_name = string.Join(".", identifiers);
-            }
-
-            bool found = this.api.TypeDeclarationExists(parent_class_name);
-
-            if (!found)
-            {
-
-                var nsp_usings = this.api.namespaces[clase.namespace_index].using_array;
-
-                foreach (var _using in nsp_usings)
+                if (!found)
                 {
-                    var nsp_name = _using.identifier.ToString();
-                    if (this.api.TypeDeclarationExists($"{nsp_name}.{parent_class_name}"))
+
+                    var nsp_usings = this.api.namespaces[clase.namespace_index].using_array;
+                    // nsp_usings.Insert(0, new UsingNode(this.api.namespaces[clase.namespace_index].identifier));
+
+                    foreach (var _using in nsp_usings)
                     {
-                        parent_class_name = $"{nsp_name}.{parent_class_name}";
-                        found = true;
+                        var nsp_name = _using.identifier.ToString();
+                        if (this.api.TypeDeclarationExists($"{nsp_name}.{parent.ToString()}"))
+                        {
+                            parent_class_name = $"{nsp_name}.{parent_class_name}";
+                            found = true;
+                            break;
+                        }
                     }
                 }
+
+                var parent_type = ContextType.PARENT_CLASS_CONTEXT;
+                if (api.GetTypeDeclaration(parent_class_name) is InterfaceNode)
+                    parent_type = ContextType.PARENT_INTERFACE_CONTEXT;
+
+                if (!found)
+                    throw new SemanticException($"Base class not found, Base name: {clase.inherit[0]}", clase.inherit[0].identifiers[0]);
+
+                this.contexts.Insert(0, new Context(parent_type, parent_class_name));
+                this.AddClassMembers(parent_class_name, true, false, 0);
+                this.PushParentClasses(parent_class_name);
             }
 
-            if (!found)
-                throw new SemanticException("Base class not found.", clase.inherit[0].identifiers[0]);
-            
-            this.contexts.Insert(0, new Context(ContextType.CLASS_CONTEXT, parent_class_name));
-            this.AddClassMembers(parent_class_name, false, true);
-            this.PushParentClasses(parent_class_name);
+
         }
 
         public void Pop()
@@ -118,12 +208,7 @@ namespace CStoJS.Semantic
 
         public void AddVariableToCurrentContext(string var_name, TypeDeclarationNode type, bool AddBase = false)
         {
-            if (this.contexts.Count == 0)
-            {
-                Console.WriteLine("No contexts added");
-                return;
-            }
-            this.contexts[this.contexts.Count - 1].AddVariable(var_name, type, AddBase);
+            this.AddVariableToContext(this.contexts.Count - 1, var_name, type, AddBase);
         }
 
         public bool VariableExists(string var_name)
@@ -148,17 +233,7 @@ namespace CStoJS.Semantic
 
         public void AddMethodToCurentContext(string name, TypeDeclarationNode return_type, bool AddBase = false)
         {
-            if (this.contexts.Count == 0)
-            {
-                Console.WriteLine("No contexts added");
-                return;
-            }
-
-            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
-            if (!expected_contexts_types.Contains(this.contexts[this.contexts.Count - 1].type))
-                throw new SemanticException("Method only can be added to Class or Interface Context", return_type.identifier.identifiers[0]);
-
-            this.contexts[this.contexts.Count - 1].AddMethod(name, return_type, AddBase);
+            AddMethodToContext(this.contexts.Count - 1, name, return_type, AddBase);
         }
 
         public bool MethodExists(string name)
@@ -183,17 +258,7 @@ namespace CStoJS.Semantic
 
         public void AddConstructorToCurrentContext(string name, bool AddBase = false)
         {
-            if (this.contexts.Count == 0)
-            {
-                Console.WriteLine("No contexts added");
-                return;
-            }
-
-            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
-            if (!expected_contexts_types.Contains(this.contexts[this.contexts.Count - 1].type))
-                throw new SemanticException("Method only can be added to Class or Interface Context");
-
-            this.contexts[this.contexts.Count - 1].AddConstructor(name, AddBase);
+            AddConstructorToContext(this.contexts.Count - 1, name, AddBase);
         }
 
         public bool ConstructorExists(string name)

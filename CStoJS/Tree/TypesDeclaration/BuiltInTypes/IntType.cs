@@ -8,5 +8,9 @@ namespace CStoJS.Tree
         public IntType(IdentifierNode identifier) : this(){
             this.identifier = identifier;
         }
+
+        public override string ToString(){
+            return "IntType";
+        }
     }
 }

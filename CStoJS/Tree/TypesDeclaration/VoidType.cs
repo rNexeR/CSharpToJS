@@ -11,5 +11,9 @@ namespace CStoJS.Tree
         {
             this.identifier = identifier;
         }
+
+        public override string ToString(){
+            return "VoidType";
+        }
     }
 }

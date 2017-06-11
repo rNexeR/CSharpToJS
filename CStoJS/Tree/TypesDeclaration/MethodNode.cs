@@ -16,6 +16,7 @@ namespace CStoJS.Tree
 
         public MethodNode(){
             this.parameters = new List<ParameterNode>();
+            this.encapsulation = new EncapsulationNode(new Token(TokenType.PRIVATE_KEYWORD, "private", 0, 0));
         }
 
         public MethodNode(IdentifierNode identifier, TypeDeclarationNode returnType, EncapsulationNode encapsulation, Token modifier) : this(){

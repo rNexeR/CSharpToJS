@@ -168,7 +168,7 @@ namespace CStoJS.Semantic
                     if (nsp.ToString() != "")
                         typename = $"{nsp.identifier.ToString()}.{dcl.identifier.ToString()}";
                     dcl.namespace_index = nsp_idx;
-                    if(types.ContainsKey(typename))
+                    if (types.ContainsKey(typename))
                         throw new SemanticException($"Double definition of Type {typename}.", dcl.identifier.identifiers[0]);
                     types[typename] = dcl;
                 }
@@ -202,8 +202,12 @@ namespace CStoJS.Semantic
             }
 
             current_namespace.parent_position = parent_pos;
-            if(parent_pos >= 0)
-                current_namespace.using_array.Add(new UsingNode(lista[parent_pos].identifier));
+            if (parent_pos >= 0)
+            {
+                current_namespace.using_array.AddRange(lista[parent_pos].using_array);
+                // current_namespace.using_array.Add(new UsingNode(lista[parent_pos].identifier));
+            }
+            current_namespace.using_array.Add(new UsingNode(current_namespace.identifier));
             current_namespace.identifier.identifiers.InsertRange(0, parent_identifiers.identifiers);
 
             lista.Add(current_namespace);

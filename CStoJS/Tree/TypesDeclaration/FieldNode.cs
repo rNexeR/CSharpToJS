@@ -11,7 +11,7 @@ namespace CStoJS.Tree
         public VariableInitializer assignment;
 
         public FieldNode(){
-            
+            this.encapsulation = new EncapsulationNode(new Token(TokenType.PRIVATE_KEYWORD, "private", 0, 0));
         }
 
         public FieldNode(TypeDeclarationNode type, IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier){

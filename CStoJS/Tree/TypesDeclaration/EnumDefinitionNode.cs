@@ -17,6 +17,8 @@ namespace CStoJS.Tree
         }
 
         public override void EvaluateSemantic(API api){
+            Console.WriteLine($"Evaluating enum {identifier}");
+
             if(this.encapsulation_modifier.token != null && this.encapsulation_modifier.token.type != TokenType.PUBLIC_KEYWORD)
                 throw new SemanticException("Enum cannot be defined as protected or private.", this.encapsulation_modifier.token);
 

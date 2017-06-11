@@ -20,9 +20,9 @@ namespace CStoJS.Tree
             this.type = right;
         }
 
-        public override TypeDeclarationNode EvaluateType()
-        {
-            return new BoolType();
-        }
+        // public override TypeDeclarationNode EvaluateType()
+        // {
+        //     return new BoolType();
+        // }
     }
 }

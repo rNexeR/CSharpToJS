@@ -8,8 +8,8 @@ namespace CStoJS.Tree
             
         }
 
-        public override TypeDeclarationNode EvaluateType(){
-            return new IdentifierTypeNode();
-        }
+        // public override TypeDeclarationNode EvaluateType(){
+        //     return new IdentifierTypeNode();
+        // }
     }
 }

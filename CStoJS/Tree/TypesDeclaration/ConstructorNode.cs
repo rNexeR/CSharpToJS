@@ -11,11 +11,12 @@ namespace CStoJS.Tree
         public Token modifier;
         public List<ParameterNode> parameters;
         public StatementNode body;
-        public List<ArgumentNode> initializer;
+        public ConstructorInitializerNode initializer;
         
         public ConstructorNode()
         {
             this.parameters = new List<ParameterNode>();
+            this.encapsulation = new EncapsulationNode(new Token(TokenType.PRIVATE_KEYWORD, "private", 0, 0));
         }
         public ConstructorNode(IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier)
         {
@@ -25,7 +26,7 @@ namespace CStoJS.Tree
         }
 
         public override string ToString(){
-            var ret = "(";
+            var ret = $"(";
 
             var param = new List<string>();
             foreach(var parameter in parameters){

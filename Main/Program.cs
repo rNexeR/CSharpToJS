@@ -99,4 +99,12 @@ namespace Main
             serializer.Serialize(logFile, tree);
         }
     }
+
+    public interface IHello{
+        void SayHi();
+    }
+
+    public abstract class Hello : IHello{
+        public abstract void SayHi();
+    }
 }

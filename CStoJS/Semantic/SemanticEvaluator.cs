@@ -41,6 +41,7 @@ namespace CStoJS.Semantic
 
         private bool ParseFiles()
         {
+            AddSystemClasses();
             foreach (var file in files)
             {
                 try
@@ -63,6 +64,70 @@ namespace CStoJS.Semantic
             return true;
         }
 
+        private void AddSystemClasses()
+        {
+            var txtContent = @"
+            namespace System{
+                namespace IO{
+                    public class TextWriter{
+                        public static void WriteLine(){}
+                    }
+            
+                    public class TextReader{
+                        public static string ReadLine(){}
+                    }
+                }
+
+                public class Console{
+                    public static System.IO.TextWriter Out;
+                    public static System.IO.TextReader In;
+                    public static void WriteLine(){}
+                    public static string ReadLine(){}
+                }
+                
+                public class Object{
+                    public virtual string ToString(){}
+                }
+            
+                public class IntType{
+                    public override string ToString(){}
+                    public static int Parse(string s){}
+                    public static int TryParse(string s, int out){}
+                }
+                
+                public class CharType{
+                    public override string ToString(){}
+                    public static int Parse(string s){}
+                    public static int TryParse(string s, char out){}
+                }
+            
+                public class DictionaryTypeNode{
+                    public override string ToString(){}
+                }
+
+                public class FloatType{
+                    public override string ToString(){}
+                    public static int Parse(string s){}
+                    public static int TryParse(string s, float out){}
+                }
+                public class StringType{
+                    public override string ToString(){}
+                }
+                public class VarType{
+                    public override string ToString(){}
+                }
+            
+                public class VoidType{
+                    public override string ToString(){}
+                }
+            }
+            ";
+            var input = new InputString(txtContent);
+            var lexer = new Lexer(input);
+            var parser = new Parser(lexer);
+            trees.Add(parser.parse());
+        }
+
         public void Evaluate()
         {
             if (parse_errors)
@@ -79,7 +144,7 @@ namespace CStoJS.Semantic
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"->{this.files[i]}: {ex.Message}");
+                    Console.WriteLine($"->{this.files[i-1]}: {ex.Message}");
                     return;
                 }
                 i++;

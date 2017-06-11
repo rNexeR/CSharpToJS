@@ -1,3 +1,5 @@
+using CStoJS.Semantic;
+
 namespace CStoJS.Tree
 {
     public abstract class ExpressionNode : VariableInitializer
@@ -5,7 +7,5 @@ namespace CStoJS.Tree
         public ExpressionNode(){
             
         }
-
-        public abstract TypeDeclarationNode EvaluateType();
     }
 }

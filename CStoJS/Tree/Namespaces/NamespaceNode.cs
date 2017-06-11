@@ -58,6 +58,9 @@ namespace CStoJS.Tree
             {
                 if (!api.namespaces_hash.ContainsKey(_using.identifier.ToString()))
                     throw new SemanticException($"Namespace {_using.identifier.ToString()} not found.", _using.identifier.identifiers[0]);
+                
+                if(_using.identifier == this.identifier)
+                    continue;
 
                 var nsp_idx = api.namespaces_hash[_using.identifier.ToString()];
                 var using_decls = api.namespaces[nsp_idx].types_declaration_array;

@@ -83,8 +83,8 @@ namespace Tests
 
     }
 
-    public interface IAlgo: IAlgoMas{
-        void SayHello();
+    public interface IAlgo{
+        void SayHi();
         void SayHello(string greeting);
         // void SayHello();
     }
@@ -97,6 +97,22 @@ namespace Tests
             ((int)x) = 5;
             (hola.adios).cambiarTodo();
             (hola.adios)++;
+            ((Clase)child).funcion();
+        }
+    }
+
+    public abstract class ClaseAbstracta: IAlgo{
+        private ClaseAbstracta(){
+
+        }
+        public ClaseAbstracta(int x){
+            
+        }
+        public abstract void SayHello(int val);
+        public abstract void SayHello(int[] val);
+        public abstract void SayHello(string greeting);
+        public abstract void SayHi(){
+            Console.WriteLine("Hi");
         }
     }
 }

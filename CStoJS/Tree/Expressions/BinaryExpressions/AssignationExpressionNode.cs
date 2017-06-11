@@ -14,15 +14,15 @@ namespace CStoJS.Tree
             
         }
 
-        public override TypeDeclarationNode EvaluateType()
-        {
-            var leftType = this.left.EvaluateType();
-            var rightType = this.right.EvaluateType();
+        // public override TypeDeclarationNode EvaluateType()
+        // {
+        //     var leftType = this.left.EvaluateType();
+        //     var rightType = this.right.EvaluateType();
 
-            if(leftType.identifier.ToString() != rightType.identifier.ToString())
-                throw new SemanticException($"AssignationExpression: cannot assign {rightType.identifier.ToString()} to {leftType.identifier.ToString()}.", leftType.identifier.identifiers[0]);
+        //     if(leftType.identifier.ToString() != rightType.identifier.ToString())
+        //         throw new SemanticException($"AssignationExpression: cannot assign {rightType.identifier.ToString()} to {leftType.identifier.ToString()}.", leftType.identifier.identifiers[0]);
             
-            return leftType;
-        }
+        //     return leftType;
+        // }
     }
 }

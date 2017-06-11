@@ -21,14 +21,14 @@ namespace CStoJS.Tree
             this.right = right;
         }
 
-        public override TypeDeclarationNode EvaluateType(){
-            var leftType = this.left.EvaluateType().identifier.ToString();
-            var rightType = this.right.EvaluateType().identifier.ToString();
+        // public override TypeDeclarationNode EvaluateType(){
+        //     var leftType = this.left.EvaluateType().identifier.ToString();
+        //     var rightType = this.right.EvaluateType().identifier.ToString();
 
-            if(!this.rules.ContainsKey($"{leftType},{rightType}"))
-                throw new SemanticException("Rule not Supported", this.left.EvaluateType().identifier.identifiers[0]);
+        //     if(!this.rules.ContainsKey($"{leftType},{rightType}"))
+        //         throw new SemanticException("Rule not Supported", this.left.EvaluateType().identifier.identifiers[0]);
 
-            return rules[$"{leftType},{rightType}"];
-        }
+        //     return rules[$"{leftType},{rightType}"];
+        // }
     }
 }

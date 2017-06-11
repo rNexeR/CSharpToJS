@@ -83,7 +83,7 @@ namespace CStoJS.ParserLibraries
             if (Match(TokenType.NAMESPACE_KEYWORD))
             {
                 var new_namespace = new NamespaceNode();
-                new_namespace.using_array.AddRange(namespace_node.using_array);
+                // new_namespace.using_array.AddRange(namespace_node.using_array);
                 // new_namespace.using_array.Add(new UsingNode(namespace_node.identifier));
                 // var new_using_nodes = new List<UsingNode>();
                 // var new_namespaces_nodes = new List<NamespaceNode>();
