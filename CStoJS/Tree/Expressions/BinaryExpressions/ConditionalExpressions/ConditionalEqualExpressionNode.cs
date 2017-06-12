@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class ConditionalEqualExpressionNode: ConditionalExpressionNode
     {
-        public ConditionalEqualExpressionNode(){
+        public ConditionalEqualExpressionNode() : base(){
 
         }
 

@@ -27,14 +27,29 @@ namespace CStoJS.Semantic
             if (context.type == ContextType.CLASS_CONTEXT)
             {
                 this.AddClassMembers(class_name);
-                if (class_name != "System.Object")
+                if (class_name != "Object")
                 {
                     this.PushParentClasses(class_name);
-                    this.contexts.Insert(0, new Context(ContextType.PARENT_CLASS_CONTEXT, "System.Object"));
-                    this.AddClassMembers("System.Object", true, false, 0);
+                    this.contexts.Insert(0, new Context(ContextType.PARENT_CLASS_CONTEXT, "Object"));
+                    this.AddClassMembers("Object", true, false, 0);
                 }
 
             }
+        }
+
+        public List<UsingNode> GetCurrentNamespaceUsings()
+        {
+            foreach (var context in this.contexts)
+            {
+                if (context.type == ContextType.CLASS_CONTEXT)
+                {
+                    var class_name = context.name;
+                    var clase = this.api.GetTypeDeclaration(class_name) as ClassNode;
+                    return this.api.namespaces[clase.namespace_index].using_array;
+                }
+
+            }
+            return new List<UsingNode>();
         }
 
         public List<Context> getParentsContexts()

@@ -78,8 +78,8 @@ namespace CStoJS.LexerLibraries
             multipleOptionsDict["*="] = TokenType.OP_ASSIGN_MULTIPLICATION;
             multipleOptionsDict["/"] = TokenType.OP_DIVISION;
             multipleOptionsDict["/="] = TokenType.OP_ASSIGN_DIVISION;
-            multipleOptionsDict["&="] = TokenType.OP_ASSIGN__AND;
-            multipleOptionsDict["|="] = TokenType.OP_ASSIGN__OR;
+            multipleOptionsDict["&="] = TokenType.OP_ASSIGN_AND;
+            multipleOptionsDict["|="] = TokenType.OP_ASSIGN_OR;
             multipleOptionsDict["^"] = TokenType.OP_BITS_XOR;
             multipleOptionsDict["^="] = TokenType.OP_ASSIGN_XOR;
             multipleOptionsDict["<<="] = TokenType.OP_ASSIGN_SHIFT_LEFT;

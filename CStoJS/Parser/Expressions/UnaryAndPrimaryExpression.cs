@@ -44,7 +44,7 @@ namespace CStoJS.ParserLibraries
                         foreach(var id in identifier)
                             left.Add(new AccessMemoryExpressionNode(new IdentifierExpressionNode(id)));
                         
-                        ((right[0]) as PostAdditiveExpressionNode).indentifier = new InlineExpressionNode(left);
+                        ((right[0]) as PostAdditiveExpressionNode).expression = new InlineExpressionNode(left);
                         return right[0];
                     }else if(Match(TokenType.OP_MEMBER_ACCESS)){
                         var right = PrimaryExpressionPrime();
@@ -58,7 +58,7 @@ namespace CStoJS.ParserLibraries
                     this.lookAhead = new Token[] { };
                     var expr = PrimaryExpression();
                     var ret = new List<ExpressionNode>();
-                    ret.Add(new CastingExpressionNode(new IdentifierTypeNode(new IdentifierNode(identifier)), expr));
+                    ret.Add(new CastingExpressionNode(new IdentifierTypeNode(new IdentifierNode(identifier)), new InlineExpressionNode(expr)));
                     return new InlineExpressionNode(ret);
                 }
                 else
@@ -113,7 +113,7 @@ namespace CStoJS.ParserLibraries
                     (
                         (right[0] is FunctionCallExpressionNode && ((FunctionCallExpressionNode)right[0]).identifier == null)
                         || (right[0] is ArrayAccessExpressionNode && ((ArrayAccessExpressionNode)right[0]).identifier == null)
-                        || (right[0] is PostAdditiveExpressionNode && ((PostAdditiveExpressionNode)right[0]).indentifier == null)
+                        || (right[0] is PostAdditiveExpressionNode && ((PostAdditiveExpressionNode)right[0]).expression == null)
                     )
                 )
                 {
@@ -127,7 +127,7 @@ namespace CStoJS.ParserLibraries
                     }
                     else
                     {
-                        ((PostAdditiveExpressionNode)right[0]).indentifier = left;
+                        ((PostAdditiveExpressionNode)right[0]).expression = left;
                     }
                 }
                 else
@@ -158,7 +158,7 @@ namespace CStoJS.ParserLibraries
                     }
                     else
                     {
-                        ((PostAdditiveExpressionNode)right[0]).indentifier = expr;
+                        ((PostAdditiveExpressionNode)right[0]).expression = expr;
                     }
                     return right;
                 }
@@ -176,7 +176,7 @@ namespace CStoJS.ParserLibraries
             else if (Match(TokenType.THIS_KEYWORD))
             {
                 var token = MatchExactly(TokenType.THIS_KEYWORD);
-                var left = new ReferenceAccessNode(token) as ExpressionNode;
+                var left = new IdentifierExpressionNode(token) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();
@@ -188,7 +188,7 @@ namespace CStoJS.ParserLibraries
             else if (Match(TokenType.BASE_KEYWORD))
             {
                 var token = MatchExactly(TokenType.BASE_KEYWORD);
-                var left = new ReferenceAccessNode(token) as ExpressionNode;
+                var left = new IdentifierExpressionNode(token) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();
@@ -197,7 +197,7 @@ namespace CStoJS.ParserLibraries
 
                 return ret;
             }
-            else if (MatchAny(this.buildInTypes))
+            else if (MatchAny(this.builtInTypes))
             {
                 var token = ConsumeToken();
                 var left = new BuiltInTypeExpressionNode(token) as ExpressionNode;
@@ -238,7 +238,7 @@ namespace CStoJS.ParserLibraries
                     }
                     else
                     {
-                        ((PostAdditiveExpressionNode)right[0]).indentifier = left;
+                        ((PostAdditiveExpressionNode)right[0]).expression = left;
                     }
                 }
                 else

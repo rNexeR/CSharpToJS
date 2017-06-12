@@ -63,5 +63,27 @@ namespace CStoJS.Semantic
 
             return ret;
         }
+
+        public static bool IsChildOf(string parent, string child, API api)
+        {
+            var ctx_man = new ContextManager(api);
+            ctx_man.Push(new Context(ContextType.CLASS_CONTEXT, child));
+
+            var parents = Utils.GetParentsNames(ctx_man);
+
+            return parents.Contains(parent);
+        }
+
+        public static string GetClassName(string class_name, List<UsingNode> usings, API api)
+        {
+            foreach(var _using in usings){
+                var _using_name = _using.ToString();
+                var n_class_name = _using_name == "" ? class_name : $"{_using_name}.{class_name}";
+                if(api.TypeDeclarationExists(n_class_name)){
+                    return n_class_name;
+                }
+            }
+            return "";
+        }
     }
 }

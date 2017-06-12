@@ -10,5 +10,12 @@ namespace CStoJS.Tree
         public BitwiseExpressionNode(ExpressionNode left, Token operador, ExpressionNode right) : base(left, operador, right)
         {
         }
+
+        public void InitializeRules()
+        {
+            this.rules["IntType,IntType"] = new IntType();
+            this.rules["IntType,CharType"] = new IntType();
+            this.rules["CharType,CharType"] = new IntType();
+        }
     }
 }

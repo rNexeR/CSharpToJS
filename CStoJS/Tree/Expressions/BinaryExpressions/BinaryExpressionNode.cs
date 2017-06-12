@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CStoJS.Exceptions;
 using CStoJS.LexerLibraries;
+using CStoJS.Semantic;
 
 namespace CStoJS.Tree
 {
@@ -10,6 +11,7 @@ namespace CStoJS.Tree
         public Token operador;
         public ExpressionNode right;
         protected Dictionary<string, TypeDeclarationNode> rules;
+        protected bool SameTypeValid = false;
 
         public BinaryExpressionNode(){
 
@@ -21,14 +23,18 @@ namespace CStoJS.Tree
             this.right = right;
         }
 
-        // public override TypeDeclarationNode EvaluateType(){
-        //     var leftType = this.left.EvaluateType().identifier.ToString();
-        //     var rightType = this.right.EvaluateType().identifier.ToString();
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man){
+            var leftType = this.left.EvaluateType(api, ctx_man);
+            var rightType = this.right.EvaluateType(api, ctx_man);
 
-        //     if(!this.rules.ContainsKey($"{leftType},{rightType}"))
-        //         throw new SemanticException("Rule not Supported", this.left.EvaluateType().identifier.identifiers[0]);
+            if(SameTypeValid && leftType.ToString() == rightType.ToString()){
+                return leftType;
+            }
 
-        //     return rules[$"{leftType},{rightType}"];
-        // }
+            if(!this.rules.ContainsKey($"{leftType},{rightType}"))
+                throw new SemanticException("Rule not Supported");
+
+            return rules[$"{leftType},{rightType}"];
+        }
     }
 }

@@ -67,6 +67,36 @@ namespace CStoJS.Semantic
         private void AddSystemClasses()
         {
             var txtContent = @"
+            public class Object{
+                public virtual string ToString(){}
+            }
+        
+            public class IntType{
+                public override string ToString(){}
+                public static int Parse(string s){}
+                public static int TryParse(string s, int out){}
+            }
+            
+            public class CharType{
+                public override string ToString(){}
+                public static int Parse(string s){}
+                public static int TryParse(string s, char out){}
+            }
+            public class FloatType{
+                public override string ToString(){}
+                public static int Parse(string s){}
+                public static int TryParse(string s, float out){}
+            }
+            public class StringType{
+                public override string ToString(){}
+            }
+            public class VarType{
+                public override string ToString(){}
+            }
+        
+            public class VoidType{
+                public override string ToString(){}
+            }
             namespace System{
                 namespace IO{
                     public class TextWriter{
@@ -84,40 +114,8 @@ namespace CStoJS.Semantic
                     public static void WriteLine(){}
                     public static string ReadLine(){}
                 }
-                
-                public class Object{
-                    public virtual string ToString(){}
-                }
-            
-                public class IntType{
-                    public override string ToString(){}
-                    public static int Parse(string s){}
-                    public static int TryParse(string s, int out){}
-                }
-                
-                public class CharType{
-                    public override string ToString(){}
-                    public static int Parse(string s){}
-                    public static int TryParse(string s, char out){}
-                }
             
                 public class DictionaryTypeNode{
-                    public override string ToString(){}
-                }
-
-                public class FloatType{
-                    public override string ToString(){}
-                    public static int Parse(string s){}
-                    public static int TryParse(string s, float out){}
-                }
-                public class StringType{
-                    public override string ToString(){}
-                }
-                public class VarType{
-                    public override string ToString(){}
-                }
-            
-                public class VoidType{
                     public override string ToString(){}
                 }
             }

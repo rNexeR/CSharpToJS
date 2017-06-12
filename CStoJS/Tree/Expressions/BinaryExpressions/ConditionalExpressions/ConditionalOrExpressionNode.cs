@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class ConditionalOrExpressionNode : ConditionalExpressionNode
     {
-        public ConditionalOrExpressionNode(){
+        public ConditionalOrExpressionNode() : base(){
 
         }
 

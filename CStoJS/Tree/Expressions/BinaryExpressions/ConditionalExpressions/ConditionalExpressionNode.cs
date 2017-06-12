@@ -10,5 +10,10 @@ namespace CStoJS.Tree
         public ConditionalExpressionNode(ExpressionNode left, Token operador, ExpressionNode right) : base(left, operador, right)
         {
         }
+
+        public void InitializeRules()
+        {
+            this.rules["BoolType,BoolType"] = new BoolType();
+        }
     }
 }

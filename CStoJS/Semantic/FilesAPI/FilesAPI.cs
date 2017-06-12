@@ -30,6 +30,13 @@ namespace CStoJS.Semantic
             return this.types[typename];
         }
 
+        // public string GetTypeDeclarationName(TypeDeclarationNode type){
+        //     if(this.types.ContainsValue(type)){
+                
+        //     }
+        //     return "";
+        // }
+
         public Dictionary<string, MethodNode> GetClassMethods(ClassNode clase)
         {
             var ret = new Dictionary<string, MethodNode>();

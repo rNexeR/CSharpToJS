@@ -1,5 +1,6 @@
 using System;
 using CStoJS.LexerLibraries;
+using CStoJS.Semantic;
 
 namespace CStoJS.Tree
 {
@@ -8,7 +9,7 @@ namespace CStoJS.Tree
         public ExpressionNode left;
         public Token operador;
         public TypeDeclarationNode type;
-        public ConditionalIsExpressionNode()
+        public ConditionalIsExpressionNode() : base()
         {
 
         }
@@ -20,9 +21,9 @@ namespace CStoJS.Tree
             this.type = right;
         }
 
-        // public override TypeDeclarationNode EvaluateType()
-        // {
-        //     return new BoolType();
-        // }
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        {
+            return new BoolType();
+        }
     }
 }

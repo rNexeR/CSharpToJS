@@ -1,4 +1,6 @@
+using System;
 using CStoJS.LexerLibraries;
+using CStoJS.Semantic;
 
 namespace CStoJS.Tree
 {
@@ -13,6 +15,11 @@ namespace CStoJS.Tree
 
         public AccessMemoryExpressionNode(){
             
+        }
+
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        {
+            return null;
         }
     }
 }

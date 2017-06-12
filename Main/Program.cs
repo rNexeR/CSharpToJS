@@ -37,9 +37,22 @@ namespace Main
                 }
             }
 
-
             var semantic_evaluator = new SemanticEvaluator(CSFiles);
             semantic_evaluator.Evaluate();
+
+            // float flotante = 3.5f;
+            // int entero = 5;
+            // char caracter = 'c';
+            // string cadena = "hola";
+            // entero += entero;
+            // flotante += entero;
+            // entero += flotante;
+            // entero += caracter;
+            // caracter += caracter;
+            // caracter += entero;
+            // cadena += cadena;
+            // cadena += caracter;
+            // var result = caracter << caracter;
 
             // var api = new API(trees);
             // api.types["System.Object"] = new ClassNode();

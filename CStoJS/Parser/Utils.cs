@@ -165,6 +165,22 @@ namespace CStoJS.ParserLibraries
             ConsumeToken();
         }
 
+        private ExpressionNode AssignationExpressionDetector(ExpressionNode left, Token operador, ExpressionNode right){
+            var bitwise_assignations = new TokenType[]{  TokenType.OP_ASSIGN_AND, TokenType.OP_ASSIGN_OR, TokenType.OP_ASSIGN_XOR, TokenType.OP_ASSIGN_SHIFT_LEFT, TokenType.OP_ASSIGN_SHIFT_RIGHT };
+            if(bits_operators.Contains(operador.type))
+                return new BitwiseAssignationExpressionNode(left, operador, right);
+
+            switch (operador.type)
+            {
+                case TokenType.OP_ASSIGN: return new EqualAssignationExpressionNode(left, operador, right);
+                case TokenType.OP_ASSIGN_PLUS: return new PlusEqualAssignationExpressionNode(left, operador, right);
+                case TokenType.OP_ASSIGN_MINUS: return new MinusEqualAssignationExpressionNode(left, operador, right);
+                case TokenType.OP_ASSIGN_MULTIPLICATION: return new MultEqualAssignationExpressionNode(left, operador, right);
+                case TokenType.OP_ASSIGN_DIVISION: return new DivEqualAssignationExpressionNode(left, operador, right);
+                default: return new ModEqualAssignationExpressionNode(left, operador, right);
+            }
+        }
+
         private TypeDeclarationNode TypeDetector(TokenType token, IdentifierNode identifier)
         {
 

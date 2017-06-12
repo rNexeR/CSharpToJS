@@ -7,9 +7,5 @@ namespace CStoJS.Tree
         public UnaryExpressionNode(){
             
         }
-
-        // public override TypeDeclarationNode EvaluateType(){
-        //     return new IdentifierTypeNode();
-        // }
     }
 }

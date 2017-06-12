@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class BitwiseShiftRightExpressionNode: BitwiseExpressionNode
     {
-        public BitwiseShiftRightExpressionNode()
+        public BitwiseShiftRightExpressionNode(): base()
         {
 
         }

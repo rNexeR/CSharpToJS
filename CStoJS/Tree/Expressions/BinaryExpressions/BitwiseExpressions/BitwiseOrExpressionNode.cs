@@ -4,7 +4,7 @@ namespace CStoJS.Tree
 {
     public class BitwiseOrExpressionNode: BitwiseExpressionNode
     {
-        public BitwiseOrExpressionNode(){
+        public BitwiseOrExpressionNode(): base(){
 
         }
 

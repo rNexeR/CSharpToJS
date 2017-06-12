@@ -21,13 +21,18 @@ namespace CStoJS.Tree
             this.falseExpression = false_expr;
         }
 
-        // public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man){
-        //     var trueExp = this.trueExpression.EvaluateType(api, ctx_man);
-        //     var falseExp = this.falseExpression.EvaluateType(api, ctx_man);
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man){
+            var cond_type = this.conditionalExpression.EvaluateType(api, ctx_man);
 
-        //     if(trueExp.identifier.ToString() != falseExp.identifier.ToString())
-        //         throw new SemanticException("Ternary Expression: True Expression and False Expression must be of the same Type.", trueExp.identifier.identifiers[0]);
-        //     return trueExp;
-        // }
+            if(cond_type.ToString() != "BoolType")
+                throw new SemanticException("Conditional Expression doesn't return a BoolType.");
+
+            var trueExp = this.trueExpression.EvaluateType(api, ctx_man);
+            var falseExp = this.falseExpression.EvaluateType(api, ctx_man);
+
+            if(trueExp.ToString() != falseExp.ToString())
+                throw new SemanticException("Ternary Expression: True Expression and False Expression must be of the same Type.");
+            return trueExp;
+        }
     }
 }
