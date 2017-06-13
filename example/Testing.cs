@@ -69,6 +69,7 @@ namespace Tests
         public Node(){
 
         }
+
     }
 
     namespace Testing{
@@ -79,18 +80,22 @@ namespace Tests
         }
     }
 
-    public interface IAlgoMas{
+    public interface IAlgoMas {
 
     }
 
-    public interface IAlgo{
-        void SayHi();
-        void SayHello(string greeting);
+    public interface IAlgo : IAlgoMas{
+        // void SayHi();
+        //void SayHello(string greeting);
         // void SayHello();
     }
 
+    public interface nuevo : IAlgo {
+        void SayHi();
+    }
+
     public class Tree{
-        Node root;
+        Node root = null;
         
         public Tree(){
             (x)++;
@@ -98,21 +103,34 @@ namespace Tests
             (hola.adios).cambiarTodo();
             (hola.adios)++;
             ((Clase)child).funcion();
+            a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
+            a.x.y;
+            a[1,2];
+            a[1][2];
+            a = null;
+            int[] a;
+            int[][] b;
+            int[,] c;
+            h.Hi();
         }
     }
 
-    public abstract class ClaseAbstracta: IAlgo{
+    public class ClaseAbstracta: IAlgo{
         private ClaseAbstracta(){
 
         }
         public ClaseAbstracta(int x){
             
         }
-        public abstract void SayHello(int val);
+        /*public abstract void SayHello(int val);
         public abstract void SayHello(int[] val);
-        public abstract void SayHello(string greeting);
-        public abstract void SayHi(){
-            Console.WriteLine("Hi");
+        public abstract void SayHello(string greeting);*/
+        public override void SayHi(){
+            
+        }
+
+        public void hola(int a, NuevaClase nc){
+
         }
     }
 }

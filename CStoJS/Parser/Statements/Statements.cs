@@ -153,7 +153,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = Expression();
-                return new AssignationExpressionNode(left, operador, right) as ExpressionNode;
+                return this.AssignationExpressionDetector(left, operador, right);
                 
             }
             else

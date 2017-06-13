@@ -10,7 +10,7 @@ namespace CStoJS.Tree
         public ExpressionNode left;
         public Token operador;
         public ExpressionNode right;
-        protected Dictionary<string, TypeDeclarationNode> rules;
+        protected Dictionary<string, TypeDeclarationNode> rules = new Dictionary<string, TypeDeclarationNode>();
         protected bool SameTypeValid = false;
 
         public BinaryExpressionNode(){

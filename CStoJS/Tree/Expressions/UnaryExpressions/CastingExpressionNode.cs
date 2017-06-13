@@ -26,7 +26,7 @@ namespace CStoJS.Tree
             var expr_type = expression.EvaluateType(api, ctx_man);
             var nsp_using = ctx_man.GetCurrentNamespaceUsings();
             var target_type_name = Utils.GetClassName(targetType.identifier.ToString(), nsp_using, api);
-            if (!Utils.IsChildOf(target_type_name, expr_type.ToString(), api))
+            if (!Utils.IsChildOf(target_type_name, expr_type.ToString(), api) && !Utils.IsChildOf( expr_type.ToString(), target_type_name, api))
             {
                 throw new SemanticException($"Cannot convert {expr_type} to {target_type_name}");
             }

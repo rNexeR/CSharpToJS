@@ -128,6 +128,7 @@ namespace CStoJS.Semantic
 
         public void Evaluate()
         {
+            Hola();
             if (parse_errors)
             {
                 return;
@@ -148,6 +149,21 @@ namespace CStoJS.Semantic
                 i++;
             }
 
+        }
+
+        private void Hola()
+        {
+            var ctx = new ContextManager(this.api);
+            ctx.Push(new Context(ContextType.CLASS_CONTEXT, "IntType"), "IntType");
+            Console.Write("");
+            Hola2((object)ctx);
+            Console.Write("");
+        }
+
+        private void Hola2(object ctx)
+        {
+            var ctx2 = (ContextManager)ctx;
+            ctx2.Clear();
         }
     }
 }

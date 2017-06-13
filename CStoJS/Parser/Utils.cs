@@ -175,9 +175,9 @@ namespace CStoJS.ParserLibraries
                 case TokenType.OP_ASSIGN: return new EqualAssignationExpressionNode(left, operador, right);
                 case TokenType.OP_ASSIGN_PLUS: return new PlusEqualAssignationExpressionNode(left, operador, right);
                 case TokenType.OP_ASSIGN_MINUS: return new MinusEqualAssignationExpressionNode(left, operador, right);
-                case TokenType.OP_ASSIGN_MULTIPLICATION: return new MultEqualAssignationExpressionNode(left, operador, right);
-                case TokenType.OP_ASSIGN_DIVISION: return new DivEqualAssignationExpressionNode(left, operador, right);
-                default: return new ModEqualAssignationExpressionNode(left, operador, right);
+                case TokenType.OP_ASSIGN_MULTIPLICATION: return new MultAssignationExpressionNode(left, operador, right);
+                case TokenType.OP_ASSIGN_DIVISION: return new DivAssignationExpressionNode(left, operador, right);
+                default: return new ModAssignationExpressionNode(left, operador, right);
             }
         }
 

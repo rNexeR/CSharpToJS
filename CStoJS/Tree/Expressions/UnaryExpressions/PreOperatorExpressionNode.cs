@@ -34,8 +34,10 @@ namespace CStoJS.Tree
             }
             else if (operador.type == TokenType.OP_BITS_COMPLEMENT)
             {
-                if(!(expression is BitwiseExpressionNode))
+                var match = new List<string> { "CharType", "IntType" };
+                if(!(match.Contains(expr_type.ToString())))
                     throw new SemanticException($"Operator {this.operador.lexema} can only be applied to Bitwise Expressions.", operador);
+                return new IntType();
             }
             else
             {

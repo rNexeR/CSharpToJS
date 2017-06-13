@@ -41,17 +41,19 @@ namespace CStoJS.ParserLibraries
                         // this.RollbackLA();
                         var right = PrimaryExpressionPrime();
                         var left = new List<ExpressionNode>();
-                        foreach(var id in identifier)
-                            left.Add(new AccessMemoryExpressionNode(new IdentifierExpressionNode(id)));
-                        
+                        foreach (var id in identifier)
+                            left.Add(new IdentifierExpressionNode(id));
+
                         ((right[0]) as PostAdditiveExpressionNode).expression = new InlineExpressionNode(left);
                         return right[0];
-                    }else if(Match(TokenType.OP_MEMBER_ACCESS)){
+                    }
+                    else if (Match(TokenType.OP_MEMBER_ACCESS))
+                    {
                         var right = PrimaryExpressionPrime();
                         var left = new List<ExpressionNode>();
-                        foreach(var id in identifier)
-                            left.Add(new AccessMemoryExpressionNode(new IdentifierExpressionNode(id)));
-                        
+                        foreach (var id in identifier)
+                            left.Add(new IdentifierExpressionNode(id));
+
                         right.InsertRange(0, left);
                         return new InlineExpressionNode(right);
                     }
@@ -197,6 +199,18 @@ namespace CStoJS.ParserLibraries
 
                 return ret;
             }
+            else if (Match(TokenType.NULL_KEYWORD))
+            {
+                ConsumeToken();
+                var left = new NullExpressionNode();
+                var right = PrimaryExpressionPrime();
+
+                var ret = new List<ExpressionNode>();
+                ret.Add(left);
+                ret.AddRange(right);
+
+                return ret;
+            }
             else if (MatchAny(this.builtInTypes))
             {
                 var token = ConsumeToken();
@@ -221,7 +235,7 @@ namespace CStoJS.ParserLibraries
             if (Match(TokenType.OP_MEMBER_ACCESS))
             {
                 var tokens = MatchExactly(new TokenType[] { TokenType.OP_MEMBER_ACCESS, TokenType.ID });
-                var left = new AccessMemoryExpressionNode(new IdentifierExpressionNode(tokens[1])) as ExpressionNode;
+                var left = new IdentifierExpressionNode(tokens[1]) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();

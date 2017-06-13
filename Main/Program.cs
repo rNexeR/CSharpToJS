@@ -40,24 +40,42 @@ namespace Main
             var semantic_evaluator = new SemanticEvaluator(CSFiles);
             semantic_evaluator.Evaluate();
 
-            // float flotante = 3.5f;
-            // int entero = 5;
-            // char caracter = 'c';
-            // string cadena = "hola";
-            // entero += entero;
-            // flotante += entero;
+            float flotante = 3.5f;
+            int entero = 5;
+            char caracter = 'c';
+            string cadena = "hola";
+            bool booleano = true;
+            entero += entero;
+            flotante += entero;
             // entero += flotante;
-            // entero += caracter;
-            // caracter += caracter;
+            entero += caracter;
+            caracter += caracter;
             // caracter += entero;
-            // cadena += cadena;
-            // cadena += caracter;
-            // var result = caracter << caracter;
+            cadena += cadena;
+            cadena += caracter;
+            var res = cadena + caracter;
+            var res2 = caracter + flotante;
+            var result = cadena + flotante;
+            var result3 = caracter - flotante;
 
+            int[,][] x = new int[1,2][];
+            int[][,] y = new int[3][,];
+
+            x[0,0] = new int[5];
+            var xx = x[0,0];
+
+            y[0] = new int[1,1];
+            var yy = y[0];
+            
             // var api = new API(trees);
             // api.types["System.Object"] = new ClassNode();
             // var contexts = new ContextManager(api);
             // contexts.Push(new Context(ContextType.CLASS_CONTEXT, "Tests.Node"), "Tests.Node");
+
+            // var x = new int[1,2];
+            // var y = x[0,1];
+            // var x2 = new int[1][];
+            // var y2 = x2[0][0];
 
             Console.WriteLine("EXIT!");
         }
@@ -73,9 +91,9 @@ namespace Main
                 //UnaryExpression
             , typeof(CastingExpressionNode), typeof(PreOperatorExpressionNode), typeof(UnaryExpressionNode)
                 //PrimaryExpressions
-            , typeof(ReferenceAccessNode), typeof(PrimaryExpressionNode), typeof(PostAdditiveExpressionNode), typeof(ParenthesizedExpressionNode)
+            , typeof(PrimaryExpressionNode), typeof(PostAdditiveExpressionNode), typeof(ParenthesizedExpressionNode)
             , typeof(LiteralExpressionNode), typeof(IdentifierExpressionNode), typeof(FunctionCallExpressionNode), typeof(BuiltInTypeExpressionNode)
-            , typeof(ArrayAccessNode), typeof(ArrayAccessExpressionNode), typeof(AccessMemoryExpressionNode)
+            , typeof(ArrayAccessNode), typeof(ArrayAccessExpressionNode)
                 //InstanceInitializer
             , typeof(ArrayInitializerExpressionNode), typeof(ConstructorCallExpressionNode), typeof(InstanceInitilizerExpressionNode)
                 //Binary Expression
@@ -113,11 +131,4 @@ namespace Main
         }
     }
 
-    public interface IHello{
-        void SayHi();
-    }
-
-    public abstract class Hello : IHello{
-        public abstract void SayHi();
-    }
 }

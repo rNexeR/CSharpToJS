@@ -6,22 +6,29 @@ namespace CStoJS.Tree
         public int dimensions;
         public TypeDeclarationNode baseType;
 
-        public ArrayType(){
+        public ArrayType()
+        {
             this.arrayOfArrays = this.dimensions = 0;
         }
 
-        public override string ToString(){
+        public override string ToString()
+        {
             var arr = "";
-            if(arrayOfArrays > 0){
-                for(int i = 0; i < arrayOfArrays; i++){
+            if (arrayOfArrays > 0)
+            {
+                for (int i = 0; i < arrayOfArrays; i++)
+                {
                     arr += "[]";
                 }
-            }else{
+            }
+            else
+            {
                 arr += "[";
-                for(int i = 0; i < arrayOfArrays; i++){
+                for (int i = 0; i < arrayOfArrays; i++)
+                {
                     arr += ",";
                 }
-                arr += "}";
+                arr += "]";
             }
             return $"{baseType}{arr}";
         }

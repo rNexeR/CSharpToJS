@@ -1,6 +1,6 @@
 namespace  Tests
 {
-    public class Algo: ClaseAbstracta{
+    /*public class Algo: ClaseAbstracta{
         public void SayHello(int x){
 
         }
@@ -12,5 +12,7 @@ namespace  Tests
         public void SayHello(string greeting){
             
         }
-    }
+    }*/
+
+    
 }

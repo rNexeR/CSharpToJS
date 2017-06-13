@@ -296,7 +296,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var right = Expression();
-                var first = new AssignationExpressionNode(left, operador, right) as ExpressionNode;
+                var first = this.AssignationExpressionDetector(left, operador, right);
                 return MultiplicativeExpressionPrime(ref first);
             }
             else

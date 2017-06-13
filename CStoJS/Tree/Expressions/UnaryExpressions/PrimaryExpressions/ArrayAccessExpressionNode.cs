@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CStoJS.Exceptions;
 using CStoJS.LexerLibraries;
 using CStoJS.Semantic;
 
@@ -10,18 +11,54 @@ namespace CStoJS.Tree
         public ExpressionNode identifier;
         public List<ArrayAccessNode> indexes;
 
-        public ArrayAccessExpressionNode(List<ArrayAccessNode> indexes)
+        public ArrayAccessExpressionNode(List<ArrayAccessNode> indexes) : base()
         {
             this.indexes = indexes;
         }
 
-        public ArrayAccessExpressionNode(){
-            
+        public ArrayAccessExpressionNode() : base()
+        {
+
         }
 
         public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
         {
-            return null;
+            var id_ret = identifier.EvaluateType(api, ctx_man);
+
+            if (!(id_ret is ArrayType))
+                throw new SemanticException("Expression doesn't return an array.");
+
+            var id_array = id_ret as ArrayType;
+            if (id_array.dimensions == 0)
+            {
+                //array of arrays
+                if (id_array.arrayOfArrays > this.indexes.Count)
+                    throw new SemanticException("Too many array indexes.");
+
+                foreach (var index in indexes)
+                {
+                    index.Evaluate(api, ctx_man);
+                    if (index.exprs.Count > 0)
+                        throw new SemanticException("Too many array dimensions indexes.");
+                }
+                var ret = new ArrayType();
+                ret.arrayOfArrays = id_array.dimensions - this.indexes.Count;
+                ret.baseType = id_array.baseType;
+                return ret;
+            }
+            else
+            {
+                //multidimensions
+                if(this.indexes.Count > 1)
+                    throw new SemanticException("Too many array indexes.");
+                foreach (var index in indexes)
+                {
+                    index.Evaluate(api, ctx_man);
+                    if (index.exprs.Count != id_array.dimensions + 1)
+                        throw new SemanticException("Differents array dimensions indexes.");
+                }
+                return id_array.baseType;
+            }
         }
     }
 }

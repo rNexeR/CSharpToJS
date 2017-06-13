@@ -12,6 +12,7 @@ namespace CStoJS.Tree
         {
             this.rules["IntType,IntType"] = new IntType();
             this.rules["FloatType,FloatType"] = new FloatType();
+            this.rules["FloatType,CharType"] = new FloatType();
             this.rules["FloatType,IntType"] = new FloatType();
             this.rules["IntType,CharType"] = new IntType();
             this.rules["CharType,CharType"] = new IntType();

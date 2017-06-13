@@ -158,6 +158,7 @@ namespace CStoJS.LexerLibraries
 
             reservedWordsDict["using"] = TokenType.USING_KEYWORD;
 
+            reservedWordsDict["null"] = TokenType.NULL_KEYWORD;
         }
 
         private void ThrowException(string msg){

@@ -52,6 +52,17 @@ namespace CStoJS.Semantic
             return new List<UsingNode>();
         }
 
+        public string GetCurrentClass(){
+            foreach (var context in this.contexts)
+            {
+                if (context.type == ContextType.CLASS_CONTEXT)
+                {
+                    return context.name;
+                }
+            }
+            return "";
+        }
+
         public List<Context> getParentsContexts()
         {
             var ret = new List<Context>();
@@ -114,7 +125,7 @@ namespace CStoJS.Semantic
 
             foreach (var method in clase.methods)
             {
-                this.AddVariableToContext(ctx_id, method.identifier.ToString(), method.returnType, AddBase);
+                this.AddMethodToContext(ctx_id, method.identifier.ToString(), method.returnType, AddBase);
             }
 
             foreach (var ctor in clase.constructors)
@@ -141,7 +152,7 @@ namespace CStoJS.Semantic
                 return;
             }
 
-            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
+            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT, ContextType.PARENT_CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
             if (!expected_contexts_types.Contains(this.contexts[this.contexts.Count - 1].type))
                 throw new SemanticException("Method only can be added to Class or Interface Context", return_type.identifier.identifiers[0]);
 
@@ -156,7 +167,7 @@ namespace CStoJS.Semantic
                 return;
             }
 
-            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
+            var expected_contexts_types = new List<ContextType> { ContextType.CLASS_CONTEXT, ContextType.PARENT_CLASS_CONTEXT/*, ContextType.INTERFACE_CONTEXT*/};
             if (!expected_contexts_types.Contains(this.contexts[this.contexts.Count - 1].type))
                 throw new SemanticException("Method only can be added to Class or Interface Context");
 
@@ -170,6 +181,7 @@ namespace CStoJS.Semantic
                 Console.WriteLine($"Class {class_name} not found in api.");
                 return;
             }
+
             var clase = this.api.GetTypeDeclaration(class_name) as TypeDefinitionNode;
             var parent_class_name_identifiers = clase.inherit;
 
@@ -202,6 +214,10 @@ namespace CStoJS.Semantic
 
                 if (!found)
                     throw new SemanticException($"Base class not found, Base name: {clase.inherit[0]}", clase.inherit[0].identifiers[0]);
+
+                foreach (var ctx in this.contexts)
+                    if (ctx.name == parent_class_name)
+                        throw new SemanticException($"Cycle detected in type {parent_class_name}");
 
                 this.contexts.Insert(0, new Context(parent_type, parent_class_name));
                 this.AddClassMembers(parent_class_name, true, false, 0);
