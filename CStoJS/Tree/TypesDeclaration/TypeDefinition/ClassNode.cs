@@ -20,12 +20,12 @@ namespace CStoJS.Tree
             Console.WriteLine($"Evaluating class {this.identifier}");
             var context_manager = new ContextManager(api);
             var parent_nsp = api.namespaces[this.namespace_index].identifier.ToString();
-            var class_name = $"{parent_nsp}.{this.identifier.ToString()}";
+            var class_name = parent_nsp == "" ? $"{this.identifier.ToString()}" : $"{parent_nsp}.{this.identifier.ToString()}";
             context_manager.Push(new Context(ContextType.CLASS_CONTEXT, class_name), class_name);
             // return;
             this.EvaluateInheritance(api, context_manager);
-            // this.EvaluateFieldsSemantic(api, context_manager);
-            // this.EvaluateConstructors(api, context_manager);
+            this.EvaluateFieldsSemantic(api, context_manager);
+            this.EvaluateConstructors(api, context_manager);
             this.EvaluateMethods(api, context_manager);
             // var parents = Utils.GetParentsNames(context_manager);
         }
@@ -99,6 +99,7 @@ namespace CStoJS.Tree
                     if (!found)
                         throw new SemanticException($"Return Type Class not found. Type name {method.returnType.ToString()}", method.returnType.identifier.identifiers[0]);
                 }
+                method.EvaluateSemantic(api, context_manager, method.returnType);
             }
         }
 
@@ -106,23 +107,15 @@ namespace CStoJS.Tree
         {
             foreach (var ctor in this.constructors)
             {
-                context_manager.Push(new Context(ContextType.CONSTRUCTOR_CONTEXT));
-                foreach(var param in ctor.parameters){
-                    context_manager.AddVariableToCurrentContext(param.identifier.ToString(), param.type);
-                }
-                if(ctor.identifier.ToString() != this.identifier.ToString())
-                    throw new SemanticException("Constructor's name must be the same as the name of the class.", ctor.identifier.identifiers[0]);
-                if (ctor.initializer != null)
-                {
-                    //check base ctor arguments
-                }
-                // ctor.body.EvaluateSemantic(api, context_manager);
+                ctor.Evaluate(api, context_manager, this.identifier.ToString());
             }
         }
 
         private void EvaluateFieldsSemantic(API api, ContextManager context_manager)
         {
-            throw new NotImplementedException();
+            foreach(var field in this.fields){
+                field.Evaluate(api, context_manager);
+            }
         }
     }
 }

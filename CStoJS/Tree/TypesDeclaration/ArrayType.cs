@@ -14,14 +14,7 @@ namespace CStoJS.Tree
         public override string ToString()
         {
             var arr = "";
-            if (arrayOfArrays > 0)
-            {
-                for (int i = 0; i < arrayOfArrays; i++)
-                {
-                    arr += "[]";
-                }
-            }
-            else
+            if (dimensions > 0)
             {
                 arr += "[";
                 for (int i = 0; i < arrayOfArrays; i++)
@@ -29,6 +22,13 @@ namespace CStoJS.Tree
                     arr += ",";
                 }
                 arr += "]";
+            }
+            else
+            {
+                for (int i = 0; i < arrayOfArrays; i++)
+                {
+                    arr += "[]";
+                }
             }
             return $"{baseType}{arr}";
         }

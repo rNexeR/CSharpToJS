@@ -51,12 +51,14 @@ namespace CStoJS.Semantic
             return this.variables[var_name];
         }
 
+        
+
         public void AddMethod(string method_name, TypeDeclarationNode return_type, bool AddBase = false)
         {
             if (VariableExists(method_name))
                 throw new SemanticException($"Double declaration of method. Method Name: {method_name}", return_type.identifier.identifiers[0]);
             methods[method_name] = return_type;
-            if (this.type == ContextType.CLASS_CONTEXT)
+            if (this.type == ContextType.CLASS_CONTEXT || this.type == ContextType.PARENT_CLASS_CONTEXT)
             {
                 methods[$"this.{method_name}"] = return_type;
                 if (AddBase)

@@ -10,10 +10,13 @@ namespace CStoJS.Semantic
     {
         public readonly API api;
         public List<Context> contexts;
+        private bool static_context;
+        private string class_name;
 
         public ContextManager()
         {
             this.contexts = new List<Context>();
+            this.static_context = false;
         }
 
         public ContextManager(API api) : this()
@@ -21,12 +24,23 @@ namespace CStoJS.Semantic
             this.api = api;
         }
 
-        public void Push(Context context, string class_name = "")
+        public void SetStaticContext()
+        {
+            this.static_context = true;
+        }
+
+        public void UnsetStaticContext()
+        {
+            this.static_context = false;
+        }
+
+        public void Push(Context context, string class_name = "", bool add_private_members = true)
         {
             this.contexts.Add(context);
             if (context.type == ContextType.CLASS_CONTEXT)
             {
-                this.AddClassMembers(class_name);
+                this.AddClassMembers(class_name, false, true, 0, add_private_members);
+                this.class_name = class_name;
                 if (class_name != "Object")
                 {
                     this.PushParentClasses(class_name);
@@ -52,7 +66,8 @@ namespace CStoJS.Semantic
             return new List<UsingNode>();
         }
 
-        public string GetCurrentClass(){
+        public string GetCurrentClass()
+        {
             foreach (var context in this.contexts)
             {
                 if (context.type == ContextType.CLASS_CONTEXT)
@@ -75,7 +90,7 @@ namespace CStoJS.Semantic
             return ret;
         }
 
-        private void AddClassMembers(string class_name, bool AddBase = false, bool CurrentContext = true, int ctx_id = 0)
+        private void AddClassMembers(string class_name, bool AddBase = false, bool CurrentContext = true, int ctx_id = 0, bool add_private_members = true)
         {
             var ctx = CurrentContext ? this.contexts.Count - 1 : ctx_id;
             if (!this.api.TypeDeclarationExists(class_name))
@@ -88,21 +103,30 @@ namespace CStoJS.Semantic
 
             foreach (var field in clase.fields)
             {
-                if (AddBase && field.encapsulation.token.lexema == "private")
+                if (
+                    ((AddBase || !add_private_members) && field.encapsulation.token.lexema == "private")
+                    || (!add_private_members && field.encapsulation.token.lexema == "protected")
+                    )
                     continue;
                 this.AddVariableToContext(ctx, field.ToString(), field.type, AddBase);
             }
 
             foreach (var method in clase.methods)
             {
-                if (AddBase && method.encapsulation.token.lexema == "private")
+                if (
+                    ((AddBase || !add_private_members) && method.encapsulation.token.lexema == "private")
+                    || (!add_private_members && method.encapsulation.token.lexema == "protected")
+                    )
                     continue;
                 this.AddMethodToContext(ctx, method.ToString(), method.returnType, AddBase);
             }
 
             foreach (var ctor in clase.constructors)
             {
-                if (AddBase && ctor.encapsulation.token.lexema == "private")
+                if (
+                    ((AddBase || !add_private_members) && ctor.encapsulation.token.lexema == "private")
+                    || (!add_private_members && ctor.encapsulation.token.lexema == "protected")
+                    )
                     continue;
                 this.AddConstructorToContext(ctx, ctor.ToString(), AddBase);
             }
@@ -178,7 +202,7 @@ namespace CStoJS.Semantic
         {
             if (!this.api.TypeDeclarationExists(class_name))
             {
-                Console.WriteLine($"Class {class_name} not found in api.");
+                Console.WriteLine($"Class <{class_name}> not found in api.");
                 return;
             }
 
@@ -217,7 +241,7 @@ namespace CStoJS.Semantic
 
                 foreach (var ctx in this.contexts)
                     if (ctx.name == parent_class_name)
-                        throw new SemanticException($"Cycle detected in type {parent_class_name}");
+                        throw new SemanticException($"Cycle detected or double declaration of parent type in type {parent_class_name}.", clase.inherit[0].identifiers[0]);
 
                 this.contexts.Insert(0, new Context(parent_type, parent_class_name));
                 this.AddClassMembers(parent_class_name, true, false, 0);
@@ -247,7 +271,23 @@ namespace CStoJS.Semantic
             for (int i = this.contexts.Count - 1; i >= 0; i--)
             {
                 if (contexts[i].VariableExists(var_name))
-                    return true;
+                {
+                    if (!static_context)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        var clase = this.api.GetTypeDeclaration(this.class_name) as ClassNode;
+                        foreach (var field in clase.fields)
+                        {
+                            if (field.ToString() == var_name && field.modifier != null && field.modifier.lexema == "static")
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
             return false;
         }
@@ -275,6 +315,29 @@ namespace CStoJS.Semantic
                     return true;
             }
             return false;
+        }
+
+        public MethodNode GetMethod(string name)
+        {
+            for (int i = this.contexts.Count - 1; i >= 0; i--)
+            {
+                if (contexts[i].MethodExists(name))
+                {
+                    var clase = api.GetTypeDeclaration(contexts[i].name) as TypeDefinitionNode;
+                    var new_name = name;
+                    if (name.Contains("base."))
+                        new_name = name.Replace("base.", "");
+                    if (name.Contains("this."))
+                        new_name = name.Replace("this.", "");
+                    foreach (var method in clase.methods)
+                    {
+                        if (method.ToString() == new_name)
+                            return method;
+                    }
+                }
+
+            }
+            return null;
         }
 
         public TypeDeclarationNode GetMethodReturnType(string name)

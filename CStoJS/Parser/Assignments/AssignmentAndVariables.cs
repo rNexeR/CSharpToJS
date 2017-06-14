@@ -4,6 +4,7 @@ using CStoJS.Inputs;
 using System;
 using System.Collections.Generic;
 using CStoJS.Tree;
+using System.Linq;
 
 namespace CStoJS.ParserLibraries
 {
@@ -29,7 +30,7 @@ namespace CStoJS.ParserLibraries
         private List<VariableInitializer> OptionalVariableInitializerList()
         {
             printDebug("Optional Variable Initializer List ==TODO");
-            if (MatchAny(this.expression_operators))
+            if (MatchAny(new TokenType[]{TokenType.BRACE_OPEN}.Concat(this.expression_operators).ToArray()))
             {
                 return VariableInitializerList();
             }

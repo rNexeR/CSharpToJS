@@ -227,7 +227,7 @@ namespace CStoJS.ParserLibraries
             {
                 var operador = ConsumeToken();
                 var type = Type();
-                var first = new CastingExpressionNode(type, left) as ExpressionNode;
+                var first = new AsExpressionNode(type, left) as ExpressionNode;
                 return RelationalExpressionPrime(ref first);
             }
             else

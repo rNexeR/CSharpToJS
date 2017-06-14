@@ -65,8 +65,13 @@ namespace Tests
         int val;
         Node left;
         Node right;
+        static int x = 6;
         
-        public Node(){
+        public Node(int val){
+
+        }
+
+        public int SetVal(int x){
 
         }
 
@@ -85,17 +90,27 @@ namespace Tests
     }
 
     public interface IAlgo : IAlgoMas{
-        // void SayHi();
-        //void SayHello(string greeting);
-        // void SayHello();
+        void SayHi();
+        void SayHello(string greeting);
+        void SayHello();
     }
 
-    public interface nuevo : IAlgo {
-        void SayHi();
-    }
+    // public interface nuevo : IAlgo {
+    //     void SayHi();
+    // }
+
 
     public class Tree{
         Node root = null;
+        int x = 5 + 5;
+        Node temp = new Node(x);
+        int val = new Node(x).SetVal(x + x);
+        int y = 'a';
+        int z = (int)3.5f;
+        int w = y + 1;
+        string a = null;
+        int[] e = {1,2,3};
+        // int[][] f = new int[][]{new int[]{1}, new int[]{2}};
         
         public Tree(){
             (x)++;
@@ -112,10 +127,11 @@ namespace Tests
             int[][] b;
             int[,] c;
             h.Hi();
+            int x = 5;
         }
     }
 
-    public class ClaseAbstracta: IAlgo{
+    public class ClaseAbstracta{
         private ClaseAbstracta(){
 
         }
@@ -125,12 +141,38 @@ namespace Tests
         /*public abstract void SayHello(int val);
         public abstract void SayHello(int[] val);
         public abstract void SayHello(string greeting);*/
-        public override void SayHi(){
+        public void SayHi(){
             
         }
 
-        public void hola(int a, NuevaClase nc){
+        public void hola(int a){
 
         }
+    }
+
+    public class X: IAlgo{
+        public X(){
+
+        }
+
+        public X(int y){
+
+        }
+
+        public virtual void SayHi(){}
+        public virtual void SayHello(){}
+        public virtual void SayHello(string msg){}
+    }
+
+    public class Y : X{
+        public Y(): base(){
+
+        }
+
+        public Y(int x): base(x){
+
+        }
+
+        public override void SayHi(){}
     }
 }

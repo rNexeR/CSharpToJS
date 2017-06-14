@@ -20,8 +20,11 @@ namespace CStoJS.Tree
 
         public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
         {
-            if(!ctx_man.VariableExists(token.lexema))
-                throw new SemanticException($"Field {token.lexema} doesn't exist in type {ctx_man.GetCurrentClass()}", token);
+            // var _usings = ctx_man.GetCurrentNamespaceUsings();
+            // var class_name = Utils.GetClassName(token.lexema, _usings, api);
+            if(!ctx_man.VariableExists(token.lexema) /*&& api.GetTypeDeclaration(class_name) == null*/)
+                throw new SemanticException($"Field {token.lexema} doesn't exist in type {ctx_man.GetCurrentClass()} or is inaccesible due to its protection lever or is declared as static", token);
+            
             return ctx_man.GetVariableType(token.lexema);
         }
     }

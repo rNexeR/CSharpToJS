@@ -30,12 +30,18 @@ namespace CStoJS.Tree
                 {
                     ret_type = expr.EvaluateType(api, ctx_man);
                     var current_ctx = Utils.GetClassName(ret_type.ToString(), _usings, api);
-                    ctx_man_cpy.Push(new Context(ContextType.CLASS_CONTEXT, current_ctx), current_ctx);
+                    var add_private_members = true;
+                    if(expr is InstanceInitilizerExpressionNode)
+                        add_private_members = false;
+                    ctx_man_cpy.Push(new Context(ContextType.CLASS_CONTEXT, current_ctx), current_ctx, add_private_members);
                 }else{
                     ret_type = expr.EvaluateType(api, ctx_man_cpy);
                     var current_ctx = Utils.GetClassName(ret_type.ToString(), _usings, api);
                     ctx_man_cpy.Clear();
-                    ctx_man_cpy.Push(new Context(ContextType.CLASS_CONTEXT, current_ctx), current_ctx);
+                    var add_private_members = true;
+                    if(expr is InstanceInitilizerExpressionNode)
+                        add_private_members = false;
+                    ctx_man_cpy.Push(new Context(ContextType.CLASS_CONTEXT, current_ctx), current_ctx, add_private_members);
                 }
                 i++;
             }

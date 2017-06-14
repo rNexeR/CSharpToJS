@@ -60,7 +60,10 @@ namespace CStoJS.ParserLibraries
                     this.lookAhead = new Token[] { };
                     var expr = PrimaryExpression();
                     var ret = new List<ExpressionNode>();
-                    ret.Add(new CastingExpressionNode(new IdentifierTypeNode(new IdentifierNode(identifier)), new InlineExpressionNode(expr)));
+                    var builtIn = new List<TokenType>(this.builtInTypes);
+                    var target = builtIn.Contains(identifier[0].type) ? TypeDetector(identifier[0].type, new IdentifierNode(identifier)) : new IdentifierTypeNode(new IdentifierNode(identifier));
+                    var op_1 = new ParenthisizedCastingExpressionNode(target, new InlineExpressionNode(expr));
+                    ret.Add(op_1);
                     return new InlineExpressionNode(ret);
                 }
                 else
@@ -201,8 +204,7 @@ namespace CStoJS.ParserLibraries
             }
             else if (Match(TokenType.NULL_KEYWORD))
             {
-                ConsumeToken();
-                var left = new NullExpressionNode();
+                var left = new NullExpressionNode(ConsumeToken());
                 var right = PrimaryExpressionPrime();
 
                 var ret = new List<ExpressionNode>();
@@ -377,6 +379,10 @@ namespace CStoJS.ParserLibraries
                 MatchExactly(TokenType.BRACKET_CLOSE);
                 var arr = new ArrayType();
                 arr.baseType = type;
+                if(exprs.Count == 1)
+                    arr.arrayOfArrays = 1;
+                else
+                    arr.dimensions = exprs.Count-1;
 
                 OptionalRankSpecifierList(ref arr);
                 var initializer = OptionalArrayInitializer();
