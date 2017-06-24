@@ -5,10 +5,11 @@ namespace CStoJS.Tree
     public class BitwiseExpressionNode : BinaryExpressionNode
     {
         public BitwiseExpressionNode() : base(){
-            
+            this.InitializeRules();
         }
         public BitwiseExpressionNode(ExpressionNode left, Token operador, ExpressionNode right) : base(left, operador, right)
         {
+            this.InitializeRules();
         }
 
         public void InitializeRules()

@@ -14,5 +14,12 @@ namespace CStoJS.Tree
         {
             this.variablesNodes = variablesNodes;
         }
+
+        public override TypeDeclarationNode EvaluateSemantic(Semantic.API api, Semantic.ContextManager context_manager){
+            foreach(var variable in this.variablesNodes){
+                variable.EvaluateSemantic(api, context_manager);
+            }
+            return null;
+        }
     }
 }

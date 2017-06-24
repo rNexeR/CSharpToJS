@@ -14,6 +14,8 @@ namespace CStoJS.ParserLibraries
         {
             printDebug("Compilation Unit");
             var compi_unit = new NamespaceNode();
+            // Console.WriteLine(compi_unit.ToString());
+            // compi_unit.identifier = new IdentifierNode(new Token(TokenType.ID, "Project", 0,0));
             // var using_nodes = new List<UsingNode>();
             // var namespaces_nodes = new List<NamespaceNode>();
             // var types_nodes = new List<TypeDeclarationNode>();
@@ -142,10 +144,6 @@ namespace CStoJS.ParserLibraries
                 identifiers.Add(tokens[1]);
                 IdentifierAttribute(ref identifiers);
             }
-            else
-            {
-
-            }
         }
 
         void IdentifierAttributeLA()
@@ -155,9 +153,16 @@ namespace CStoJS.ParserLibraries
             {
                 IdentifierAttributeLA();
             }
-            else
-            {
+        }
 
+        void IdentifierAttributeLA(ref List<Token> identifiers){
+            printDebug("Identifier Attribute LA");
+            if (Match(TokenType.OP_MEMBER_ACCESS))
+            {
+                ConsumeOnMatchLA(TokenType.OP_MEMBER_ACCESS);
+                identifiers.Add(currentToken);
+                ConsumeOnMatchLA(TokenType.ID);
+                IdentifierAttributeLA(ref identifiers);
             }
         }
     }

@@ -186,12 +186,13 @@ namespace CStoJS.ParserLibraries
 
             switch (token)
             {
-                case TokenType.INT_KEYWORD: return new IntType(identifier);
-                case TokenType.CHAR_KEYWORD: return new CharType(identifier);
-                case TokenType.STRING_KEYWORD: return new StringType(identifier);
-                case TokenType.FLOAT_KEYWORD: return new FloatType(identifier);
-                case TokenType.VOID_KEYWORD: return new VoidType(identifier);
-                case TokenType.BOOL_KEYWORD: return new BoolType(identifier);
+                case TokenType.INT_KEYWORD: identifier.identifiers[0].lexema = "IntType"; return new IntType(identifier);
+                case TokenType.CHAR_KEYWORD: identifier.identifiers[0].lexema = "CharType"; return new CharType(identifier);
+                case TokenType.STRING_KEYWORD: identifier.identifiers[0].lexema = "StringType"; return new StringType(identifier);
+                case TokenType.FLOAT_KEYWORD: identifier.identifiers[0].lexema = "FloatType"; return new FloatType(identifier);
+                case TokenType.VOID_KEYWORD: identifier.identifiers[0].lexema = "VoidType"; return new VoidType(identifier);
+                case TokenType.VAR_KEYWORD: identifier.identifiers[0].lexema = "VarType"; return new VarType(identifier);
+                case TokenType.BOOL_KEYWORD: identifier.identifiers[0].lexema = "BoolType"; return new BoolType(identifier);
                 default: return new IdentifierTypeNode(identifier);
             }
         }

@@ -142,6 +142,8 @@ namespace CStoJS.ParserLibraries
         private StatementNode StatementExpression()
         {
             printDebug("Statement Expression");
+            if(currentToken.lexema == "i")
+                Console.Write("");
             var left = UnaryExpression();
             return new StatementExpressionNode(StatementExpressionFactorized(ref left));
             // return StatementExpressionFactorized(ref left);

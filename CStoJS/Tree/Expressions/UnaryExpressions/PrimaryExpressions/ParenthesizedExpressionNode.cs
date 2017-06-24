@@ -17,9 +17,9 @@ namespace CStoJS.Tree
             
         }
 
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
-            return expressionNode.EvaluateType(api, ctx_man);
+            return expressionNode.EvaluateType(api, class_ctx_man);
         }
     }
 }

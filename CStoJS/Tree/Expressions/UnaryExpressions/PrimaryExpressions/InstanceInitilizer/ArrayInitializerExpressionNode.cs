@@ -20,7 +20,7 @@ namespace CStoJS.Tree
 
         }
 
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
             // var usings = ctx_man.GetCurrentNamespaceUsings();
             // string expected_name;
@@ -28,12 +28,12 @@ namespace CStoJS.Tree
             //     expected_name = arr.ToString();
             // else
             //     expected_name = Utils.GetClassName(arr.baseType.identifier.ToString(), usings, api);
-            if (initializer != null)
-            {
-                var initializers_type = this.initializer.EvaluateType(api, ctx_man);
-                if (arr.ToString() != initializers_type.ToString())
-                    throw new SemanticException($"Array Initializer types ({initializers_type}) mismatch in type with constructor type ({arr}).");
-            }
+            // if (initializer != null)
+            // {
+            //     var initializers_type = this.initializer.EvaluateType(api, class_ctx_man);
+            //     if (arr.ToString() != initializers_type.ToString())
+            //         throw new SemanticException($"Array Initializer types ({initializers_type}) mismatch in type with constructor type ({arr}).");
+            // }
             //arr.baseType = api.GetTypeDeclaration(expected_name);
             return arr;
         }

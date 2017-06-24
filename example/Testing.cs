@@ -65,14 +65,19 @@ namespace Tests
         int val;
         Node left;
         Node right;
+        protected int y = 0;
         static int x = 6;
         
         public Node(int val){
-
+            y = 1;
         }
 
-        public int SetVal(int x){
+        public static int SetVal(int x){
+            return 0;
+        }
 
+        public static float SetVal(float x, float y){
+            return 0.5f;
         }
 
     }
@@ -103,31 +108,24 @@ namespace Tests
     public class Tree{
         Node root = null;
         int x = 5 + 5;
-        Node temp = new Node(x);
-        int val = new Node(x).SetVal(x + x);
+        Node temp = new Node(5);
+        int val = Node.SetVal(5 + 5);
         int y = 'a';
         int z = (int)3.5f;
-        int w = y + 1;
         string a = null;
-        int[] e = {1,2,3};
+        int[] e = new int[5];
         // int[][] f = new int[][]{new int[]{1}, new int[]{2}};
         
         public Tree(){
-            (x)++;
-            ((int)x) = 5;
-            (hola.adios).cambiarTodo();
-            (hola.adios)++;
-            ((Clase)child).funcion();
-            a.x[a.x[0,0].y].setX( getY(x[fn(1,2)]));
-            a.x.y;
-            a[1,2];
-            a[1][2];
-            a = null;
-            int[] a;
-            int[][] b;
-            int[,] c;
-            h.Hi();
-            int x = 5;
+            int s = Node.SetVal(5);
+            float r = Node.SetVal(1f, 2f);
+            // int q = this.temp.y;
+            s = 5;
+            bool x = s == 5;
+            int t = x ? 1 : 2;
+            while(x) t++;
+
+            return;
         }
     }
 

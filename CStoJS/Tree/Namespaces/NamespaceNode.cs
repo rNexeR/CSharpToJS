@@ -25,6 +25,8 @@ namespace CStoJS.Tree
 
         public override string ToString()
         {
+            // if(identifier.identifiers.Count == 0)
+            //     return "CStoJS";
             return identifier.ToString();
         }
 
@@ -71,6 +73,15 @@ namespace CStoJS.Tree
                         throw new SemanticException($"Double definition of type {type.identifier.ToString()}.", _using.identifier.identifiers[0]);
                     decl_names.Add(type.identifier.ToString());
                 }
+            }
+        }
+
+        public void GenerateCode(Outputs.IOutput output, API api){
+            foreach(var type in this.types_declaration_array){
+                if(!(type is ClassNode))
+                    continue;
+                output.WriteStringLine("");
+                type.GenerateCode(output, api);
             }
         }
     }

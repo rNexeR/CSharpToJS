@@ -31,7 +31,7 @@ namespace CStoJS.Semantic
             if (VariableExists(var_name))
                 throw new SemanticException($"Double declaration of variable. Variable Name: {var_name}", type.identifier.identifiers[0]);
             variables[var_name] = type;
-            if (this.type == ContextType.CLASS_CONTEXT)
+            if (this.type == ContextType.CLASS_CONTEXT || this.type == ContextType.PARENT_CLASS_CONTEXT)
             {
                 variables[$"this.{var_name}"] = type;
                 if (AddBase)

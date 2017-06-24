@@ -33,5 +33,18 @@ namespace CStoJS.Tree
                 previous_val = node.assignment;
             }
         }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            var nsp_name = api.namespaces[this.namespace_index].ToString();
+            String type_name = Utils.GetFullName(nsp_name, this.identifier.ToString());
+            output.WriteStringLine($"{type_name} = {{");
+            
+            foreach(var _enum in this.enum_node){
+                output.WriteStringLine($"\t{_enum.identifier} : {_enum.assignment},");
+            }
+            
+            output.WriteStringLine($"}}");
+            this.generated = true;
+        }
     }
 }

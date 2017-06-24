@@ -43,7 +43,7 @@ namespace CStoJS.Tree
             return ret;
         }
 
-        internal void Evaluate(API api, ContextManager context_manager, string class_name)
+        public void Evaluate(API api, ContextManager context_manager, string class_name)
         {
             var _usings = context_manager.GetCurrentNamespaceUsings();
             if (this.identifier.ToString() != class_name)
@@ -63,7 +63,7 @@ namespace CStoJS.Tree
             {
                 this.initializer.Evaluate(api, context_manager);
             }
-            this.body.Evaluate(api, context_manager, new VoidType());
+            var ret = this.body.EvaluateSemantic(api, context_manager);
             context_manager.Pop();
         }
     }

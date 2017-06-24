@@ -34,6 +34,18 @@ namespace CStoJS.Semantic
             this.static_context = false;
         }
 
+        public bool IsStaticContext()
+        {
+            return this.static_context;
+        }
+
+        public bool HasContextType(ContextType type){
+            foreach(var ctx in this.contexts)
+                if(ctx.type == type)
+                    return true;
+                return false;
+        }
+
         public void Push(Context context, string class_name = "", bool add_private_members = true)
         {
             this.contexts.Add(context);
@@ -41,6 +53,11 @@ namespace CStoJS.Semantic
             {
                 this.AddClassMembers(class_name, false, true, 0, add_private_members);
                 this.class_name = class_name;
+
+                var clase = api.GetTypeDeclaration(class_name);
+                if(!(clase is ClassNode) && !(clase is InterfaceNode))
+                    return;
+
                 if (class_name != "Object")
                 {
                     this.PushParentClasses(class_name);
@@ -95,11 +112,21 @@ namespace CStoJS.Semantic
             var ctx = CurrentContext ? this.contexts.Count - 1 : ctx_id;
             if (!this.api.TypeDeclarationExists(class_name))
             {
-                Console.WriteLine($"Class {class_name} not found in api.");
+                // Console.WriteLine($"Class {class_name} not found in api.");
                 return;
             }
 
-            var clase = this.api.GetTypeDeclaration(class_name) as TypeDefinitionNode;
+            var type = this.api.GetTypeDeclaration(class_name);
+
+            if(type is EnumDefinitionNode){
+                var enum_type = type as EnumDefinitionNode;
+                foreach(var item in enum_type.enum_node){
+                    this.AddVariableToContext(ctx, item.identifier.ToString(), new IntType(), false);
+                }
+                return;
+            }
+
+            var clase = type as TypeDefinitionNode;
 
             foreach (var field in clase.fields)
             {
@@ -136,7 +163,7 @@ namespace CStoJS.Semantic
         {
             if (!this.api.TypeDeclarationExists(class_name))
             {
-                Console.WriteLine($"Class {class_name} not found in api.");
+                // Console.WriteLine($"Class {class_name} not found in api.");
                 return;
             }
 
@@ -202,7 +229,6 @@ namespace CStoJS.Semantic
         {
             if (!this.api.TypeDeclarationExists(class_name))
             {
-                Console.WriteLine($"Class <{class_name}> not found in api.");
                 return;
             }
 
@@ -278,14 +304,19 @@ namespace CStoJS.Semantic
                     }
                     else
                     {
-                        var clase = this.api.GetTypeDeclaration(this.class_name) as ClassNode;
+                        var clase = this.api.GetTypeDeclaration(contexts[i].name) as ClassNode;
+                        var found = false;
                         foreach (var field in clase.fields)
                         {
-                            if (field.ToString() == var_name && field.modifier != null && field.modifier.lexema == "static")
+                            if (field.ToString() == var_name)
                             {
-                                return true;
+                                found = true;
+                                if(field.modifier != null && field.modifier.lexema == "static")
+                                    return true;
                             }
                         }
+                        if(!found)
+                            return true;
                     }
                 }
             }
@@ -312,7 +343,23 @@ namespace CStoJS.Semantic
             for (int i = this.contexts.Count - 1; i >= 0; i--)
             {
                 if (contexts[i].MethodExists(name))
-                    return true;
+                {
+                    if (!static_context)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        var clase = this.api.GetTypeDeclaration(contexts[i].name) as ClassNode;
+                        foreach (var method in clase.methods)
+                        {
+                            if (method.ToString() == name && method.modifier != null && method.modifier.lexema == "static")
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
             return false;
         }

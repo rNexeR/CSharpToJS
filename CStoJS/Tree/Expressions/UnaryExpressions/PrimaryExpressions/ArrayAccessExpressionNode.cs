@@ -21,8 +21,9 @@ namespace CStoJS.Tree
 
         }
 
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
+            var ctx_man = st_ctx_man is null ? class_ctx_man : st_ctx_man;
             var id_ret = identifier.EvaluateType(api, ctx_man);
 
             if (!(id_ret is ArrayType))
@@ -37,8 +38,8 @@ namespace CStoJS.Tree
 
                 foreach (var index in indexes)
                 {
-                    index.Evaluate(api, ctx_man);
-                    if (index.exprs.Count > 0)
+                    index.Evaluate(api, class_ctx_man);
+                    if (index.exprs.Count > (id_ret as ArrayType).arrayOfArrays)
                         throw new SemanticException("Too many array dimensions indexes.");
                 }
                 var ret = new ArrayType();
@@ -53,7 +54,7 @@ namespace CStoJS.Tree
                     throw new SemanticException("Too many array indexes.");
                 foreach (var index in indexes)
                 {
-                    index.Evaluate(api, ctx_man);
+                    index.Evaluate(api, class_ctx_man);
                     if (index.exprs.Count != id_array.dimensions + 1)
                         throw new SemanticException("Differents array dimensions indexes.");
                 }

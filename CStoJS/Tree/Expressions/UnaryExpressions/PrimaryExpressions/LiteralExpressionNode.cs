@@ -17,7 +17,7 @@ namespace CStoJS.Tree
             this.literal = literal;
         }
 
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
             switch(literal.type){
                 case TokenType.LITERAL_INT: return api.GetTypeDeclaration("IntType");

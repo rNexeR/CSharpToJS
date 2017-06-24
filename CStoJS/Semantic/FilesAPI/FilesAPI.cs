@@ -18,6 +18,42 @@ namespace CStoJS.Semantic
             GenerateTypesHash(trees);
         }
 
+        public Dictionary<string,TypeDeclarationNode> GetEnums(){
+            var ret = new Dictionary<string,TypeDeclarationNode>();
+
+            foreach(var type in this.types){
+                if(type.Value is EnumDefinitionNode){
+                    ret.Add(type.Key, type.Value);
+                }
+            }
+
+            return ret;
+        }
+
+        // public Dictionary<string,TypeDeclarationNode> GetClassesWOParents(){
+        //     var ret = new Dictionary<string,TypeDeclarationNode>();
+
+        //     foreach(var type in this.types){
+        //         if(type.Value is ClassNode && (type.Value as ClassNode).inherit.Count == 0){
+        //             ret.Add(type.Key, type.Value);
+        //         }
+        //     }
+
+        //     return ret;
+        // }
+
+        // public Dictionary<string,TypeDeclarationNode> GetClassesWParents(){
+        //     var ret = new Dictionary<string,TypeDeclarationNode>();
+
+        //     foreach(var type in this.types){
+        //         if(type.Value is ClassNode && (type.Value as ClassNode).inherit.Count > 0){
+        //             ret.Add(type.Key, type.Value);
+        //         }
+        //     }
+
+        //     return ret;
+        // }
+
         public bool TypeDeclarationExists(string typename)
         {
             return this.types.ContainsKey(typename);
@@ -173,7 +209,7 @@ namespace CStoJS.Semantic
                 {
                     string typename = dcl.identifier.ToString();
                     if (nsp.ToString() != "")
-                        typename = $"{nsp.identifier.ToString()}.{dcl.identifier.ToString()}";
+                        typename = $"{nsp.ToString()}.{dcl.identifier.ToString()}";
                     dcl.namespace_index = nsp_idx;
                     if (types.ContainsKey(typename))
                         throw new SemanticException($"Double definition of Type {typename}.", dcl.identifier.identifiers[0]);

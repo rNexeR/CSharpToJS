@@ -161,7 +161,8 @@ namespace CStoJS.LexerLibraries
             reservedWordsDict["null"] = TokenType.NULL_KEYWORD;
         }
 
-        private void ThrowException(string msg){
+        private void ThrowException(string msg)
+        {
             throw new LexicalException($"{msg} [{currentSymbol.character}] at [{currentSymbol.rowCount}, {currentSymbol.colCount}]");
         }
 
@@ -178,20 +179,47 @@ namespace CStoJS.LexerLibraries
             }
             else if (multipleOptionsDict.ContainsKey(currentSymbol.character.ToString()))
                 return MultipleOptionsSelector();
-            else if(currentSymbol.character == '\'')
+            else if (currentSymbol.character == '\'')
                 return CharLiteralDetector();
-            else if(currentSymbol.character == '"')
+            else if (currentSymbol.character == '"')
                 return StringLiteralDetector();
-            else if(currentSymbol.character == '@')
+            else if (currentSymbol.character == '@')
                 return StringVerbatimLiteralDetector();
             else if (Char.IsDigit(currentSymbol.character))
                 return DigitOptionsSelector();
             else if (Char.IsLetter(currentSymbol.character) || currentSymbol.character == '_')
                 return LetterOptionsSelector();
-            else{
+            else
+            {
                 ThrowException("Symbol not supported.");
                 return new Token(TokenType.EOF, "", 0, 0);
             }
+        }
+
+        private Token BinaryOrHexadecimalIntDetector(Symbol before)
+        {
+            var lexema = new StringBuilder("0");
+            var ret = new Token(TokenType.LITERAL_INT, lexema.ToString(), currentSymbol.rowCount, currentSymbol.colCount);
+
+            if(currentSymbol.character == 'x' || currentSymbol.character == 'X'){
+                lexema.Append(currentSymbol.character);
+                currentSymbol = inputString.GetNextSymbol();
+                while(Char.IsDigit(currentSymbol.character) || (currentSymbol.character >= 'a' && currentSymbol.character <= 'f')){
+                    lexema.Append(currentSymbol.character);
+                    currentSymbol = inputString.GetNextSymbol();
+                }
+
+            }else if(currentSymbol.character == 'b' || currentSymbol.character == 'B'){
+                lexema.Append(currentSymbol.character);
+                currentSymbol = inputString.GetNextSymbol();
+                while((currentSymbol.character >= '0' && currentSymbol.character <= '9')){
+                    lexema.Append(currentSymbol.character);
+                    currentSymbol = inputString.GetNextSymbol();
+                }
+            }
+
+            ret.lexema = lexema.ToString();
+            return ret;
         }
 
         private Token MultipleOptionsSelector()
@@ -212,27 +240,38 @@ namespace CStoJS.LexerLibraries
                 currentSymbol = inputString.GetNextSymbol();
                 lexema.Append(currentSymbol.character);
 
-                if(ret.type == TokenType.LINE_COMMENT){
-                    while(currentSymbol.character != '\n'){
+                if (ret.type == TokenType.LINE_COMMENT)
+                {
+                    while (currentSymbol.character != '\n')
+                    {
                         currentSymbol = inputString.GetNextSymbol();
-                        if(currentSymbol.character == '\0'){
+                        if (currentSymbol.character == '\0')
+                        {
                             ThrowException("Block Comment must be closed");
                         }
                     }
                     return GetNextToken();
                 }
-                else if(ret.type == TokenType.BLOCK_COMMENT){
-                    while(true){
+                else if (ret.type == TokenType.BLOCK_COMMENT)
+                {
+                    while (true)
+                    {
                         currentSymbol = inputString.GetNextSymbol();
-                        if(currentSymbol.character == '*'){
+                        if (currentSymbol.character == '*')
+                        {
                             currentSymbol = inputString.GetNextSymbol();
-                            if(currentSymbol.character == '/'){
+                            if (currentSymbol.character == '/')
+                            {
                                 currentSymbol = inputString.GetNextSymbol();
                                 return GetNextToken();
-                            }else if(currentSymbol.character == '\0'){
+                            }
+                            else if (currentSymbol.character == '\0')
+                            {
                                 ThrowException("Block Comment must be closed");
                             }
-                        }else if(currentSymbol.character == '\0'){
+                        }
+                        else if (currentSymbol.character == '\0')
+                        {
                             ThrowException("Block Comment must be closed");
                         }
                     }
@@ -252,7 +291,7 @@ namespace CStoJS.LexerLibraries
             do
             {
                 currentSymbol = inputString.GetNextSymbol();
-                if(currentSymbol.character == '\n' || currentSymbol.character == '\0')
+                if (currentSymbol.character == '\n' || currentSymbol.character == '\0')
                     ThrowException("Char Literal must be closed.");
                 lexema.Append(currentSymbol.character);
                 lex = lexema.ToString();
@@ -261,7 +300,7 @@ namespace CStoJS.LexerLibraries
             ret.lexema = lexema.ToString();
             currentSymbol = inputString.GetNextSymbol();
 
-            if(ret.lexema.Length > 3)
+            if (ret.lexema.Length > 3)
                 ThrowException("Too many characters in Char Literal.");
             return ret;
         }
@@ -275,7 +314,7 @@ namespace CStoJS.LexerLibraries
             do
             {
                 currentSymbol = inputString.GetNextSymbol();
-                if(currentSymbol.character == '\n' || currentSymbol.character == '\0')
+                if (currentSymbol.character == '\n' || currentSymbol.character == '\0')
                     ThrowException("String Literal must be closed.");
                 lexema.Append(currentSymbol.character);
                 lex = lexema.ToString();
@@ -298,18 +337,22 @@ namespace CStoJS.LexerLibraries
             do
             {
                 currentSymbol = inputString.GetNextSymbol();
-                if(currentSymbol.character == '"'){
+                if (currentSymbol.character == '"')
+                {
                     lexema.Append(currentSymbol.character);
                     currentSymbol = inputString.GetNextSymbol();
-                    if(currentSymbol.character == '"'){
+                    if (currentSymbol.character == '"')
+                    {
                         lexema.Append(currentSymbol.character);
                         currentSymbol = inputString.GetNextSymbol();
                         //continue;
-                    }else{
+                    }
+                    else
+                    {
                         break;
                     }
                 }
-                    
+
                 lexema.Append(currentSymbol.character);
             } while (currentSymbol.character != '"');
 
@@ -346,22 +389,34 @@ namespace CStoJS.LexerLibraries
         private Token DigitOptionsSelector()
         {
             var lexema = new StringBuilder(currentSymbol.character.ToString());
+            var before = currentSymbol;
             var ret = new Token(TokenType.LITERAL_INT, lexema.ToString(), currentSymbol.rowCount, currentSymbol.colCount);
             currentSymbol = inputString.GetNextSymbol();
 
-            while(Char.IsDigit(currentSymbol.character) || (currentSymbol.character == '.' && !lexema.ToString().Contains("."))){
+            if(currentSymbol.character == 'x' || currentSymbol.character == 'X' || currentSymbol.character == 'b' || currentSymbol.character == 'B')
+                return this.BinaryOrHexadecimalIntDetector(before);
+
+            while (Char.IsDigit(currentSymbol.character) || (currentSymbol.character == '.' && !lexema.ToString().Contains(".")))
+            {
                 lexema.Append(currentSymbol.character);
-                if(currentSymbol.character == '.')
+                if (currentSymbol.character == '.')
                     ret.type = TokenType.LITERAL_FLOAT;
                 currentSymbol = inputString.GetNextSymbol();
             }
 
-            if(ret.type == TokenType.LITERAL_FLOAT){
-                if(currentSymbol.character != 'F' && currentSymbol.character != 'f')
+            if (ret.type == TokenType.LITERAL_FLOAT)
+            {
+                if (currentSymbol.character != 'F' && currentSymbol.character != 'f')
                     ThrowException("Float Literal must finish with F.");
                 else
                     lexema.Append(currentSymbol.character);
-                    currentSymbol = inputString.GetNextSymbol();
+                currentSymbol = inputString.GetNextSymbol();
+            }
+            else if (currentSymbol.character == 'F' || currentSymbol.character == 'f')
+            {
+                ret.type = TokenType.LITERAL_FLOAT;
+                lexema.Append(currentSymbol.character);
+                currentSymbol = inputString.GetNextSymbol();
             }
 
             ret.lexema = lexema.ToString();

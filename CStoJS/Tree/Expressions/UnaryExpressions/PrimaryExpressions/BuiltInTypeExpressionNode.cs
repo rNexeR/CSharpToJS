@@ -17,7 +17,7 @@ namespace CStoJS.Tree
             this.token = token;
         }
 
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
             switch(token.type){
                 case TokenType.INT_KEYWORD: return api.GetTypeDeclaration("IntType");

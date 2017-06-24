@@ -16,7 +16,7 @@ namespace CStoJS.Tree
 
         public FieldNode()
         {
-            
+
         }
 
         public FieldNode(TypeDeclarationNode type, IdentifierNode identifier, EncapsulationNode encapsulation, Token modifier)
@@ -24,7 +24,7 @@ namespace CStoJS.Tree
             this.type = type;
             this.identifier = identifier;
             this.encapsulation = encapsulation;
-            if(this.encapsulation.token == null)
+            if (this.encapsulation.token == null)
                 this.encapsulation = new EncapsulationNode(new Token(TokenType.PRIVATE_KEYWORD, "private", 0, 0));
             this.modifier = modifier;
         }
@@ -39,9 +39,18 @@ namespace CStoJS.Tree
             return this.identifier.ToString();
         }
 
-        internal void Evaluate(API api, ContextManager context_manager)
+        public void Evaluate(API api, ContextManager context_manager)
         {
-            if(this.modifier != null && this.modifier.lexema == "static")
+            var _usings = context_manager.GetCurrentNamespaceUsings();
+            var type_name = this.type.ToString();
+            if (!(this.type is ArrayType))
+            {
+                type_name = Utils.GetClassName(type.ToString(), _usings, api);
+                if (!api.TypeDeclarationExists(type_name))
+                    throw new SemanticException($"Type of field {this.identifier} not found.", this.type.identifier.identifiers[0]);
+                this.type = api.GetTypeDeclaration(type_name);
+            }
+            if (this.modifier != null && this.modifier.lexema == "static")
                 context_manager.SetStaticContext();
             var rules = new Dictionary<string, TypeDeclarationNode>();
             rules["FloatType,IntType"] = new FloatType();
@@ -49,9 +58,9 @@ namespace CStoJS.Tree
             if (this.assignment != null)
             {
                 var assign_ret = this.assignment.EvaluateType(api, context_manager);
-                if (assign_ret.ToString() != type.ToString() && !rules.ContainsKey($"{type.ToString()},{assign_ret}"))
+                if (assign_ret.ToString() != type.ToString() && !rules.ContainsKey($"{type.ToString()},{assign_ret}") && !Utils.AreEquivalentsTypes(this.type, assign_ret, _usings, api))
                 {
-                    if(  ((this.type is IdentifierTypeNode) || this.type.ToString() == "StringType") && assign_ret.ToString() == "NullType")
+                    if (((this.type is ClassNode) || this.type.ToString() == "StringType") && assign_ret.ToString() == "NullType")
                         return;
                     throw new SemanticException($"Assignation expression ({assign_ret}) mismatch with field type ({type}).", identifier.identifiers[0]);
                 }

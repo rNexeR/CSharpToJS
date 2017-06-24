@@ -11,7 +11,7 @@ namespace CStoJS.Tree
         public NullExpressionNode(Token identifier){
             this.identifier = identifier;
         }
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
             return new NullType(this.identifier);
         }

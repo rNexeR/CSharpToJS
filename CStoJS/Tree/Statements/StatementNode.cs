@@ -9,6 +9,9 @@ namespace CStoJS.Tree
 
         }
 
-        public void Evaluate(API api, ContextManager context_manager, TypeDeclarationNode returnType) { }
+        public virtual TypeDeclarationNode EvaluateSemantic(API api, ContextManager context_manager)
+        {
+            return null;
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CStoJS.Exceptions;
 
 namespace CStoJS.Tree
 {
@@ -12,6 +13,18 @@ namespace CStoJS.Tree
 
         public BlockStatementNode(List<StatementNode> lista){
             this.statements = lista;
+        }
+
+        public override TypeDeclarationNode EvaluateSemantic(Semantic.API api, Semantic.ContextManager context_manager){
+            TypeDeclarationNode ret = null;
+            foreach(var stmt in this.statements){
+                var st_ret = stmt.EvaluateSemantic(api, context_manager);
+                if(ret == null && st_ret != null)
+                    ret = st_ret;
+                if(ret != null && st_ret != null && ret.ToString() != st_ret.ToString())
+                    throw new SemanticException($"Multiple return type detected. {ret} and {st_ret}.");
+            }
+            return ret;
         }
     }
 }

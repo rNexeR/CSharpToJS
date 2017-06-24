@@ -22,9 +22,9 @@ namespace CStoJS.Tree
             this.expression = expr;
         }
 
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
-            var expr_type = expression.EvaluateType(api, class_ctx_man);
+            var expr_type = (expression as UnaryExpressionNode).EvaluateType(api, class_ctx_man, st_ctx_man);
             var temp1 = new List<TokenType> { TokenType.OP_SUBSTRACT, TokenType.OP_SUM, TokenType.OP_INC_MM, TokenType.OP_INC_PP };
             if (temp1.Contains(operador.type))
             {

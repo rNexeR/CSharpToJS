@@ -19,7 +19,7 @@ namespace CStoJS.Tree
         {
             Console.WriteLine($"Evaluating class {this.identifier}");
             var context_manager = new ContextManager(api);
-            var parent_nsp = api.namespaces[this.namespace_index].identifier.ToString();
+            var parent_nsp = api.namespaces[this.namespace_index].ToString();
             var class_name = parent_nsp == "" ? $"{this.identifier.ToString()}" : $"{parent_nsp}.{this.identifier.ToString()}";
             context_manager.Push(new Context(ContextType.CLASS_CONTEXT, class_name), class_name);
             // return;
@@ -113,9 +113,33 @@ namespace CStoJS.Tree
 
         private void EvaluateFieldsSemantic(API api, ContextManager context_manager)
         {
-            foreach(var field in this.fields){
+            context_manager.SetStaticContext();
+            foreach (var field in this.fields)
+            {
                 field.Evaluate(api, context_manager);
             }
+            context_manager.UnsetStaticContext();
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api)
+        {
+            var _usings = api.namespaces[this.namespace_index].using_array;
+            var base_class = "GeneratedCode.Object";
+            foreach (var parent in this.inherit)
+            {
+                var p_name = Utils.GetClassName(parent.ToString(), _usings, api);
+                var parent_type = api.GetTypeDeclaration(p_name);
+                if (parent_type is ClassNode)
+                {
+                    base_class = $"GeneratedCode.{p_name}";
+                    parent_type.GenerateCode(output, api);
+                    output.WriteStringLine("");
+                }
+            }
+            
+            var nsp_name = api.namespaces[this.namespace_index].identifier.ToString();
+            var full_name = Utils.GetFullName(nsp_name, this.identifier.ToString());
+            output.WriteStringLine($"{full_name} = class extends {base_class} {{}};");
         }
     }
 }

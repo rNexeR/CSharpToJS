@@ -46,7 +46,7 @@ namespace CStoJS.ParserLibraries
             MatchExactly(TokenType.PAREN_CLOSE);
             var body = EmbeddedStatement();
 
-            return new ForeachStatementNode(new LocalVariableNode(type, new IdentifierNode(id)), collection);
+            return new ForeachStatementNode(new LocalVariableNode(type, new IdentifierNode(id)), collection, body);
         }
 
         private StatementNode ForStatement()
@@ -62,7 +62,7 @@ namespace CStoJS.ParserLibraries
             MatchExactly(TokenType.PAREN_CLOSE);
             var body = EmbeddedStatement();
 
-            return new ForStatementNode(initializer, condition, increment, body as EmbeddedStatementNode);
+            return new ForStatementNode(initializer, condition, increment, body);
         }
 
         private List<StatementNode> OptionalForInitializer()
@@ -102,7 +102,7 @@ namespace CStoJS.ParserLibraries
             var condition = Expression();
             MatchExactly(TokenType.PAREN_CLOSE);
             MatchExactly(TokenType.END_STATEMENT);
-            return new DoStatementNode(condition, body as EmbeddedStatementNode);
+            return new DoStatementNode(condition, body);
         }
 
         private StatementNode WhileStatement()
@@ -114,7 +114,7 @@ namespace CStoJS.ParserLibraries
             MatchExactly(TokenType.PAREN_CLOSE);
             var body = EmbeddedStatement();
 
-            return new WhileStatementNode(condition,body as EmbeddedStatementNode);
+            return new WhileStatementNode(condition,body);
         }
 
         private JumpStatementNode JumpStatement()

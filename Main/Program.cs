@@ -10,6 +10,8 @@ using CStoJS.ParserLibraries;
 using CStoJS.Tree;
 using CStoJS.Semantic;
 using System.Collections.Generic;
+using CStoJS.CodeGenerator;
+using CStoJS.Outputs;
 
 namespace Main
 {
@@ -17,6 +19,8 @@ namespace Main
     {
         static void Main(string[] args)
         {
+            // args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/RaimProgram";
+            // args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/MergeProgram";
             string[] files;
             List<string> CSFiles = new List<string>();
             var path = Path.GetFullPath("./");
@@ -39,6 +43,10 @@ namespace Main
 
             var semantic_evaluator = new SemanticEvaluator(CSFiles);
             semantic_evaluator.Evaluate();
+
+            var output = new FileOutput("./out.js");
+            var code_generator = new CodeGenerator(output, semantic_evaluator.api);
+            code_generator.GenerateCode();
 
             // float flotante = 3.5f;
             // int entero = 5;
@@ -139,18 +147,19 @@ namespace Main
         }
 
         protected X(int x){
-            
+
         }
 
-        public void sayHi(){}
+        public int sayHi(){
+            return 0;
+        }
     }
 
     public interface IAlgo{
         void SayHello();
     }
 
-    public class Y: X{
-        // public abstract void sayHi();
-        // public override SayHello(){}
+    public class Y{
+        int x = new X().sayHi();
     }
 }

@@ -62,18 +62,38 @@ namespace CStoJS.Tree
                 {
                     throw new SemanticException("Method cannot be virtual because is not marked as virtual, override or abstract in parent.", modifier);
                 }
+                if (method_def.encapsulation.token.lexema != this.encapsulation.token.lexema)
+                    throw new SemanticException($"Method cannot be {this.encapsulation} because is parents mark it as {method_def.encapsulation}.", modifier);
             }
 
             context_manager.Push(new Context(ContextType.METHOD_CONTEXT));
             foreach (var param in this.parameters)
             {
                 var param_type = param.type;
+                if(param_type is ArrayType)
+                    param_type = (param_type as ArrayType).baseType;
                 var param_type_name = Utils.GetClassName(param_type.ToString(), _usings, api);
                 if (param_type_name == "" || !api.TypeDeclarationExists(param_type_name))
                     throw new SemanticException($"Type not found {param_type.ToString()}", param.identifier.identifiers[0]);
-                context_manager.AddVariableToCurrentContext(param.identifier.ToString(), api.GetTypeDeclaration(param_type_name));
+                if(param.type is ArrayType)
+                    context_manager.AddVariableToCurrentContext(param.identifier.ToString(), param.type);
+                else
+                    context_manager.AddVariableToCurrentContext(param.identifier.ToString(), api.GetTypeDeclaration(param_type_name));
             }
-            this.body.Evaluate(api, context_manager, returnType);
+            if(this.body != null){
+                var ret = this.body.EvaluateSemantic(api, context_manager);
+                if(returnType is VoidType){
+                    if(!(ret is VoidType) && ret != null)
+                        throw new SemanticException($"Method {this.identifier} cannot return {ret}.");
+                }else{
+                    if(ret is null){
+                        throw new SemanticException($"Method {this.identifier} must return {returnType}, no return found.");
+                    }else{
+                        if(!Utils.AreEquivalentsTypes(this.returnType, ret, _usings, api))
+                            throw new SemanticException($"Method {this.identifier} cannot return {ret}, must return {returnType}.");
+                    }
+                }
+            }
             context_manager.Pop();
         }
     }

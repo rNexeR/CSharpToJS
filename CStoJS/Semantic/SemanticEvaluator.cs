@@ -97,6 +97,9 @@ namespace CStoJS.Semantic
             public class VoidType{
                 public override string ToString(){}
             }
+            public class BoolType{
+                public override string ToString(){}
+            }
             namespace System{
                 namespace IO{
                     public class TextWriter{
@@ -137,13 +140,18 @@ namespace CStoJS.Semantic
             var i = 0;
             foreach (var nsp in this.trees)
             {
+                if (i == 0)
+                {
+                    i++;
+                    continue;
+                }
                 try
                 {
                     nsp.EvaluateSemantic(api);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"->{this.files[i-1]}: {ex.Message}");
+                    Console.WriteLine($"->{this.files[i - 1]}: {ex.Message}");
                     return;
                 }
                 i++;

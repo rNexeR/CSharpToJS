@@ -94,7 +94,7 @@ namespace CStoJS.ParserLibraries
             var body = EmbeddedStatement();
             var elsePart = OptionalElsePart();
 
-            return new IfStatementNode(condition, body as EmbeddedStatementNode, elsePart);
+            return new IfStatementNode(condition, body, elsePart);
         }
 
         private ElseNode OptionalElsePart()

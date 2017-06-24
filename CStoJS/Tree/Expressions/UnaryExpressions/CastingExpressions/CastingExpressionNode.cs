@@ -22,10 +22,11 @@ namespace CStoJS.Tree
             this.expression = expression;
         }
 
-        public override TypeDeclarationNode EvaluateType(API api, ContextManager ctx_man)
+        public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
-            var expr_type = expression.EvaluateType(api, ctx_man);
-            var nsp_using = ctx_man.GetCurrentNamespaceUsings();
+            var expr_type = expression.EvaluateType(api, class_ctx_man);
+            var nsp_using = class_ctx_man.GetCurrentNamespaceUsings();
+            var expr_type_name = Utils.GetClassName(expr_type.identifier.ToString(), nsp_using, api);
             var target_type_name = Utils.GetClassName(targetType.identifier.ToString(), nsp_using, api);
             if (this.rules.ContainsKey($"{expr_type},{this.targetType}"))
             {
@@ -33,12 +34,12 @@ namespace CStoJS.Tree
             }
             else if (expr_type is NullType && (targetType is ClassNode || targetType is StringType)) { }
             else if (expr_type.ToString() == targetType.ToString()) { }
-            else if (!Utils.IsChildOf(target_type_name, expr_type.ToString(), api) && !Utils.IsChildOf(expr_type.ToString(), target_type_name, api))
+            else if (!Utils.IsChildOf(target_type_name, expr_type_name, api) && !Utils.IsChildOf(expr_type_name, target_type_name, api))
             {
-                throw new SemanticException($"Cannot convert {expr_type} to {target_type_name}");
+                throw new SemanticException($"Cannot convert {expr_type_name} to {target_type_name}");
             }
 
-            var _usings = ctx_man.GetCurrentNamespaceUsings();
+            var _usings = class_ctx_man.GetCurrentNamespaceUsings();
             var type_name = Utils.GetClassName(targetType.ToString(), _usings, api);
 
             return api.GetTypeDeclaration(type_name);

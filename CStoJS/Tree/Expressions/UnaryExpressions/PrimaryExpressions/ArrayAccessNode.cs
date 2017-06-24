@@ -17,9 +17,9 @@ namespace CStoJS.Tree
             
         }
 
-        public void Evaluate(API api, ContextManager ctx_man){
+        public void Evaluate(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null){
             foreach(var expr in this.exprs){
-                var type = expr.EvaluateType(api, ctx_man);
+                var type = expr.EvaluateType(api, class_ctx_man);
                 if(type.ToString() != "IntType")
                     throw new SemanticException("Expression used as array index must return a int value.");
             }

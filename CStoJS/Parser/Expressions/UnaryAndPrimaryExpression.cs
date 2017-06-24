@@ -29,9 +29,15 @@ namespace CStoJS.ParserLibraries
                     identifier.Add(f_type);
                     if (lookAhead[2].type == TokenType.OP_MEMBER_ACCESS)
                     {
-                        identifier.Add(ConsumeToken());
+                        identifier.Add(currentToken);
+                        ConsumeOnMatchLA(TokenType.ID);
 
-                        IdentifierAttribute(ref identifier);
+                        IdentifierAttributeLA(ref identifier);
+
+                        if(!Match(TokenType.PAREN_CLOSE)){
+                            RollbackLA();
+                            return new InlineExpressionNode(PrimaryExpression());
+                        }
 
                         MatchExactly(TokenType.PAREN_CLOSE);
                     }
@@ -182,7 +188,7 @@ namespace CStoJS.ParserLibraries
             {
                 var token = MatchExactly(TokenType.THIS_KEYWORD);
                 var left = new IdentifierExpressionNode(token) as ExpressionNode;
-                var right = PrimaryExpressionPrime();
+                var right = PrimaryExpressionPrime("this");
 
                 var ret = new List<ExpressionNode>();
                 ret.Add(left);
@@ -194,7 +200,7 @@ namespace CStoJS.ParserLibraries
             {
                 var token = MatchExactly(TokenType.BASE_KEYWORD);
                 var left = new IdentifierExpressionNode(token) as ExpressionNode;
-                var right = PrimaryExpressionPrime();
+                var right = PrimaryExpressionPrime("base");
 
                 var ret = new List<ExpressionNode>();
                 ret.Add(left);
@@ -231,12 +237,14 @@ namespace CStoJS.ParserLibraries
             }
         }
 
-        private List<ExpressionNode> PrimaryExpressionPrime()
+        private List<ExpressionNode> PrimaryExpressionPrime(string reference = null)
         {
             printDebug("Primary Expression Prime");
             if (Match(TokenType.OP_MEMBER_ACCESS))
             {
                 var tokens = MatchExactly(new TokenType[] { TokenType.OP_MEMBER_ACCESS, TokenType.ID });
+                if(reference != null)
+                    tokens[1].lexema = $"{reference}.{tokens[1].lexema}";
                 var left = new IdentifierExpressionNode(tokens[1]) as ExpressionNode;
                 var right = PrimaryExpressionPrime();
 
@@ -326,7 +334,8 @@ namespace CStoJS.ParserLibraries
             }
             else
             {
-                var type = TypeDetector(ConsumeToken().type, new IdentifierNode());
+                var token = ConsumeToken();
+                var type = TypeDetector(token.type, new IdentifierNode(token));
                 return InstanceExpressionFactorized(ref type);
                 // return new InstanceExpressionNode(type, initializer);
             }
