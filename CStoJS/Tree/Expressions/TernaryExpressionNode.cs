@@ -34,5 +34,13 @@ namespace CStoJS.Tree
                 throw new SemanticException("Ternary Expression: True Expression and False Expression must be of the same Type.");
             return trueExp;
         }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            conditionalExpression.GenerateCode(output, api);
+            output.WriteString(" ? ");
+            trueExpression.GenerateCode(output, api);
+            output.WriteString(" : ");
+            falseExpression.GenerateCode(output, api);
+        }
     }
 }

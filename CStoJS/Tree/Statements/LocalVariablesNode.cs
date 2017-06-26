@@ -21,5 +21,14 @@ namespace CStoJS.Tree
             }
             return null;
         }
+
+        public override void GenerateCode(Outputs.IOutput output, Semantic.API api){
+            var i = 0;
+            foreach(var variable in this.variablesNodes){
+                variable.GenerateCode(output, api);
+                // if(i != this.variablesNodes.Count -1 && this.variablesNodes.Count > 1)
+                //     output.WriteString(", ");
+            }
+        }
     }
 }

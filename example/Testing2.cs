@@ -1,3 +1,4 @@
+using Tests;
 
 namespace  Tests2
 {
@@ -16,8 +17,33 @@ namespace  Tests2
     }*/
 
     public class Hoas{
-        public Tests.Node x = new Tests.Node(1);
+        public Node x = new Node(1);
     }
 
-    
+    public class Program{
+        public static void Main(string[] args){
+            
+        }
+    }
+
+    public class Elipse
+    {
+        public static int proyection = 5;
+
+        public float getArea()
+        {
+            float a = proyection * (2.1416f * 20);
+            this.proyection = 6;
+            return a;
+        }
+    }
+
+    public class Ellipsiode
+    {
+        public float getArea()
+        {
+            float a = Elipse.proyection * (2.1416f * 20);
+            return a;
+        }
+    }    
 }

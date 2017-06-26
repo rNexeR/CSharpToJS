@@ -394,9 +394,9 @@ namespace CStoJS.ParserLibraries
                     arr.dimensions = exprs.Count-1;
 
                 OptionalRankSpecifierList(ref arr);
-                var initializer = OptionalArrayInitializer();
+                // var initializer = OptionalArrayInitializer();
 
-                return new ArrayInitializerExpressionNode(arr, initializer);
+                return new ArrayInitializerExpressionNode(arr, exprs);
 
             }
             else if (Match(TokenType.BRACKET_CLOSE) || Match(TokenType.COMMA))
@@ -406,8 +406,8 @@ namespace CStoJS.ParserLibraries
                 arr.baseType = type;
                 RankSpecifierList(ref arr);
 
-                var initializer = ArrayInitializer();
-                return new ArrayInitializerExpressionNode(arr, initializer);
+                // var initializer = ArrayInitializer();
+                return new ArrayInitializerExpressionNode(arr, new List<ExpressionNode>());
             }
             else
             {

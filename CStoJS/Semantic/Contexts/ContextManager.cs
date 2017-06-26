@@ -39,11 +39,12 @@ namespace CStoJS.Semantic
             return this.static_context;
         }
 
-        public bool HasContextType(ContextType type){
-            foreach(var ctx in this.contexts)
-                if(ctx.type == type)
+        public bool HasContextType(ContextType type)
+        {
+            foreach (var ctx in this.contexts)
+                if (ctx.type == type)
                     return true;
-                return false;
+            return false;
         }
 
         public void Push(Context context, string class_name = "", bool add_private_members = true)
@@ -55,7 +56,7 @@ namespace CStoJS.Semantic
                 this.class_name = class_name;
 
                 var clase = api.GetTypeDeclaration(class_name);
-                if(!(clase is ClassNode) && !(clase is InterfaceNode))
+                if (!(clase is ClassNode) && !(clase is InterfaceNode))
                     return;
 
                 if (class_name != "Object")
@@ -118,9 +119,11 @@ namespace CStoJS.Semantic
 
             var type = this.api.GetTypeDeclaration(class_name);
 
-            if(type is EnumDefinitionNode){
+            if (type is EnumDefinitionNode)
+            {
                 var enum_type = type as EnumDefinitionNode;
-                foreach(var item in enum_type.enum_node){
+                foreach (var item in enum_type.enum_node)
+                {
                     this.AddVariableToContext(ctx, item.identifier.ToString(), new IntType(), false);
                 }
                 return;
@@ -296,6 +299,16 @@ namespace CStoJS.Semantic
         {
             for (int i = this.contexts.Count - 1; i >= 0; i--)
             {
+                if (contexts[i].type == ContextType.ENUM_CONTEXT)
+                {
+                    var _enum = this.api.GetTypeDeclaration(contexts[i].name) as EnumDefinitionNode;
+                    foreach (var item in _enum.enum_node)
+                    {
+                        if (item.identifier.ToString() == var_name)
+                            return true;
+                    }
+                    return false;
+                }
                 if (contexts[i].VariableExists(var_name))
                 {
                     if (!static_context)
@@ -304,6 +317,7 @@ namespace CStoJS.Semantic
                     }
                     else
                     {
+
                         var clase = this.api.GetTypeDeclaration(contexts[i].name) as ClassNode;
                         var found = false;
                         foreach (var field in clase.fields)
@@ -311,11 +325,11 @@ namespace CStoJS.Semantic
                             if (field.ToString() == var_name)
                             {
                                 found = true;
-                                if(field.modifier != null && field.modifier.lexema == "static")
+                                if (field.modifier != null && field.modifier.lexema == "static")
                                     return true;
                             }
                         }
-                        if(!found)
+                        if (!found)
                             return true;
                     }
                 }
@@ -327,8 +341,30 @@ namespace CStoJS.Semantic
         {
             for (int i = this.contexts.Count - 1; i >= 0; i--)
             {
+                if (contexts[i].type == ContextType.ENUM_CONTEXT)
+                {
+                    var _enum = this.api.GetTypeDeclaration(contexts[i].name) as EnumDefinitionNode;
+                    foreach (var item in _enum.enum_node)
+                    {
+                        if (item.identifier.ToString() == var_name)
+                            return _enum;
+                    }
+                    return _enum;
+                }
                 if (contexts[i].VariableExists(var_name))
-                    return contexts[i].GetVariableType(var_name);
+                {
+                    var ret = contexts[i].GetVariableType(var_name);
+                    ret.is_in_class = false;
+                    ret.is_static = false;
+                    if (contexts[i].type == ContextType.CLASS_CONTEXT || contexts[i].type == ContextType.PARENT_CLASS_CONTEXT)
+                    {
+                        ret.is_in_class = true;
+                        var clase = this.api.GetTypeDeclaration(contexts[i].name);
+                        if (Utils.FieldIsStatic(var_name, clase))
+                            ret.is_static = true;
+                    }
+                    return ret;
+                }
             }
             return null;
         }
@@ -391,8 +427,21 @@ namespace CStoJS.Semantic
         {
             for (int i = this.contexts.Count - 1; i >= 0; i--)
             {
-                if (contexts[i].MethodExists(name))
-                    return contexts[i].GetMethodReturnType(name);
+                if (contexts[i].MethodExists(name)){
+                    var ret = contexts[i].GetMethodReturnType(name);
+                    ret.is_in_class = false;
+                    ret.is_static = false;
+                    if (contexts[i].type == ContextType.CLASS_CONTEXT || contexts[i].type == ContextType.PARENT_CLASS_CONTEXT)
+                    {
+                        ret.is_in_class = true;
+                        var clase = this.api.GetTypeDeclaration(contexts[i].name) as ClassNode;
+                        foreach(var method in clase.methods){
+                            if(method.ToString() == name && method.modifier != null && method.modifier.lexema == "static")
+                                ret.is_static = true;
+                        }
+                    }
+                    return ret;
+                }
             }
             return null;
         }

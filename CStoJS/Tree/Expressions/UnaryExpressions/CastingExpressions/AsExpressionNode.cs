@@ -13,5 +13,9 @@ namespace CStoJS.Tree
         {
             
         }
+
+        public override void GenerateCode(Outputs.IOutput output, Semantic.API api){
+            this.expression.GenerateCode(output, api);
+        }
     }
 }

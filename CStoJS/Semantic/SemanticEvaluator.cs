@@ -103,7 +103,7 @@ namespace CStoJS.Semantic
             namespace System{
                 namespace IO{
                     public class TextWriter{
-                        public static void WriteLine(){}
+                        public static void WriteLine(string msg){}
                     }
             
                     public class TextReader{
@@ -114,12 +114,8 @@ namespace CStoJS.Semantic
                 public class Console{
                     public static System.IO.TextWriter Out;
                     public static System.IO.TextReader In;
-                    public static void WriteLine(){}
+                    public static void WriteLine(string msg){}
                     public static string ReadLine(){}
-                }
-            
-                public class DictionaryTypeNode{
-                    public override string ToString(){}
                 }
             }
             ";

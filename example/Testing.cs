@@ -70,6 +70,7 @@ namespace Tests
         
         public Node(int val){
             y = 1;
+            x = 5;
         }
 
         public static int SetVal(int x){
@@ -107,13 +108,17 @@ namespace Tests
 
     public class Tree{
         Node root = null;
-        int x = 5 + 5;
+        int x = 'r' + 'c';
         Node temp = new Node(5);
         int val = Node.SetVal(5 + 5);
         int y = 'a';
+        int test = (1+5*3) + ((3*3) + 3);
+        int b = int.Parse("123");
         int z = (int)3.5f;
         string a = null;
         int[] e = new int[5];
+        Node[][] nodes = new Node[10][];
+        Node[,] nodes2 = new Node[1,2];
         // int[][] f = new int[][]{new int[]{1}, new int[]{2}};
         
         public Tree(){
@@ -123,13 +128,20 @@ namespace Tests
             s = 5;
             bool x = s == 5;
             int t = x ? 1 : 2;
+            t++;
+            ++t;
+            char caracter = 'a';
+            caracter++;
+            ++caracter;
             while(x) t++;
+
+            a = "hola";
 
             return;
         }
     }
 
-    public class ClaseAbstracta{
+    public abstract class ClaseAbstracta{
         private ClaseAbstracta(){
 
         }

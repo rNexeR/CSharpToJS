@@ -84,5 +84,14 @@ namespace CStoJS.Tree
                 return optionalExpression.EvaluateType(api, context_manager);
             }
         }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString($"\t\t{this.identifier.lexema}");
+            if(this.optionalExpression != null){
+                output.WriteString(" ");
+                this.optionalExpression.GenerateCode(output, api);
+            }
+            output.WriteStringLine(";");
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace CStoJS.Tree
             output.WriteStringLine($"{type_name} = {{");
             
             foreach(var _enum in this.enum_node){
-                output.WriteStringLine($"\t{_enum.identifier} : {_enum.assignment},");
+                output.WriteStringLine($"\t{_enum.identifier}: {_enum.assignment},");
             }
             
             output.WriteStringLine($"}}");

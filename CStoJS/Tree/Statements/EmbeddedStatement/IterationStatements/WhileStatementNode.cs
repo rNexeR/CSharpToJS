@@ -28,5 +28,18 @@ namespace CStoJS.Tree
 
             return ret;
         }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString("\t\t\twhile(");
+            this.conditional.GenerateCode(output, api);
+            output.WriteString(")");
+            if(this.body != null){
+                output.WriteStringLine("{");
+                this.body.GenerateCode(output, api);
+                output.WriteStringLine("\t\t\t}");
+            }else{
+                output.WriteStringLine(";");
+            }
+        }
     }
 }

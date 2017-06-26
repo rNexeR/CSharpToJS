@@ -123,6 +123,13 @@ namespace CStoJS.Tree
 
         public override void GenerateCode(Outputs.IOutput output, API api)
         {
+            if(generated)
+                return;
+            var nsp_name = api.namespaces[this.namespace_index].identifier.ToString();
+            var full_name = Utils.GetFullName(nsp_name, this.identifier.ToString());
+
+            Utils.PrintDebug($"Generating class {full_name}");
+
             var _usings = api.namespaces[this.namespace_index].using_array;
             var base_class = "GeneratedCode.Object";
             foreach (var parent in this.inherit)
@@ -136,10 +143,99 @@ namespace CStoJS.Tree
                     output.WriteStringLine("");
                 }
             }
-            
-            var nsp_name = api.namespaces[this.namespace_index].identifier.ToString();
-            var full_name = Utils.GetFullName(nsp_name, this.identifier.ToString());
-            output.WriteStringLine($"{full_name} = class extends {base_class} {{}};");
+
+            output.WriteStringLine($"{full_name} = class extends {base_class} {{");
+            AddClassFieldsCode(output, api);
+            AddConstructorsCode(output, api);
+            AddClassMethodsCode(output, api);
+            output.WriteStringLine("};");
+
+            AddStaticClassFieldsCode(output, full_name, api);
+            this.generated = true;
+        }
+
+        private void AddClassMethodsCode(Outputs.IOutput output, API api)
+        {
+            foreach (var method in this.methods)
+            {
+                output.WriteStringLine("");
+                var method_name = Utils.GetMethodName(method.identifier.ToString(), method);
+                var modifier = method.modifier is null ? "" : method.modifier.lexema == "static" ? "static " : "";
+                output.WriteString($"\t{modifier}{method_name}");
+                if(method.body != null){
+                    output.WriteStringLine("{");
+                    method.body.GenerateCode(output, api);
+                    output.WriteStringLine("\t};");
+                }else
+                    output.WriteStringLine("{};");
+            }
+        }
+
+        private void AddConstructorsCode(Outputs.IOutput output, API api)
+        {
+            foreach (var ctor in this.constructors)
+            {
+                output.WriteStringLine("");
+                var ctor_name = Utils.GetCtorName(this.identifier.ToString(), ctor);
+                output.WriteStringLine($"\t{ctor_name} {{");
+                // if(ctor.initializer != null){
+                //     output.WriteString("\t\t\tsuper(");
+                //     output.WriteString("");
+                //     output.WriteStringLine(");");
+                // }
+                ctor.body.GenerateCode(output, api);
+                output.WriteStringLine($"\t}};");
+            }
+        }
+
+        private void AddStaticClassFieldsCode(Outputs.IOutput output, string full_name, API api)
+        {
+            foreach (var field in this.fields)
+            {
+                if (!(field.modifier is null))
+                {
+                    Utils.PrintDebug($"Static class field {full_name}.{field}");
+                    output.WriteString($"{full_name}.{field} = ");
+                    if(field.assignment != null)
+                        field.assignment.GenerateCode(output, api);
+                    else
+                        output.WriteString("null");
+                    output.WriteString(";");
+
+                }
+            }
+            output.WriteStringLine("");
+        }
+
+        private void AddClassFieldsCode(Outputs.IOutput output, API api)
+        {
+            output.WriteStringLine("");
+            output.WriteStringLine("\tconstructor() {");
+            output.WriteStringLine("\t\tsuper();");
+            foreach (var field in this.fields)
+            {
+                if (field.modifier is null)
+                {
+                    Utils.PrintDebug($"Class field {field}");
+                    output.WriteString($"\t\tthis.{field} = ");
+                    if (field.assignment is null)
+                        output.WriteString("null");
+                    else
+                    {
+                        if (field.assignment.returnType.ToString() == "CharType" && field.type.ToString() == "IntType")
+                        {
+                            output.WriteString("CharToInt(");
+                            field.assignment.GenerateCode(output, api);
+                            output.WriteString(")");
+                        }
+                        else
+                            field.assignment.GenerateCode(output, api);
+                    }
+                    output.WriteStringLine(";");
+                }
+            }
+            output.WriteStringLine(Utils.ctors_caller);
+            output.WriteStringLine("\t};");
         }
     }
 }

@@ -9,19 +9,22 @@ namespace CStoJS.Tree
         public StatementNode body;
         public ElseNode elseBody;
 
-        public IfStatementNode(){
+        public IfStatementNode()
+        {
 
         }
 
-        public IfStatementNode(ExpressionNode conditional, StatementNode body, ElseNode elseBody){
+        public IfStatementNode(ExpressionNode conditional, StatementNode body, ElseNode elseBody)
+        {
             this.conditional = conditional;
             this.body = body;
             this.elseBody = elseBody;
         }
 
-        public override TypeDeclarationNode EvaluateSemantic(Semantic.API api, Semantic.ContextManager context_manager){
+        public override TypeDeclarationNode EvaluateSemantic(Semantic.API api, Semantic.ContextManager context_manager)
+        {
             var cond_tye = conditional.EvaluateType(api, context_manager);
-            if(!(conditional is ConditionalExpressionNode) && cond_tye.ToString() != "BoolType")
+            if (!(conditional is ConditionalExpressionNode) && cond_tye.ToString() != "BoolType")
                 throw new SemanticException("Conditional in If Statement must return a bool.");
 
             context_manager.Push(new Context(ContextType.IF_CONTEXT));
@@ -33,16 +36,44 @@ namespace CStoJS.Tree
 
             context_manager.Pop();
 
-            if(body_ret == null && else_ret == null)
+            if (body_ret == null && else_ret == null)
                 return null;
-            else if(body_ret == null){
+            else if (body_ret == null)
+            {
                 return else_ret;
-            }else if(else_ret == null){
+            }
+            else if (else_ret == null)
+            {
                 return body_ret;
-            }else{
-                if(body_ret.ToString() != else_ret.ToString())
+            }
+            else
+            {
+                if (body_ret.ToString() != else_ret.ToString())
                     throw new SemanticException($"Multiple return type detected. {body_ret} and {else_ret}.");
                 return body_ret;
+            }
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api)
+        {
+            output.WriteString($"\t\tif(");
+            this.conditional.GenerateCode(output, api);
+            output.WriteString(")");
+            if (body != null)
+            {
+                output.WriteStringLine("{");
+                this.body.GenerateCode(output, api);
+                output.WriteStringLine("\t\t}");
+                if (elseBody != null)
+                {
+                    output.WriteStringLine("\t\telse{");
+                    this.elseBody.body.GenerateCode(output, api);
+                    output.WriteStringLine("\t\t}");
+                }
+            }
+            else
+            {
+                output.WriteString(";");
             }
         }
     }

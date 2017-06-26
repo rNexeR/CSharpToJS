@@ -7,15 +7,15 @@ namespace CStoJS.Tree
     public class SwitchStatementNode : EmbeddedStatementNode
     {
         public ExpressionNode expressionToEval;
-        public List<CaseExpressionNode> casess;
+        public List<CaseExpressionNode> cases;
 
         public SwitchStatementNode(){
-            this.casess = new List<CaseExpressionNode>();
+            this.cases = new List<CaseExpressionNode>();
         }
 
         public SwitchStatementNode(ExpressionNode exprToEval, List<CaseExpressionNode> cases){
             this.expressionToEval = exprToEval;
-            this.casess = cases;
+            this.cases = cases;
         }
 
         public override TypeDeclarationNode EvaluateSemantic(Semantic.API api, Semantic.ContextManager context_manager){
@@ -23,7 +23,7 @@ namespace CStoJS.Tree
             context_manager.Push(new Context(ContextType.SWITCH_CONTEXT));
             TypeDeclarationNode ret = null;
 
-            foreach(var _case in this.casess){
+            foreach(var _case in this.cases){
                 var case_ret = _case.EvaluateSemantic(api, context_manager, eval_type);
                 if(case_ret != null && ret == null)
                     ret = case_ret;
@@ -38,6 +38,16 @@ namespace CStoJS.Tree
             context_manager.Pop();
 
             return ret;
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString("\t\tswitch(");
+            this.expressionToEval.GenerateCode(output, api);
+            output.WriteStringLine("){");
+            foreach(var _case in this.cases){
+                _case.GenerateCode(output, api);
+            }
+            output.WriteStringLine("\t\t}");
         }
     }
 }

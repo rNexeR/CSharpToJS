@@ -14,5 +14,6 @@ namespace CStoJS.Semantic
         IF_CONTEXT,
         SWITCH_CONTEXT,
         PARENT_INTERFACE_CONTEXT,
+        ENUM_CONTEXT,
     }
 }

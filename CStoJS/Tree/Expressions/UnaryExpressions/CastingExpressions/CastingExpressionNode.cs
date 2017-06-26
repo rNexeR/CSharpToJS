@@ -30,7 +30,8 @@ namespace CStoJS.Tree
             var target_type_name = Utils.GetClassName(targetType.identifier.ToString(), nsp_using, api);
             if (this.rules.ContainsKey($"{expr_type},{this.targetType}"))
             {
-                return this.rules[$"{this.targetType},{expr_type}"];
+                this.returnType = this.rules[$"{this.targetType},{expr_type}"];
+                return returnType;
             }
             else if (expr_type is NullType && (targetType is ClassNode || targetType is StringType)) { }
             else if (expr_type.ToString() == targetType.ToString()) { }
@@ -42,7 +43,9 @@ namespace CStoJS.Tree
             var _usings = class_ctx_man.GetCurrentNamespaceUsings();
             var type_name = Utils.GetClassName(targetType.ToString(), _usings, api);
 
-            return api.GetTypeDeclaration(type_name);
+            this.returnType = api.GetTypeDeclaration(type_name); 
+
+            return returnType;
         }
     }
 }

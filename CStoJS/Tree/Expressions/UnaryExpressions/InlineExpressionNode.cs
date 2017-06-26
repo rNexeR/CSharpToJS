@@ -38,9 +38,12 @@ namespace CStoJS.Tree
                     var current_ctx = Utils.GetClassName(ret_type.ToString(), _usings, api);
                     var add_private_members = true;
                     var ret_type_name = Utils.GetClassName(ret_type.identifier.ToString(), _usings, api);
-                    if ((expr is InstanceInitilizerExpressionNode) || (!Utils.IsChildOf(ctx_man.GetCurrentClass(), ret_type_name, api) && !Utils.IsChildOf(ret_type_name, ctx_man.GetCurrentClass(), api) ) )
+                    if ((expr is InstanceInitilizerExpressionNode) || (!Utils.IsChildOf(ctx_man.GetCurrentClass(), ret_type_name, api) && !Utils.IsChildOf(ret_type_name, ctx_man.GetCurrentClass(), api)))
                         add_private_members = false;
-                    ctx_man_cpy.Push(new Context(ContextType.CLASS_CONTEXT, current_ctx), current_ctx, add_private_members);
+                    if(api.GetTypeDeclaration(current_ctx) is EnumDefinitionNode)
+                        ctx_man_cpy.Push(new Context(ContextType.ENUM_CONTEXT, current_ctx), current_ctx);
+                    else
+                        ctx_man_cpy.Push(new Context(ContextType.CLASS_CONTEXT, current_ctx), current_ctx, add_private_members);
                     if (
                         (expr is IdentifierExpressionNode && (expr as IdentifierExpressionNode).token.lexema == ret_type.identifier.ToString())
                     // || ctx_man.IsStaticContext()
@@ -59,7 +62,19 @@ namespace CStoJS.Tree
                 }
                 i++;
             }
+            this.returnType = ret_type;
             return ret_type;
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api)
+        {
+            var i = 0;
+            foreach (var expr in expressions){
+                expr.GenerateCode(output, api);
+                if(i != expressions.Count -1 && expressions.Count > 1)
+                    output.WriteString(".");
+                i++;
+            }
         }
     }
 }

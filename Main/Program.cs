@@ -19,8 +19,9 @@ namespace Main
     {
         static void Main(string[] args)
         {
+            Utils.debug_enabled = true;
             // args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/RaimProgram";
-            // args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/MergeProgram";
+            args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/MergeProgram";
             string[] files;
             List<string> CSFiles = new List<string>();
             var path = Path.GetFullPath("./");
@@ -86,8 +87,9 @@ namespace Main
             // var x2 = new int[1][];
             // var y2 = x2[0][0];
 
-
             Console.WriteLine("EXIT!");
+            char c = 'a';
+            int x = c++;
         }
 
         private static void SerializeTree(NamespaceNode tree)
@@ -157,6 +159,13 @@ namespace Main
 
     public interface IAlgo{
         void SayHello();
+    }
+
+    public abstract class Holaa{
+        public Holaa(){
+
+        }
+
     }
 
     public class Y{

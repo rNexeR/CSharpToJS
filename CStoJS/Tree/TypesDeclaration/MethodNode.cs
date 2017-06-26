@@ -89,7 +89,7 @@ namespace CStoJS.Tree
                     if(ret is null){
                         throw new SemanticException($"Method {this.identifier} must return {returnType}, no return found.");
                     }else{
-                        if(!Utils.AreEquivalentsTypes(this.returnType, ret, _usings, api))
+                        if(!Utils.AreEquivalentsTypes(this.returnType, ret, _usings, api) && this.returnType.ToString() != ret.ToString())
                             throw new SemanticException($"Method {this.identifier} cannot return {ret}, must return {returnType}.");
                     }
                 }

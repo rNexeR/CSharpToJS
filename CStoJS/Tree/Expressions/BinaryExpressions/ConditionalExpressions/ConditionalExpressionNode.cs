@@ -23,6 +23,7 @@ namespace CStoJS.Tree
 
         public override TypeDeclarationNode EvaluateType(Semantic.API api, Semantic.ContextManager ctx_man){
             base.EvaluateType(api, ctx_man);
+            this.returnType = new BoolType();
             return new BoolType();
         }
     }

@@ -40,5 +40,28 @@ namespace CStoJS.Tree
             return ret;
 
         }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString("\t\t\tfor(");
+            foreach(var st in this.initializerExpression){
+                st.GenerateCode(output, api);
+                output.RemoveCharacter(2);
+            }
+            output.WriteString(";");
+            this.conditionalExpression.GenerateCode(output, api);
+            output.WriteString(";");
+            foreach(var st in this.incrementExpression){
+                st.GenerateCode(output, api);
+                output.RemoveCharacter(2);
+            }
+            output.WriteString(")");
+            if(this.body != null){
+                output.WriteStringLine("{");
+                this.body.GenerateCode(output, api);
+                output.WriteStringLine("\t\t\t}");
+            }else{
+                output.WriteStringLine(";");
+            }
+        }
     }
 }

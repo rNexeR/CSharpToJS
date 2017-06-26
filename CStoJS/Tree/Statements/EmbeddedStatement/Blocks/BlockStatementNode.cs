@@ -26,5 +26,11 @@ namespace CStoJS.Tree
             }
             return ret;
         }
+
+        public override void GenerateCode(Outputs.IOutput output, Semantic.API api){
+            foreach(var stmt in this.statements){
+                stmt.GenerateCode(output, api);
+            }
+        }
     }
 }

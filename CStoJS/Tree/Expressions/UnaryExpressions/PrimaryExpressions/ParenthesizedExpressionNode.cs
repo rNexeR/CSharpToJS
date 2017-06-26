@@ -21,5 +21,11 @@ namespace CStoJS.Tree
         {
             return expressionNode.EvaluateType(api, class_ctx_man);
         }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString("(");
+            expressionNode.GenerateCode(output, api);
+            output.WriteString(")");
+        }
     }
 }

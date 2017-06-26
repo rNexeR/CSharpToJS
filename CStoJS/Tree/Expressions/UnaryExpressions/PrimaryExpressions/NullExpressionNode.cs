@@ -13,7 +13,12 @@ namespace CStoJS.Tree
         }
         public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
-            return new NullType(this.identifier);
+            this.returnType = new NullType(this.identifier);
+            return returnType;
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString("null");
         }
     }
 }

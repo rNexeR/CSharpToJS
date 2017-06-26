@@ -12,5 +12,16 @@ namespace CStoJS.Tree
         {
             this.expressionNode = expressionNode;
         }
+
+        public override TypeDeclarationNode EvaluateSemantic(Semantic.API api, Semantic.ContextManager context_manager){
+            this.expressionNode.EvaluateType(api, context_manager);
+            return null;
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, Semantic.API api){
+            output.WriteString("\t\t");
+            this.expressionNode.GenerateCode(output, api);
+            output.WriteStringLine(";");
+        }
     }
 }

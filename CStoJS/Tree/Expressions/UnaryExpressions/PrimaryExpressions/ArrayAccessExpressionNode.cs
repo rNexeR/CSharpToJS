@@ -45,6 +45,8 @@ namespace CStoJS.Tree
                 var ret = new ArrayType();
                 ret.arrayOfArrays = id_array.dimensions - this.indexes.Count;
                 ret.baseType = id_array.baseType;
+                if(ret.arrayOfArrays <= 0)
+                    return ret.baseType;
                 return ret;
             }
             else
@@ -59,6 +61,20 @@ namespace CStoJS.Tree
                         throw new SemanticException("Differents array dimensions indexes.");
                 }
                 return id_array.baseType;
+            }
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            this.identifier.GenerateCode(output, api);
+            foreach(var index in this.indexes){
+                output.WriteString("[");
+                var i = 0;
+                foreach(var exp in index.exprs){
+                    exp.GenerateCode(output, api);
+                    if(i < index.exprs.Count -1 && index.exprs.Count > 1)
+                        output.WriteString(",");
+                }
+                output.WriteString("]");
             }
         }
     }

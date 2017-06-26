@@ -9,6 +9,7 @@ namespace CStoJS.Tree
         public TypeDeclarationNode type;
         public IdentifierNode identifier;
         public VariableInitializer assignation;
+        private TypeDeclarationNode assignation_type;
         public LocalVariableNode()
         {
 
@@ -44,7 +45,11 @@ namespace CStoJS.Tree
             if (this.assignation != null)
             {
                 var assign_ret = this.assignation.EvaluateType(api, context_manager);
-                context_manager.AddVariableToCurrentContext(this.identifier.ToString(), assign_ret);
+                this.assignation_type = assign_ret;
+                if(this.type.ToString() == "VarType")
+                    context_manager.AddVariableToCurrentContext(this.identifier.ToString(), assign_ret);
+                else
+                    context_manager.AddVariableToCurrentContext(this.identifier.ToString(), this.type);
                 if (assign_ret.ToString() != type.ToString() && !rules.ContainsKey($"{type.ToString()},{assign_ret}"))
                 {
                     if (((this.type is ClassNode) || this.type.ToString() == "StringType") && assign_ret.ToString() == "NullType")
@@ -71,6 +76,21 @@ namespace CStoJS.Tree
                 }
             }
             return null;
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api)
+        {
+            output.WriteString($"\t\tlet {this.identifier}");
+            if (this.assignation != null)
+            {
+                output.WriteString(" = ");
+                if(this.assignation_type.ToString() == "IntType")
+                    output.WriteString("ToIntPrecision(");
+                this.assignation.GenerateCode(output, api);
+                if(this.assignation_type.ToString() == "IntType")
+                    output.WriteString(")");
+            }
+            output.WriteStringLine(";");
         }
     }
 }

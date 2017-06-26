@@ -48,5 +48,9 @@ namespace CStoJS.Tree
             }
             return ret;
         }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString($" new {(this.returnType as ArrayType).baseType}...");
+        }
     }
 }

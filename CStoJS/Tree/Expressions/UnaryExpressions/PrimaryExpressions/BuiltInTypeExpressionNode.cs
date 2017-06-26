@@ -20,12 +20,17 @@ namespace CStoJS.Tree
         public override TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man = null)
         {
             switch(token.type){
-                case TokenType.INT_KEYWORD: return api.GetTypeDeclaration("IntType");
-                case TokenType.CHAR_KEYWORD: return api.GetTypeDeclaration("CharType");
-                case TokenType.BOOL_KEYWORD: return api.GetTypeDeclaration("BoolType");
-                case TokenType.STRING_KEYWORD: return api.GetTypeDeclaration("StringType");
-                default: return api.GetTypeDeclaration("FloatType");
+                case TokenType.INT_KEYWORD: this.returnType =  api.GetTypeDeclaration("IntType"); break;
+                case TokenType.CHAR_KEYWORD: this.returnType =  api.GetTypeDeclaration("CharType"); break;
+                case TokenType.BOOL_KEYWORD: this.returnType =  api.GetTypeDeclaration("BoolType"); break;
+                case TokenType.STRING_KEYWORD: this.returnType =  api.GetTypeDeclaration("StringType"); break;
+                default: this.returnType =  api.GetTypeDeclaration("FloatType"); break;
             }
+            return this.returnType;
+        }
+
+        public override void GenerateCode(Outputs.IOutput output, API api){
+            output.WriteString($"GeneratedCode.{this.returnType}");
         }
     }
 }

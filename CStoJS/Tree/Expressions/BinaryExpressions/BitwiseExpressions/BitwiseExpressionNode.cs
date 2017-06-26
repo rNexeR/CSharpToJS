@@ -17,6 +17,7 @@ namespace CStoJS.Tree
             this.rules["IntType,IntType"] = new IntType();
             this.rules["IntType,CharType"] = new IntType();
             this.rules["CharType,CharType"] = new IntType();
+            this.rules["CharType,IntType"] = new IntType();
         }
     }
 }

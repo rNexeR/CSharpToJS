@@ -18,6 +18,8 @@ namespace CStoJS.Tree
         public string type;
         public int namespace_index;
         public bool generated = false;
+        public bool is_in_class;
+        public bool is_static;
 
         public TypeDeclarationNode(){
             this.encapsulation_modifier = new EncapsulationNode();

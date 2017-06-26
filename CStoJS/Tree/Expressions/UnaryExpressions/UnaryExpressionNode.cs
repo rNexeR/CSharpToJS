@@ -14,5 +14,7 @@ namespace CStoJS.Tree
         }
 
         public abstract TypeDeclarationNode EvaluateType(API api, ContextManager class_ctx_man, ContextManager st_ctx_man);
+
+        // public override void GenerateCode(Outputs.IOutput output, API api){}
     }
 }
