@@ -125,8 +125,66 @@ GeneratedCode.System.IO.TextReader = class {
     static ReadLine() {}
 }
         
+GeneratedCode.RaimProgram = {};
+GeneratedCode.RaimProgram.Base = {};
+GeneratedCode.RaimProgram.Common = {};
+GeneratedCode.RaimProgram.Common.Sorting = {};
+GeneratedCode.RaimProgram.Base.Derivatives = {};
 
-GeneratedCode.sort = class extends GeneratedCode.Object {
+GeneratedCode.RaimProgram.Common.StudentType = {
+	FRESHMAN: 0,
+	SOPHOMORE: 1,
+	JUNIOR: 2,
+	SENIOR: 3,
+}
+
+GeneratedCode.RaimProgram.Base.Person = class extends GeneratedCode.Object {
+
+	constructor() {
+		super();
+		this.Name = null;
+		this.Age = null;
+
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length >= 1) this[arguments[0]](...argus);
+	};
+
+	Person() {
+	};
+
+	Person_StringType_IntType(name,age) {
+		this.Name = name;
+		this.Age = age;
+	};
+
+	print(){
+		GeneratedCode.System.Console.WriteLine_StringType(this.ToString());
+	};
+
+	PrintClassTypeWithNumberCall(){
+		let numberCall = ToIntPrecision(this.GetAndIncrementNumberCall());
+		GeneratedCode.System.Console.WriteLine_StringType((("Person" + " ") + GeneratedCode.RaimProgram.Base.Person._numberCall));
+	};
+
+	fn(){
+		GeneratedCode.System.Console.WriteLine_StringType("Person");
+	};
+
+	metodoPrivado(){
+		GeneratedCode.System.Console.WriteLine_StringType("Soy el metodo Privado");
+	};
+
+	GetAndIncrementNumberCall(){
+		GeneratedCode.RaimProgram.Base.Person._numberCall++;
+		return GeneratedCode.RaimProgram.Base.Person._numberCall;
+	};
+
+	SortPersons_Person1D_IntType(persons,size){};
+};
+GeneratedCode.RaimProgram.Base.Person._numberCall = 0;
+
+GeneratedCode.RaimProgram.Program = class extends GeneratedCode.Object {
 
 	constructor() {
 		super();
@@ -137,141 +195,196 @@ GeneratedCode.sort = class extends GeneratedCode.Object {
 	};
 
 	static Main_StringType1D(args){
-		let c7 = ToIntPrecision((ToIntPrecision(CharToInt('a') + ToIntPrecision(1))));
-		let c = ToIntPrecision((ToIntPrecision(20 + 30)));
-		let c1 = ToIntPrecision((ToIntPrecision(((ToIntPrecision(((ToIntPrecision((ToIntPrecision(20 + 30)) - (ToIntPrecision(10 * 50))))) / 5))) * 10)));
-		let c2 = ToIntPrecision((ToIntPrecision(1 << 0x1)));
-		let c3 = ToIntPrecision((ToIntPrecision(c2 ^ c1)));
-		let c4 = ToIntPrecision((ToIntPrecision(1 & c)));
-		let c5 = ToIntPrecision((ToIntPrecision(100 % 7)));
-		let c6 = ToIntPrecision((ToIntPrecision(c4 | c1)));
-		let c8 = ToIntPrecision((ToIntPrecision(CharToInt('b') * CharToInt('r'))));
-		GeneratedCode.System.Console.WriteLine_StringType(("Suma: " + c));
-		GeneratedCode.System.Console.WriteLine_StringType(("sumatoria complicada: " + c1));
-		GeneratedCode.System.Console.WriteLine_StringType(("let shiting: " + c2));
-		GeneratedCode.System.Console.WriteLine_StringType(("XOR operator: " + c3));
-		GeneratedCode.System.Console.WriteLine_StringType(("AND operator: " + c4));
-		GeneratedCode.System.Console.WriteLine_StringType(("MOD operator: " + c5));
-		GeneratedCode.System.Console.WriteLine_StringType(("OR operator: " + c6));
-		GeneratedCode.System.Console.WriteLine_StringType(("Suma char and int: " + c7));
-		GeneratedCode.System.Console.WriteLine_StringType(("Mult chars: " + c8));
-		c8 += c5;
-		GeneratedCode.System.Console.WriteLine_StringType(("+= " + c8));
-		c7 -= c5;
-		GeneratedCode.System.Console.WriteLine_StringType(("-= " + c7));
-		c6 *= c5;
-		GeneratedCode.System.Console.WriteLine_StringType(("*= " + c6));
-		c5 /= c5;
-		GeneratedCode.System.Console.WriteLine_StringType(("/= " + c5));
-		c4 &= c5;
-		GeneratedCode.System.Console.WriteLine_StringType(("&= " + c4));
-		c3 |= c5;
-		GeneratedCode.System.Console.WriteLine_StringType(("|= " + c3));
-		c2 ^= c5;
-		GeneratedCode.System.Console.WriteLine_StringType(("^= " + c2));
-		c1 %= ~c8;
-		GeneratedCode.System.Console.WriteLine_StringType(("%= " + c1));
-		let s = ("a" + 1);
-		let s2 = ("a" + 1.5);
-		GeneratedCode.System.Console.WriteLine_StringType(("Suma string-loat " + s2));
-		s2 += " in";
-		GeneratedCode.System.Console.WriteLine_StringType(("Suma string-int " + s));
-		GeneratedCode.System.Console.WriteLine_StringType(("Suma assign " + s2));
-		GeneratedCode.System.Console.WriteLine_StringType("Using selectionsort ");
-		let array = [];
-		array[0] = 7;
-		array[1] = 50;
-		array[2] = 20;
-		array[3] = 40;
-		array[4] = 90;
-		array[5] = 6;
-		array[6] = 4;
-		let size = ToIntPrecision(7);
-		GeneratedCode.sort.IntArraySelectionSort_IntType1D_IntType(array, size);
-			for(		let i = ToIntPrecision(0);(i < size);		i++){
-		GeneratedCode.System.Console.WriteLine_StringType(("" + array[i]));
-			}
-		GeneratedCode.System.Console.WriteLine_StringType("Using HOLAAaaaaaaaaaaa ");
-		let array2 = [];
-		array2[0] = 7;
-		array2[1] = 35;
-		array2[2] = 22;
-		array2[3] = 45;
-		array2[4] = 92;
-		array2[5] = 11;
-		array2[6] = 4;
-		let size2 = ToIntPrecision(7);
-		GeneratedCode.sort.IntArrayQuickSort_IntType1D_IntType(array2, size2);
-			for(		let i = ToIntPrecision(0);(i < size2);		i++){
-		GeneratedCode.System.Console.WriteLine_StringType(("" + array2[i]));
-			}
+		let student =  new GeneratedCode.RaimProgram.Base.Derivatives.Student("Student");
+		let students = [];
+		students[0] =  new GeneratedCode.RaimProgram.Base.Derivatives.Student("Student_StringType_IntType","D", 50);
+		students[1] =  new GeneratedCode.RaimProgram.Base.Derivatives.Student("Student_StringType_IntType","C", 22);
+		students[2] =  new GeneratedCode.RaimProgram.Base.Derivatives.Student("Student_StringType_IntType","B", 40);
+		students[3] =  new GeneratedCode.RaimProgram.Base.Derivatives.Student("Student_StringType_IntType","A", 35);
+		student.SortPersons_Person1D_IntType(students, 4);
+		GeneratedCode.RaimProgram.Program.PrintPersonsInfo_Person1D(students);
+		GeneratedCode.System.Console.WriteLine_StringType("");
+		let teacher =  new GeneratedCode.RaimProgram.Base.Derivatives.Teacher("Teacher");
+		let teachers = [];
+		teachers[0] =  new GeneratedCode.RaimProgram.Base.Derivatives.Teacher("Teacher_StringType_IntType","Za", 50);
+		teachers[1] =  new GeneratedCode.RaimProgram.Base.Derivatives.Teacher("Teacher_StringType_IntType","Yb", 22);
+		teachers[2] =  new GeneratedCode.RaimProgram.Base.Derivatives.Teacher("Teacher_StringType_IntType","Xc", 40);
+		teachers[3] =  new GeneratedCode.RaimProgram.Base.Derivatives.Teacher("Teacher_StringType_IntType","Wd", 35);
+		teacher.SortPersons_Person1D_IntType(teachers, 4);
+		GeneratedCode.RaimProgram.Program.PrintPersonsInfo_Person1D(teachers);
 	};
 
-	static IntArrayQuickSort_IntType1D_IntType_IntType(data,l,r){
-		let i;
-		let j;
-		let x;
-		i = l;
-		j = r;
-		x = data[(ToIntPrecision(((ToIntPrecision(l + r))) / 2))];
-			while(true){
-			while((data[i] < x)){
-		i++;
-			}
-			while((x < data[j])){
-		j--;
-			}
-		if((i <= j)){
-		GeneratedCode.sort.exchange_IntType1D_IntType_IntType(data, i, j);
-		i++;
-		j--;
+	static PrintPersonsInfo_Person1D(persons){
+			for(let p of persons){
+		p.print();
+		if(p instanceof GeneratedCode.RaimProgram.Base.Derivatives.Teacher){
+		let t = p;
+		GeneratedCode.System.Console.WriteLine_StringType((t.Name + " is a teacher."));
+		GeneratedCode.System.Console.WriteLine_StringType(t.ToString());
+		t.PrintClassTypeWithNumberCall();
+		GeneratedCode.System.Console.WriteLine_StringType((("Grumpiness: " + t.GetRandomGrumpiness_FloatType_FloatType(1, 100)) + "\n"));
 		}
-		if((i > j)){
-		break;
+		else{
+		let s = p;
+		s.fn();
+		GeneratedCode.System.Console.WriteLine_StringType((s.Name + " is not a teacher."));
+		s.PrintClassTypeWithNumberCall();
 		}
 			}
-		if((l < j)){
-		GeneratedCode.sort.IntArrayQuickSort_IntType1D_IntType_IntType(data, l, j);
-		}
-		if((i < r)){
-		GeneratedCode.sort.IntArrayQuickSort_IntType1D_IntType_IntType(data, i, r);
-		}
-	};
-
-	static IntArrayQuickSort_IntType1D_IntType(data,size){
-		GeneratedCode.sort.IntArrayQuickSort_IntType1D_IntType_IntType(data, 0, (ToIntPrecision(size - 1)));
-	};
-
-	static IntArrayMin_IntType1D_IntType_IntType(data,start,size){
-		let minPos = ToIntPrecision(start);
-			for(		let pos = ToIntPrecision((ToIntPrecision(start + 1)));(pos < size);		pos++){
-		if((data[pos] < data[minPos])){
-		minPos = pos;
-		}
-			}
-		return minPos;
-	};
-
-	static IntArraySelectionSort_IntType1D_IntType(data,size){
-		let i;
-		let N = ToIntPrecision(size);
-		GeneratedCode.System.Console.WriteLine_StringType("Hola");
-		let n = ToIntPrecision(GeneratedCode.IntType.Parse_StringType("5"));
-			for(		i = 0;(i < (ToIntPrecision(N - 1)));		i++){
-		let k = ToIntPrecision(this.IntArrayMin_IntType1D_IntType_IntType(data, i, size));
-		if((i != k)){
-		GeneratedCode.sort.exchange_IntType1D_IntType_IntType(data, i, k);
-		}
-			}
-	};
-
-	static exchange_IntType1D_IntType_IntType(data,m,n){
-		let temporary;
-		temporary = data[m];
-		data[m] = data[n];
-		data[n] = temporary;
 	};
 };
 
+
+
+GeneratedCode.RaimProgram.Base.Derivatives.Student = class extends GeneratedCode.RaimProgram.Base.Person {
+
+	constructor() {
+		super();
+		this.studentType = null;
+
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length >= 1) this[arguments[0]](...argus);
+	};
+
+	Student() {
+	};
+
+	Student_StringType_IntType(name,age) {
+		this.Name = name;
+		this.Age = age;
+	};
+
+	SetStudentType_StudentType(type){
+		GeneratedCode.RaimProgram.Common.StudentType = type;
+	};
+
+	fn(){
+		super.fn();
+		GeneratedCode.System.Console.WriteLine_StringType("Student");
+	};
+
+	SetStudentType_IntType(type){
+		switch(type){
+			case 0: 		this.studentType = GeneratedCode.RaimProgram.Common.StudentType.FRESHMAN;
+		break;
+			case 1: 		this.studentType = GeneratedCode.RaimProgram.Common.StudentType.SOPHOMORE;
+		break;
+			case 2: 		this.studentType = GeneratedCode.RaimProgram.Common.StudentType.JUNIOR;
+		break;
+			case 3: 		this.studentType = GeneratedCode.RaimProgram.Common.StudentType.SENIOR;
+		break;
+			default : 		GeneratedCode.System.Console.WriteLine_StringType("Invalid entry for StudentType");
+		break;
+		}
+	};
+
+	GetStudentType(){
+		return GeneratedCode.RaimProgram.Common.StudentType;
+	};
+
+	SortPersons_Person1D_IntType(persons,size){
+		this.QuickSort_Person1D_IntType_IntType(persons, 0, (ToIntPrecision(size - 1)));
+	};
+
+	ToString(){
+		return ((("Name: " + this.Name) + "\nAge: ") + this.Age);
+	};
+
+	QuickSort_Person1D_IntType_IntType(persons,left,right){
+		let i = ToIntPrecision(left);
+		let j = ToIntPrecision(right);
+		let pivot = persons[(ToIntPrecision(((ToIntPrecision(left + right))) / 2))];
+			do{
+			while((((persons[i].Age < pivot.Age)) && ((i < right)))){
+		i++;
+			}
+			while((((pivot.Age < persons[j].Age)) && ((j > left)))){
+		j--;
+			}
+		if((i <= j)){
+		let temp = persons[i];
+		persons[i] = persons[j];
+		persons[j] = temp;
+		i++;
+		j--;
+		}
+			}while((i <= j));
+		if((left < j)){
+		this.QuickSort_Person1D_IntType_IntType(persons, left, j);
+		}
+		if((i < right)){
+		this.QuickSort_Person1D_IntType_IntType(persons, i, right);
+		}
+	};
+};
+
+
+GeneratedCode.RaimProgram.Base.Derivatives.Random = class extends GeneratedCode.Object {
+
+	constructor() {
+		super();
+
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length >= 1) this[arguments[0]](...argus);
+	};
+
+	Random() {
+	};
+
+	Nextfloat(){
+		return 5.5;
+	};
+};
+
+
+
+GeneratedCode.RaimProgram.Base.Derivatives.Teacher = class extends GeneratedCode.RaimProgram.Base.Person {
+
+	constructor() {
+		super();
+
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length >= 1) this[arguments[0]](...argus);
+	};
+
+	Teacher() {
+		GeneratedCode.RaimProgram.Base.Derivatives.Teacher.random =  new GeneratedCode.RaimProgram.Base.Derivatives.Random("Random");
+	};
+
+	Teacher_StringType_IntType(name,age) {
+		this.Name = name;
+		this.Age = age;
+		GeneratedCode.RaimProgram.Base.Derivatives.Teacher.random =  new GeneratedCode.RaimProgram.Base.Derivatives.Random("Random");
+	};
+
+	GetRandomGrumpiness_FloatType_FloatType(lowerLimit,upperLimit){
+		let range = (upperLimit - lowerLimit);
+		let number = GeneratedCode.RaimProgram.Base.Derivatives.Teacher.random.Nextfloat();
+		return (((number * range)) + lowerLimit);
+	};
+
+	SortPersons_Person1D_IntType(persons,size){
+		GeneratedCode.RaimProgram.Base.Derivatives.Teacher.BubbleSort_Person1D_IntType(persons, size);
+	};
+
+	ToString(){
+		return ((("Name5: " + this.Name) + "\nAg5: ") + this.Age);
+	};
+
+	static BubbleSort_Person1D_IntType(persons,size){
+			for(		let pass = ToIntPrecision(1);(pass < size);		pass++){
+			for(		let i = ToIntPrecision(0);(i < (ToIntPrecision(size - pass)));		i++){
+		if((persons[i].Age >= persons[(ToIntPrecision(i + 1))].Age)){
+		let temp = persons[i];
+		persons[i] = persons[(ToIntPrecision(i + 1))];
+		persons[(ToIntPrecision(i + 1))] = temp;
+		}
+			}
+			}
+	};
+};
+GeneratedCode.RaimProgram.Base.Derivatives.Teacher.random = null;
 module.exports = GeneratedCode;
-GeneratedCode.sort.Main_StringType1D();

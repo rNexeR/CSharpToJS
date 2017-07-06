@@ -33,7 +33,8 @@ namespace CStoJS.Tree
         }
 
         public override void GenerateCode(Outputs.IOutput output, API api){
-            literal.lexema = literal.lexema.Replace("f", "");
+            if(this.returnType.ToString() == "FloatType")
+                literal.lexema = literal.lexema.Replace("f", "");
             output.WriteString(literal.lexema);
         }
     }

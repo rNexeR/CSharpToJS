@@ -20,8 +20,8 @@ namespace Main
         static void Main(string[] args)
         {
             Utils.debug_enabled = true;
-            // args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/RaimProgram";
-            args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/MergeProgram";
+            args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/RaimProgram";
+            // args[0] = @"/home/rnexer/DEV/Compi/CSharpToJS/example/MergeProgram";
             string[] files;
             List<string> CSFiles = new List<string>();
             var path = Path.GetFullPath("./");

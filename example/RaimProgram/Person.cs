@@ -7,7 +7,7 @@ namespace RaimProgram.Base
     {
         public string Name;
         public int Age;
-        private int _numberCall=0;
+        private static int _numberCall=0;
 
         public Person()
         {

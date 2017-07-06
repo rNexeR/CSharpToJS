@@ -18,6 +18,7 @@ namespace CStoJS.Tree
             this.rules["CharType,CharType"] = new IntType();
 
             this.rules["StringType,FloatType"] = new StringType();
+            this.rules["StringType,BoolType"] = new StringType();
             this.rules["StringType,IntType"] = new StringType();
             this.rules["StringType,CharType"] = new StringType();
             this.rules["StringType,StringType"] = new StringType();

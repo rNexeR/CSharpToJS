@@ -44,7 +44,7 @@ namespace CStoJS.Tree
                     if (api.TypeDeclarationExists(base_name))
                     {
                         var type = api.GetTypeDeclaration(base_name);
-                        if (type.encapsulation_modifier.token.lexema != "public")
+                        if (type.encapsulation_modifier.token != null && type.encapsulation_modifier.token.lexema != "public")
                         {
                             // var nsp_parent = api.namespaces[type.namespace_index].ToString();
                             // var current_nsp = api.namespaces[this.namespace_index].ToString();
